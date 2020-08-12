@@ -4,30 +4,31 @@ body {
 }
 
 ul {
-    list-style-type: none;
+    text-align: center;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background-color: #444;
+    display: flex;
+    justify-content: center;
 }
 
 li {
-    float: left;
+    list-style: none;
+    display: inline-block;
+    padding: 14px 16px;
+}
+
+li:hover {
+    background-color: #111;
 }
 
 li a {
-    display: block;
-    color: white;
+    color: white; 
     text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
     font-size: 1.1em;
     font-weight: 100;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-    background-color: #111;
+    padding: 14px 0;
 }
 
 #active-tab {
@@ -38,17 +39,24 @@ li a:hover {
 }
 
 h1 {
-    font-family: 'Yatra One', serif;
+    font-family: 'Libre Baskerville', serif;
     font-weight: 900;
     font-size: 4em;
     text-align: center;
-    color: #444;
-    margin-top: .5em;
-    margin-bottom: 0em; 
+    color: white;
+    padding-top: .5em;
+    padding-bottom: .5em; 
+    margin-top: 0em;
+    margin-bottom: 0em;
+    border-bottom-width: .1em;
+    border-bottom-style: solid;
+    background-color: rgb(0, 58, 72);
+    border-color:rgb(0, 119, 146);;
 }
 
 h2 {
     font-family: 'Libre Baskerville', serif;
+    color: rgb(0, 119, 146);
 }
 
 #main {
