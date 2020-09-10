@@ -60,6 +60,18 @@ h2 {
 }
 
 #main {
-    margin-left: 2em;
+    margin-left: 10%;
+    margin-right: 4em;
+    margin-top: 2em; 
+}
+
+#headshot {
+    width: 20%;
+    min-width: 20em;
+    float: left;
     margin-right: 2em;
+}
+
+#contact {
+    float: left;
 }
