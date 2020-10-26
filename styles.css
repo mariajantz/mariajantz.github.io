@@ -3,7 +3,7 @@ body {
     margin: 0px; 
 }
 
-ul {
+ul#head {
     text-align: center;
     margin: 0;
     padding: 0;
@@ -12,17 +12,17 @@ ul {
     justify-content: center;
 }
 
-li {
+ul#head li {
     list-style: none;
     display: inline-block;
     padding: 14px 16px;
 }
 
-li:hover {
+ul#head li:hover {
     background-color: #111;
 }
 
-li a {
+ul#head li a {
     color: white; 
     text-align: center;
     text-decoration: none;
