@@ -3259,15 +3259,15 @@ input, select, textarea {
 		}
 
 			#header.alt.style1 .logo strong {
-				color: #6fc3df;
+				color: #1a85a8;
 			}
 
 			#header.alt.style2 .logo strong {
-				color: #8d82c4;
+				color: #216d38;
 			}
 
 			#header.alt.style3 .logo strong {
-				color: #ec8d81;
+				color: #c27012;
 			}
 
 			#header.alt.style4 .logo strong {
@@ -3491,15 +3491,15 @@ input, select, textarea {
 			}
 
 		#banner.style1:after {
-			background-color: #6fc3df;
+			background-color: #1a85a8;
 		}
 
 		#banner.style2:after {
-			background-color: #8d82c4;
+			background-color: #216d38;
 		}
 
 		#banner.style3:after {
-			background-color: #ec8d81;
+			background-color: #c27012;
 		}
 
 		#banner.style4:after {
