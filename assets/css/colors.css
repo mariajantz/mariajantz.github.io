@@ -1,0 +1,55 @@
+/* Enter color paramters */
+label {
+    display: block;
+    margin: 10px 0;
+}
+
+label span {
+    display: inline-block;
+    text-align: right;
+    width: 300px;
+}
+
+body {
+    text-align: center;
+}
+
+form {
+    display: inline-block;
+}
+/* Sizing for Project Containers - use js to  */
+
+.column-4 {
+    float: left;
+    width: 21%; /*Change this depending on number of columns*/
+    padding: 5px;
+    margin: 10px;
+    height: 45%;
+}
+
+/* Color and Images for Project Containers 
+- Using JS, generate the correct number of columns, then set to the 
+correct colors for each vision type 
+- I think do this as a set of divs containing all colors so sizing/highlight on hover is consistent. 
+some examples: 
+- generate colors: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors
+- flexible number of columns: https://jsfiddle.net/mckinleymedia/chLLg4rr/
+- get data from form: 
+*/
+
+.project-1 {
+    margin-left: 5%;
+    background-color: rgb(184, 0, 0);
+}
+
+.project-2 {
+    background-color: rgb(0, 153, 25);
+}
+
+.project-3 {
+    background-color: #209BFF;
+}
+
+.project-4 {
+    background-color: #112d4e;
+}
