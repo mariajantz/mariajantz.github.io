@@ -15,8 +15,11 @@ function genDivs(cols, rowname){
             col.className = "columns project-" + tmp.toString();
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
-            //
+            //change width of these boxes to fill the space
+            cwidth = 100/cols - 5
+            col.style.width = cwidth.toString() + '%'
             //then put a color here
+            col.style.backgroundColor = 'rgb(184, 100, 0)'
             row.appendChild(col);
         }
         e.appendChild(row);

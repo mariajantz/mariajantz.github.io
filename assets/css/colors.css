@@ -30,8 +30,8 @@ form {
 .columns {
     float: left;
     width: 21%; /*Change this depending on number of columns*/
-    padding: 5px;
-    margin: 10px;
+    padding: 1%;
+    margin: 4%;
     height: 100%;
     color: rgb(234, 0, 255);
 }
