@@ -20,10 +20,10 @@ form {
 /* Sizing for Project Containers - use js to  */
 
 .normal {
-    height: 200px;
+    height: 250px;
 }
 
-.deut {
+.colorblind {
     height: 100px;
 }
 

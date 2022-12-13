@@ -1,7 +1,8 @@
 var num_divs = document.getElementById('num_clrs').value
 
 genDivs(num_divs, 'normal')
-genDivs(num_divs, 'deut')
+genDivs(num_divs, 'colorblind')
+genDivs(num_divs, 'colorblind')
 
 function genDivs(cols, rowname){
     var e = document.getElementById("target");
@@ -24,8 +25,8 @@ function genDivs(cols, rowname){
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
             //change width of these boxes to fill the space
-            cwidth = (fullwd-100)/cols-2*rows;
-            col.style.width = cwidth.toString() + 'px'
+            cwidth = (fullwd-100)/cols-2*(rows+1);
+            col.style.width = cwidth.toString() + 'px';
             //col.style.width = cwidth.toString() + '%';
             //then put a color here
             col.style.backgroundColor = genColor();
@@ -45,7 +46,13 @@ function genColor(){
 }
 
 function updateColors() {
-    //get all the existing divs in target, then update the colors (for now use random colors)
+    //get all the existing divs in target - normal, then update the colors (for now use random colors)
+    var clrblocks = document.getElementsByClassName("normal");
+    for (var c=0; c<clrblocks.length; c++) {
+        console.log(clrblocks[c]);
+        clrblocks[c].style.backgroundColor = genColor();
+    }
+
 }
 
 function restoreDefaultValues() {
