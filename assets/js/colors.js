@@ -1,5 +1,7 @@
-genDivs(4, 'normal')
-genDivs(4, 'deut')
+var num_divs = document.getElementById('num_clrs').value
+
+genDivs(num_divs, 'normal')
+genDivs(num_divs, 'deut')
 
 function genDivs(cols, rowname){
     var e = document.getElementById("target");
@@ -11,9 +13,17 @@ function genDivs(cols, rowname){
             var col = document.createElement("div");
             let tmp = c+1;
             col.className = "columns project-" + tmp.toString();
-            col.innerHTML = (r * rows) + c;
+            //col.innerHTML = (r * rows) + c;
+            //CSS changes: 
+            //
+            //then put a color here
             row.appendChild(col);
         }
         e.appendChild(row);
     }
+}
+
+function genColor(){
+    // for now just random color
+
 }
