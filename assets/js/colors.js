@@ -1,21 +1,23 @@
 var num_divs = document.getElementById('num_clrs').value
 
-genDivs(num_divs, 'normal')
-genDivs(num_divs, 'colorblind')
-genDivs(num_divs, 'colorblind')
+genDivs(num_divs, 'normal', 'normal')
+genDivs(num_divs, 'colorblind', 'deuteranopia')
+genDivs(num_divs, 'colorblind', 'protanopia')
+genDivs(num_divs, 'colorblind', 'tritanopia')
 
-function genDivs(cols, rowname){
+function genDivs(cols, rowname, rowid){
     var e = document.getElementById("target");
     var rows = 1
     for (var r = 0; r < rows; r++) {
         var row = document.createElement("div");
         row.className = rowname;
+        row.id = rowid; 
         var fullwd = row.style.width; 
         console.log(fullwd)
         //before starting, make a div with a label
         var lbl = document.createElement("div");
         lbl.className = "columns lbl";
-        lbl.innerHTML = rowname;
+        lbl.innerHTML = rowid;
         lbl.style.width = '100px';
         row.appendChild(lbl)
         for (var c = 0; c < cols; c++) {
