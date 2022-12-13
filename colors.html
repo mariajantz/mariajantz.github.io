@@ -17,11 +17,11 @@
         </label>
         <label>
             <span>Minimum brightness (0-100, 0=black)</span>
-            <input type="number" value="80" min="0" max="100">
+            <input id='min_bright' type="number" value="30" min="0" max="100">
         </label>
         <label>
             <span>Maximum brightness (0-100, 100=white)</span>
-            <input type="number" value="30" min="0" max="100">
+            <input id='max_bright' type="number" value="80" min="0" max="100">
         </label>
         <label>
             <span>Minimum distance from other colors</span>
@@ -47,7 +47,7 @@
 
     <button>Generate colors</button>
     <button>Clear locked colors</button>
-    <button>Restore default values</button>
+    <button type="button" onclick="restoreDefaultValues()">Restore default values</button>
 
     <p>Insert here: set of colors across the page (like the Adobe generator thing). Use
         any random set, but then also provide below the colors: smaller bar with each of the

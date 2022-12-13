@@ -19,7 +19,7 @@ function genDivs(cols, rowname){
             cwidth = 100/cols - 5
             col.style.width = cwidth.toString() + '%'
             //then put a color here
-            col.style.backgroundColor = 'rgb(184, 100, 0)'
+            col.style.backgroundColor = genColor()
             row.appendChild(col);
         }
         e.appendChild(row);
@@ -28,5 +28,18 @@ function genDivs(cols, rowname){
 
 function genColor(){
     // for now just random color
+    r = Math.floor(Math.random()*255)
+    g = Math.floor(Math.random() * 255)
+    b = Math.floor(Math.random() * 255)
+    return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
+}
 
+function updateColors() {
+    //get all the existing divs in target, then update the colors (for now use random colors)
+}
+
+function restoreDefaultValues() {
+    var nc = document.getElementById("num_clrs");
+    nc.value = 4; 
+    document.getElementById("max_bright").value = 80;
 }
