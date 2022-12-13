@@ -19,12 +19,13 @@ form {
 }
 /* Sizing for Project Containers - use js to  */
 
-.column-4 {
+.columns {
     float: left;
     width: 21%; /*Change this depending on number of columns*/
     padding: 5px;
     margin: 10px;
-    height: 45%;
+    height: 200px;
+    color: rgb(234, 0, 255);
 }
 
 /* Color and Images for Project Containers 
