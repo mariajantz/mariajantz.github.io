@@ -10,10 +10,10 @@ function genDivs(cols, rowname){
         var row = document.createElement("div");
         row.className = rowname;
         //before starting, make a div with a label
-        var col = document.createElement("div");
-        col.className = "columns lbl";
-        col.innerHTML = rowname;
-        col.style.width = '10%';
+        var lbl = document.createElement("div");
+        lbl.className = "columns lbl";
+        lbl.innerHTML = rowname;
+        lbl.style.width = '10%';
         for (var c = 0; c < cols; c++) {
             var col = document.createElement("div");
             let tmp = c+1;
@@ -21,7 +21,7 @@ function genDivs(cols, rowname){
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
             //change width of these boxes to fill the space
-            cwidth = 100/cols - 15;
+            cwidth = 100/cols - 10;
             col.style.width = cwidth.toString() + '%';
             //then put a color here
             col.style.backgroundColor = genColor();
