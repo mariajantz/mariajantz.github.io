@@ -19,12 +19,20 @@ form {
 }
 /* Sizing for Project Containers - use js to  */
 
+.normal {
+    height: 200px;
+}
+
+.deut {
+    height: 100px;
+}
+
 .columns {
     float: left;
     width: 21%; /*Change this depending on number of columns*/
     padding: 5px;
     margin: 10px;
-    height: 200px;
+    height: 100%;
     color: rgb(234, 0, 255);
 }
 
