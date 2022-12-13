@@ -9,6 +9,8 @@ function genDivs(cols, rowname){
     for (var r = 0; r < rows; r++) {
         var row = document.createElement("div");
         row.className = rowname;
+        var fullwd = row.style.width; 
+        console.log(fullwd)
         //before starting, make a div with a label
         var lbl = document.createElement("div");
         lbl.className = "columns lbl";
@@ -22,8 +24,9 @@ function genDivs(cols, rowname){
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
             //change width of these boxes to fill the space
-            cwidth = 90/cols-5;
-            col.style.width = cwidth.toString() + '%';
+            cwidth = (fullwd-100)/cols-2*rows;
+            col.style.width = cwidth.toString() + 'px'
+            //col.style.width = cwidth.toString() + '%';
             //then put a color here
             col.style.backgroundColor = genColor();
             //if rowname isn't "normal" then recast this to the correct type
@@ -46,7 +49,12 @@ function updateColors() {
 }
 
 function restoreDefaultValues() {
-    var nc = document.getElementById("num_clrs");
-    nc.value = 4; 
+    document.getElementById("num_clrs").value = 4; 
+    document.getElementById('min_bright').value = 30;  
     document.getElementById("max_bright").value = 80;
+    document.getElementById('min_dist').value = 0; 
+    document.getElementById('deut_check').checked = true;
+    document.getElementById('prot_check').checked = true;
+    document.getElementById('trit_check').checked = true;
+    document.getElementById('gb_check').checked = false;
 }

@@ -40,8 +40,8 @@ form {
 .columns {
     float: left;
     width: 21%; /*Change this depending on number of columns*/
-    padding: 1%;
-    margin: 0%;
+    padding: 0%;
+    margin: 1%;
     height: 100%;
 }
 
