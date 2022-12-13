@@ -49,7 +49,7 @@ function genColor(){
 
 function updateColors() {
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
-    var clrblocks = document.getElementsByClassName("normal");
+    var clrblocks = document.getElementsByClassName("normal").childNodes;
     for (var c=0; c<clrblocks.length; c++) {
         console.log(clrblocks[c]);
         clrblocks[c].style.backgroundColor = genColor();
