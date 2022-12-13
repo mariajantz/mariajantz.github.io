@@ -9,6 +9,11 @@ function genDivs(cols, rowname){
     for (var r = 0; r < rows; r++) {
         var row = document.createElement("div");
         row.className = rowname;
+        //before starting, make a div with a label
+        var col = document.createElement("div");
+        col.className = "columns lbl";
+        col.innerHTML = rowname;
+        col.style.width = '10%';
         for (var c = 0; c < cols; c++) {
             var col = document.createElement("div");
             let tmp = c+1;
@@ -16,10 +21,11 @@ function genDivs(cols, rowname){
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
             //change width of these boxes to fill the space
-            cwidth = 100/cols - 5
-            col.style.width = cwidth.toString() + '%'
+            cwidth = 100/cols - 15;
+            col.style.width = cwidth.toString() + '%';
             //then put a color here
-            col.style.backgroundColor = genColor()
+            col.style.backgroundColor = genColor();
+            //if rowname isn't "normal" then recast this to the correct type
             row.appendChild(col);
         }
         e.appendChild(row);
