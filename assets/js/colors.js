@@ -25,7 +25,7 @@ function genDivs(cols, rowname){
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
             //change width of these boxes to fill the space
-            cwidth = (fullwd-100)/cols-2*(rows+1);
+            cwidth = Math.floor((fullwd-100)/cols-2*(cols+1)); 
             col.style.width = cwidth.toString() + 'px';
             //col.style.width = cwidth.toString() + '%';
             //then put a color here

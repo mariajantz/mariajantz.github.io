@@ -17,14 +17,20 @@ body {
 form {
     display: inline-block;
 }
-/* Sizing for Project Containers - use js to  */
+/* Sizing for Project Containers - use js to edit. 
+Also, probably need to change all this to grid layout 
+https: //www.outsystems.com/blog/posts/css-vertical-align/
+https: //css-tricks.com/snippets/css/complete-guide-grid/
+*/
 
 .normal {
     height: 250px;
+    line-height: 250px;
 }
 
 .colorblind {
     height: 100px;
+    line-height: 100px;
 }
 
 #target {
