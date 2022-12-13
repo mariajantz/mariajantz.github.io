@@ -27,7 +27,7 @@ function genDivs(cols, rowname, rowid){
             //col.innerHTML = (r * rows) + c;
             //CSS changes: 
             //change width of these boxes to fill the space
-            cwidth = Math.floor((fullwd-100)/cols-2*(cols+1)); 
+            cwidth = Math.floor((fullwd-100)/cols-2*(cols+1)*(fullwd/200)); 
             col.style.width = cwidth.toString() + 'px';
             //col.style.width = cwidth.toString() + '%';
             //then put a color here
@@ -48,10 +48,14 @@ function genColor(){
 }
 
 function updateColors() {
+    //first check if the number of colors included is the same as the number of divs
+    //if not, delete any extra divs (last child) and resize all of them 
+    //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var clrblocks = document.getElementsByClassName("normal").childNodes;
     for (var c=0; c<clrblocks.length; c++) {
         console.log(clrblocks[c]);
+        console.log(c);
         clrblocks[c].style.backgroundColor = genColor();
     }
 

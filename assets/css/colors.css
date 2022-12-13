@@ -47,7 +47,7 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
     float: left;
     width: 21%; /*Change this depending on number of columns*/
     padding: 0%;
-    margin: 1%;
+    margin: .5%;
     height: 100%;
 }
 
