@@ -27,13 +27,22 @@ form {
     height: 100px;
 }
 
+#target {
+    width: 95%; 
+    margin: auto;
+}
+
+.lbl {
+    text-align: right;
+    color:black
+}
+
 .columns {
     float: left;
     width: 21%; /*Change this depending on number of columns*/
     padding: 1%;
-    margin: 1%;
+    margin: 0%;
     height: 100%;
-    color: rgb(234, 0, 255);
 }
 
 /* Color and Images for Project Containers 
@@ -47,7 +56,6 @@ some examples:
 */
 
 .project-1 {
-    margin-left: 2.5%;
     background-color: rgb(184, 0, 0);
 }
 

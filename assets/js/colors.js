@@ -13,7 +13,7 @@ function genDivs(cols, rowname){
         var lbl = document.createElement("div");
         lbl.className = "columns lbl";
         lbl.innerHTML = rowname;
-        lbl.style.width = '10%';
+        lbl.style.width = '100px';
         row.appendChild(lbl)
         for (var c = 0; c < cols; c++) {
             var col = document.createElement("div");
