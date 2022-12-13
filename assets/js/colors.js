@@ -1,14 +1,16 @@
 genDivs(4)
+genDivs(4)
 
 function genDivs(cols){
     var e = document.getElementById("target");
     var rows = 1
     for (var r = 0; r < rows; r++) {
         var row = document.createElement("div");
-        row.className = "columns";
+        row.className = "normal";
         for (var c = 0; c < cols; c++) {
             var col = document.createElement("div");
-            col.className = "col";
+            let tmp = c+1;
+            col.className = "columns project-" + tmp.toString();
             col.innerHTML = (r * rows) + c;
             col.innerHTML = "A";
             row.appendChild(col);
