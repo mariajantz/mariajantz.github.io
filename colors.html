@@ -1,77 +1,81 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Colors</title>
     <link rel="stylesheet" href="assets/css/colors.css">
-    <script src="assets/js/colors.js"></script>
 </head>
 
 <body>
+    <script src="assets/js/colors.js"></script>
+    <h1 id="test">Colorblind-friendly color palette generator</h1>
+    <h3>Choose color parameters:</h3>
 
-<h1 id="test">Colorblind-friendly color palette generator</h1>
-<h3>Choose color parameters:</h3>
+    <!-- <script>
+        document.getElementById("test").innerHTML = 20;
+    </script> -->
 
-<script>
-    document.getElementById("test").innerHTML = 20;
-</script>
+    <form>
+        <label>
+            <span>Number of colors</span>
+            <input type="number" value=3 min=2 max="12">
+        </label>
+        <label>
+            <span>Minimum brightness (0-100, 0=black)</span>
+            <input type="number" value="80" min="0" max="100">
+        </label>
+        <label>
+            <span>Maximum brightness (0-100, 100=white)</span>
+            <input type="number" value="30" min="0" max="100">
+        </label>
+        <label>
+            <span>Minimum distance from other colors</span>
+            <input type="number" value=5 min=2 max="12">
+        </label>
+        <label>
+            <span>Deuteranopia</span>
+            <input type="checkbox" checked>
+        </label>
+        <label>
+            <span>Protanopia</span>
+            <input type="checkbox" checked>
+        </label>
+        <label>
+            <span>Tritanopia</span>
+            <input type="checkbox" checked>
+        </label>
+        <label>
+            <span>Reduce grays/browns</span>
+            <input type="checkbox" checked>
+        </label>
+    </form>
 
-<form>
-    <label>
-        <span>Number of colors</span>
-        <input type="number" value=3 min=2 max="12">
-    </label>
-    <label>
-        <span>Minimum brightness (0-100, 0=black)</span>
-        <input type="number" value="80" min="0" max="100">
-    </label>
-    <label>
-        <span>Maximum brightness (0-100, 100=white)</span>
-        <input type="number" value="30" min="0" max="100">
-    </label>
-    <label>
-        <span>Minimum distance from other colors</span>
-        <input type="number" value=5 min=2 max="12">
-    </label>
-    <label>
-        <span>Deuteranopia</span>
-        <input type="checkbox" checked>
-    </label>
-    <label>
-        <span>Protanopia</span>
-        <input type="checkbox" checked>
-    </label>
-    <label>
-        <span>Tritanopia</span>
-        <input type="checkbox" checked>
-    </label>
-    <label>
-        <span>Reduce grays/browns</span>
-        <input type="checkbox" checked>
-    </label>
-</form>
+    <button>Generate colors</button>
+    <button>Clear locked colors</button>
+    <button>Restore default values</button>
 
-<button>Generate colors</button>
-<button>Clear locked colors</button>
+    <p>Insert here: set of colors across the page (like the Adobe generator thing). Use
+        any random set, but then also provide below the colors: smaller bar with each of the
+        colorblindness types, as well as editable RGB, HEX, etc values.
+        Click on a color to lock it in so it doesn't change when regenerating lists and is
+        referenced for distances to colors. Also, provide a "simulated plot" option like the one
+        in viz palette. (scroll down to see? Do scatter plot w/overlap and lines.)
+    </p>
 
-<p>Insert here: set of colors across the page (like the Adobe generator thing). Use 
-    any random set, but then also provide below the colors: smaller bar with each of the 
-    colorblindness types, as well as editable RGB, HEX, etc values. 
-    Click on a color to lock it in so it doesn't change when regenerating lists and is 
-    referenced for distances to colors. Also, provide a "simulated plot" option like the one
-    in viz palette. (scroll down to see? Do scatter plot w/overlap and lines.)
-</p>
+    <div id="target"></div>
 
-<div class="column-4 project-1">
-</div>
+    <div class="column-4 project-1">
+    </div>
 
-<div class="column-4 project-2">
-</div>
+    <div class="column-4 project-2">
+    </div>
 
-<div class="column-4 project-3">
-</div>
+    <div class="column-4 project-3">
+    </div>
 
-<div class="column-4 project-4">
-</div>
+    <div class="column-4 project-4">
+    </div>
 
 </body>
+
 </html>
