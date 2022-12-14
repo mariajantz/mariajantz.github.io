@@ -1,9 +1,9 @@
 var num_divs = document.getElementById('num_clrs').value
 
-genDivs(num_divs, 'normal', 'normal')
-genDivs(num_divs, 'colorblind', 'deuteranopia')
-genDivs(num_divs, 'colorblind', 'protanopia')
-genDivs(num_divs, 'colorblind', 'tritanopia')
+// genDivs(num_divs, 'normal', 'normal')
+// genDivs(num_divs, 'colorblind', 'deuteranopia')
+// genDivs(num_divs, 'colorblind', 'protanopia')
+// genDivs(num_divs, 'colorblind', 'tritanopia')
 
 genDivsGrid(num_divs);
 
@@ -46,7 +46,7 @@ function genDivsGrid(cols) {
     var e = document.getElementById("target2");
     var rows = 4;
     for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
+        for (var c = 0; c < cols+1; c++) {
             var cell = document.createElement('div'); 
             //name each cell so normal, extras get 
             let tmp = r + 1;
@@ -59,8 +59,11 @@ function genDivsGrid(cols) {
     }
     //style table
     e.style.display = 'grid';
-    e.style.gridTemplateColumns = '100px auto auto auto';
-    e.style.gridTemplateRows = '250 100 100 100';
+    e.style.gridTemplateColumns = '100px' + ' auto'.repeat(cols);
+    e.style.gridTemplateRows = '250px 100px 100px 100px';
+    e.style.gap = '10px';
+    //label column
+    //e.style.gridTemplateAreas = '""';
 }
 
 function genColor(){
