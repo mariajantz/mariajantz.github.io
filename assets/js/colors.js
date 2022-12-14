@@ -46,7 +46,8 @@ function genDivsGrid(cols) {
     var e = document.getElementById("target");
     var rows = 4;
     const col_lbl = cols +1; 
-    console.log(col_lbl)
+    console.log(cols);
+    console.log(col_lbl);
     for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols; c++) {
             var cell = document.createElement('div'); 
