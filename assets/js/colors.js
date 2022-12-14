@@ -91,8 +91,8 @@ function manualColor(elem){
     //get the parent div
     //change its background color
     console.log('hello')
-    console.log(elem); 
-    console.log(elem.parentNode);
+    console.log(this); 
+    console.log(elem);
 }
 
 function restoreDefaultValues() {
