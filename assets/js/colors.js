@@ -24,7 +24,9 @@ function genDivsGrid(cols) {
                 var colorpicker = document.createElement('input');
                 colorpicker.type = 'color';
                 colorpicker.className = 'edit-color';
-                colorpicker.onclick = 'manualColor(this)'; 
+                colorpicker.oninput = function test() {
+                    console.log('hello');
+                }; 
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox'; 
