@@ -5,7 +5,7 @@ var num_divs = document.getElementById('num_clrs').value
 // genDivs(num_divs, 'colorblind', 'protanopia')
 // genDivs(num_divs, 'colorblind', 'tritanopia')
 console.log(num_divs);
-genDivsGrid(num_divs);
+genDivsGrid(4);
 
 function genDivs(cols, rowname, rowid){
     var e = document.getElementById("target");
