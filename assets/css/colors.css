@@ -52,6 +52,12 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
     height: 100%;
 }
 
+.form-column{
+    float: left;
+    width: 50%;
+    padding: 5%;
+}
+
 /* Color and Images for Project Containers 
 - Using JS, generate the correct number of columns, then set to the 
 correct colors for each vision type 

@@ -11,6 +11,7 @@
     <h3>Choose color parameters:</h3>
 
     <form>
+        <div class="form-column">
         <label>
             <span>Number of colors</span>
             <input id='num_clrs' type="number" value=4 min=2 max="12">
@@ -27,6 +28,8 @@
             <span>Minimum distance from other colors</span>
             <input id='min_dist' type="number" value=5 min=2 max="12">
         </label>
+        </div>
+        <div class="form-column">
         <label>
             <span>Deuteranopia</span>
             <input id='deut_check' type="checkbox" checked>
@@ -43,6 +46,7 @@
             <span>Reduce grays/browns</span>
             <input id='gb_check' type="checkbox">
         </label>
+        </div>
     </form>
 
     <button type="button" onclick="updateColors()">Generate colors</button>
