@@ -78,8 +78,6 @@ function updateColors() {
             if (normblocks[c].className.includes('row-0')) {
                 locked[c - 1] = normblocks[c].childNodes[1].checked;
             }
-            console.log(locked)
-            console.log(c % num_cols)
             if (!locked[c % num_cols - 1]) {
                 normblocks[c].style.backgroundColor = genColor();
             }
