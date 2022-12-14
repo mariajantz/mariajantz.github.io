@@ -24,6 +24,7 @@ function genDivsGrid(cols) {
                 var colorpicker = document.createElement('input');
                 colorpicker.type = 'color';
                 colorpicker.className = 'edit-color';
+                colorpicker.onclick = 'manualColor(this)'; 
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox'; 
@@ -82,6 +83,13 @@ function updateColors() {
         }
     }
 
+}
+
+function manualColor(elem){
+    //get the button that was selected
+    //get the parent div
+    //change its background color
+    console.log(elem.parentNode.class); 
 }
 
 function restoreDefaultValues() {
