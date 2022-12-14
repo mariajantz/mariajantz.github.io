@@ -32,7 +32,7 @@ function genDivs(cols, rowname, rowid){
             //col.style.width = cwidth.toString() + '%';
             //then put a color here
             col.style.backgroundColor = genColor();
-            col.style.display = grid; 
+            col.style.display = 'grid'; 
             //if rowname isn't "normal" then recast this to the correct type
             row.appendChild(col);
         }
