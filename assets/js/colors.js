@@ -55,6 +55,8 @@ function genDivsGrid(cols) {
             cell.innerHTML = r+c;
             if (c==0) {
                 cell.id = 'lbl-' + r.toString();
+                cell.style.backgroundColor = 'white';
+                cell.innerHTML = 'label this';
             }
             e.appendChild(cell);
         }
