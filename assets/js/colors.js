@@ -69,7 +69,9 @@ function updateColors() {
             if (normblocks[c].className == 'row-1'){
                 locked[c-1] = normblocks[c].childNodes[1].checked;
             }
-            normblocks[c].style.backgroundColor = genColor();
+            if (!locked[c/(normblocks.length/4)-1]){
+                normblocks[c].style.backgroundColor = genColor();
+            }
         }
     }
 
