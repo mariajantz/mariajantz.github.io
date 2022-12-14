@@ -43,7 +43,7 @@ function genDivs(cols, rowname, rowid){
 }
 
 function genDivsGrid(cols) {
-    var e = document.getElementById("target2");
+    var e = document.getElementById("target");
     var rows = 4;
     for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols+1; c++) {
