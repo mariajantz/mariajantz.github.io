@@ -4,7 +4,7 @@ var num_divs = document.getElementById('num_clrs').value
 // genDivs(num_divs, 'colorblind', 'deuteranopia')
 // genDivs(num_divs, 'colorblind', 'protanopia')
 // genDivs(num_divs, 'colorblind', 'tritanopia')
-
+console.log(num_divs);
 genDivsGrid(num_divs);
 
 function genDivs(cols, rowname, rowid){
@@ -45,7 +45,9 @@ function genDivs(cols, rowname, rowid){
 function genDivsGrid(cols) {
     var e = document.getElementById("target");
     var rows = 4;
+    console.log(cols);
     const col_lbl = cols +1; 
+    const row_lbls = ['Normal vision', 'Deuteranopia', 'Protanopia', 'Tritanopia'];
     console.log(col_lbl);
     for (var r = 0; r < rows; r++) {
         for (var c = 0; c < col_lbl; c++) {
@@ -54,12 +56,14 @@ function genDivsGrid(cols) {
             cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
             
             cell.style.backgroundColor = genColor();
-            cell.innerHTML = r+c;
+            //cell.innerHTML = r+c;
             if (c==0) {
                 cell.id = 'lbl-' + r.toString();
                 cell.style.backgroundColor = 'white';
-                cell.innerHTML = 'label this';
+                cell.innerHTML = row_lbls[r];
             }
+            //else if row 0 add a checkbox (locked/unlocked) to the grid cell
+
             e.appendChild(cell);
         }
     }
@@ -68,7 +72,7 @@ function genDivsGrid(cols) {
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(cols);
     e.style.gridTemplateRows = '250px 100px 100px 100px';
     e.style.gap = '10px';
-    e.style.alignItems = 'center';
+    e.style.alignItems = 'stretch';
     //label column
     //e.style.gridTemplateAreas = '""';
 }
