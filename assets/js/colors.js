@@ -60,7 +60,7 @@ function genDivsGrid(cols) {
     //style table
     e.style.display = 'grid';
     e.style.gridTemplateColumns = '100 auto auto auto';
-    
+    e.style.gridTemplateRows = '250 100 100 100';
 }
 
 function genColor(){
