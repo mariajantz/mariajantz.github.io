@@ -60,10 +60,16 @@ function updateColors() {
     //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var normblocks = document.getElementById("target").childNodes;
+    //add array to update 
+    var locked = [];
     
     for (var c=1; c<normblocks.length; c++) {
         if (normblocks[c].id != 'lbl'){
-        normblocks[c].style.backgroundColor = genColor();
+            //add here: check if that row is checked
+            if (normblocks[c].className == 'row-1'){
+                locked[c-1] = normblocks[c].childNodes[1].checked;
+            }
+            normblocks[c].style.backgroundColor = genColor();
         }
     }
 
