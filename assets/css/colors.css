@@ -16,6 +16,7 @@ body {
 
 form {
     display: inline-block;
+    width: 95%; 
 }
 /* Sizing for Project Containers - use js to edit. 
 Also, probably need to change all this to grid layout 
@@ -55,7 +56,6 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
 .form-column{
     float: left;
     width: 50%;
-    padding: 5%;
 }
 
 /* Color and Images for Project Containers 

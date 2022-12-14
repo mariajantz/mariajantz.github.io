@@ -23,14 +23,14 @@ function genDivsGrid(cols) {
             }
             //else if row 0 add a checkbox (locked/unlocked) to the grid cell
             else if (r==0) {
+                var colorpicker = document.createElement('input');
+                colorpicker.type = 'color';
+                colorpicker.className = 'edit-color';
+                cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox'; 
                 checkbox.className = 'lock';
                 cell.appendChild(checkbox);
-                var colorpicker = document.createElement('input'); 
-                colorpicker.type = 'color'; 
-                colorpicker.className = 'edit-color';
-                cell.appendChild(colorpicker); 
                 cell.style.justifyItems = 'end';
             }
             e.appendChild(cell);
