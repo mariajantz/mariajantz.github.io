@@ -27,6 +27,11 @@ function genDivsGrid(cols) {
                 checkbox.type = 'checkbox'; 
                 checkbox.className = 'lock';
                 cell.appendChild(checkbox);
+                var colorpicker = document.createElement('input'); 
+                colorpicker.type = 'color'; 
+                colorpicker.className = 'edit-color';
+                cell.appendChild(colorpicker); 
+                cell.style.justifyItems = 'end';
             }
             e.appendChild(cell);
         }
