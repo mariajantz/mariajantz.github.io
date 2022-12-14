@@ -76,7 +76,7 @@ function updateColors() {
             }
             console.log(locked)
             console.log(c % num_cols)
-            if (!locked[c / (normblocks.length / 4) - 1]) {
+            if (!locked[c % num_cols - 1]) {
                 normblocks[c].style.backgroundColor = genColor();
             }
         }
