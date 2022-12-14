@@ -68,6 +68,7 @@ function genDivsGrid(cols) {
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(cols);
     e.style.gridTemplateRows = '250px 100px 100px 100px';
     e.style.gap = '10px';
+    e.style.alignItems = 'center';
     //label column
     //e.style.gridTemplateAreas = '""';
 }
