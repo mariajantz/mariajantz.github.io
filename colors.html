@@ -11,39 +11,39 @@
 
     <form>
         <div class="form-column">
-        <label>
+        <label class="c1">
             <span>Number of colors</span>
             <input id='num_clrs' type="number" value=4 min=2 max="12">
         </label>
-        <label>
+        <label class="c1">
             <span>Minimum brightness (0-100, 0=black)</span>
             <input id='min_bright' type="number" value="30" min="0" max="100">
         </label>
-        <label>
+        <label class="c1">
             <span>Maximum brightness (0-100, 100=white)</span>
             <input id='max_bright' type="number" value="80" min="0" max="100">
         </label>
-        <label>
+        <label class="c1">
             <span>Minimum distance from other colors</span>
             <input id='min_dist' type="number" value=5 min=2 max="12">
         </label>
         </div>
         <div class="form-column">
-        <label>
-            <span>Deuteranopia</span>
+        <label class="c2">
             <input id='deut_check' type="checkbox" checked>
+            <span>Deuteranopia</span>
         </label>
-        <label>
-            <span>Protanopia</span>
+        <label class="c2">
             <input id='prot_check' type="checkbox" checked>
+            <span>Protanopia</span>
         </label>
-        <label>
-            <span>Tritanopia</span>
+        <label class="c2">
             <input id='trit_check' type="checkbox" checked>
+            <span>Tritanopia</span>
         </label>
-        <label>
-            <span>Reduce grays/browns</span>
+        <label class="c2">
             <input id='gb_check' type="checkbox">
+            <span>Reduce grays/browns</span>
         </label>
         </div>
     </form>

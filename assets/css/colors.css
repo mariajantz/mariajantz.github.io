@@ -4,9 +4,15 @@ label {
     margin: 10px 0;
 }
 
-label span {
+.c1 span {
     display: inline-block;
     text-align: right;
+    width: 300px;
+}
+
+.c2 span {
+    display: inline-block;
+    text-align: left;
     width: 300px;
 }
 
