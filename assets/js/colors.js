@@ -59,19 +59,24 @@ function updateColors() {
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var normblocks = document.getElementById("target").childNodes;
     var num_clrs = document.getElementById('num_clrs').value;
-    var num_cols = normblocks.length/4;
+    var num_cols = normblocks.length / 4;
     console.log(num_cols)
     console.log(num_clrs)
+    if ((num_cols - 1) != num_clrs) {
+        console.log('Repopulate columns')
+    }
     //add array to update 
     var locked = [];
-    
-    for (var c=1; c<normblocks.length; c++) {
-        if (normblocks[c].id != 'lbl'){
+
+    for (var c = 1; c < normblocks.length; c++) {
+        if (normblocks[c].id != 'lbl') {
             //add here: check if that row is checked
-            if (normblocks[c].className == 'row-1'){
-                locked[c-1] = normblocks[c].childNodes[1].checked;
+            if (normblocks[c].className.includes('row-0')) {
+                locked[c - 1] = normblocks[c].childNodes[1].checked;
             }
-            if (!locked[c/(normblocks.length/4)-1]){
+            console.log(locked)
+            console.log(c % num_cols)
+            if (!locked[c / (normblocks.length / 4) - 1]) {
                 normblocks[c].style.backgroundColor = genColor();
             }
         }
