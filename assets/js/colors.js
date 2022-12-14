@@ -49,7 +49,7 @@ function genDivsGrid(cols) {
         for (var c = 0; c < cols+1; c++) {
             var cell = document.createElement('div'); 
             //name each cell so normal, extras get 
-            cell.className = "grid-cell row-" + r.toString();
+            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
             
             cell.style.backgroundColor = genColor();
             cell.innerHTML = r+c;
