@@ -17,7 +17,7 @@ function genDivsGrid(cols) {
             cell.style.backgroundColor = genColor();
             //cell.innerHTML = r+c;
             if (c==0) {
-                cell.id = 'lbl-' + r.toString();
+                cell.id = 'lbl';
                 cell.style.backgroundColor = 'white';
                 cell.innerHTML = row_lbls[r];
             }
@@ -62,7 +62,9 @@ function updateColors() {
     var normblocks = document.getElementById("target").childNodes;
     
     for (var c=1; c<normblocks.length; c++) {
+        if (normblocks[c].id != 'lbl'){
         normblocks[c].style.backgroundColor = genColor();
+        }
     }
 
 }
