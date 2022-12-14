@@ -5,6 +5,8 @@ genDivs(num_divs, 'colorblind', 'deuteranopia')
 genDivs(num_divs, 'colorblind', 'protanopia')
 genDivs(num_divs, 'colorblind', 'tritanopia')
 
+genDivsGrid(num_divs);
+
 function genDivs(cols, rowname, rowid){
     var e = document.getElementById("target");
     var rows = 1
@@ -32,12 +34,33 @@ function genDivs(cols, rowname, rowid){
             //col.style.width = cwidth.toString() + '%';
             //then put a color here
             col.style.backgroundColor = genColor();
-            col.style.display = 'grid'; 
+            //col.style.display = 'grid'; 
             //if rowname isn't "normal" then recast this to the correct type
             row.appendChild(col);
         }
         e.appendChild(row);
     }
+}
+
+function genDivsGrid(cols) {
+    var e = document.getElementById("target2");
+    var rows = 4;
+    for (var r = 0; r < rows; r++) {
+        for (var c = 0; c < cols; c++) {
+            var cell = document.createElement('div'); 
+            //name each cell so normal, extras get 
+            let tmp = r + 1;
+            cell.className = "grid-cell row-" + tmp.toString();
+            
+            cell.style.backgroundColor = genColor();
+            cell.innerHTML = r+c;
+            e.appendChild(cell);
+        }
+    }
+    //style table
+    e.style.display = 'grid';
+    e.style.gridTemplateColumns = '100 auto auto auto';
+    
 }
 
 function genColor(){
