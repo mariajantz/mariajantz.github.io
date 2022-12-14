@@ -1,6 +1,4 @@
-var num_divs = document.getElementById('num_clrs').value
 
-console.log(num_divs);
 genDivsGrid(4);
 
 function genDivsGrid(cols) {
@@ -60,6 +58,10 @@ function updateColors() {
     //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var normblocks = document.getElementById("target").childNodes;
+    var num_clrs = document.getElementById('num_clrs').value;
+    var num_cols = normblocks.length/4;
+    console.log(num_cols)
+    console.log(num_clrs)
     //add array to update 
     var locked = [];
     
