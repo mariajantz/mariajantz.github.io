@@ -46,7 +46,7 @@ function genDivsGrid(cols) {
     var e = document.getElementById("target");
     var rows = 4;
     for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols+1; c++) {
+        for (var c = 0; c < (cols); c++) {
             var cell = document.createElement('div'); 
             //name each cell so normal, extras get 
             cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
