@@ -47,6 +47,9 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
 
 .lock {
     float: right;
+    cursor: pointer; 
+    width: 1.5em; 
+    height: 1.5em;
 }
 
 .edit-color {
