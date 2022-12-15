@@ -27,7 +27,7 @@ function genDivsGrid(cols) {
                 // colorpicker.oninput = function test() {
                 //     console.log('hello');
                 // }; 
-                colorpicker.oninput = () => {manualColor(c);};
+                colorpicker.oninput = () => {manualColor(colval);};
                 //could also try add event listener
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
