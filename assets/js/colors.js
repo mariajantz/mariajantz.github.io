@@ -24,10 +24,8 @@ function genDivsGrid(cols) {
                 var colorpicker = document.createElement('input');
                 colorpicker.type = 'color';
                 colorpicker.className = 'edit-color';
-                // colorpicker.oninput = function test() {
-                //     console.log('hello');
-                // }; 
                 colorpicker.oninput = () => {manualColor(colval);};
+                //colorpicker.addEventListener('click', manualColor)
                 //could also try add event listener
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
@@ -87,22 +85,18 @@ function updateColors() {
 
 }
 
-function manualColor(cellname){
+function manualColor(cellnum){
     //get the button that was selected
     //get the parent div
     //change its background color
-    console.log('hello')
-    console.log(this); 
-    console.log(cellname)
-    console.log(document.getElementsByClassName('col-1'))
+    console.log(cellnum)
+    var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
+    console.log(cols)
+    var cp = document.getElementsByClassName('color-picker')
+    console.log(cp)
     //get all the elements of the same column and change their background colors
     //based on colorblindness
-    console.log(this.parent)
-    console.log(this.closest)
-    console.log(this.parent.location)
-    console.log(this.parent.parent);
-    console.log(this.parent.window)
-    console.log(this.parent.caller)
+
 }
 
 function toCB(rgbArr, cbType) {
