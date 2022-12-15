@@ -27,7 +27,8 @@ function genDivsGrid(cols) {
                 // colorpicker.oninput = function test() {
                 //     console.log('hello');
                 // }; 
-                colorpicker.oninput = manualColor(this);
+                colorpicker.oninput = manualColor();
+                //could also try add event listener
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox'; 
@@ -86,13 +87,12 @@ function updateColors() {
 
 }
 
-function manualColor(elem){
+function manualColor(){
     //get the button that was selected
     //get the parent div
     //change its background color
     console.log('hello')
     console.log(this); 
-    console.log(elem);
 }
 
 function restoreDefaultValues() {
