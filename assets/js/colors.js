@@ -94,8 +94,13 @@ function manualColor(cellname){
     console.log('hello')
     console.log(this); 
     console.log(cellname)
-    console.log(this.parent())
-    console.log(this.closest())
+    console.log(document.getElementsByClassName('col-1'))
+    console.log(this.parent)
+    console.log(this.closest)
+    console.log(this.parent.location)
+    console.log(this.parent.parent);
+    console.log(this.parent.window)
+    console.log(this.parent.caller)
 }
 
 function toCB(rgbArr, cbType) {
