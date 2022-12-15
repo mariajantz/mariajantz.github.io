@@ -80,6 +80,9 @@ function updateColors() {
             }
             if (!locked[c % num_cols - 1]) {
                 normblocks[c].style.backgroundColor = genColor();
+                if (normblocks[c].className.includes('row-0')) {
+                    normblocks[c].childNodes[0].value = normblocks[c].style.backgroundColor;
+                }
             }
         }
     }
@@ -93,14 +96,14 @@ function manualColor(cellnum){
 
     //get the parent div
     var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
-    console.log(cols)
+    //console.log(cols)
     
     //change parent background color
     cols[0].style.backgroundColor = clr_hex.toString();
 
     //get all the elements of the same column and change their background colors
     //based on colorblindness
-    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]);
+    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
     console.log(clr_deut)
 
 }
