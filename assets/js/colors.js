@@ -11,7 +11,7 @@ function genDivsGrid(cols) {
             var cell = document.createElement('div'); 
             //name each cell so normal, extras get 
             cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
-            
+            const colval = c; 
             cell.style.backgroundColor = genColor();
             //cell.innerHTML = r+c;
             if (c==0) {
@@ -27,7 +27,7 @@ function genDivsGrid(cols) {
                 // colorpicker.oninput = function test() {
                 //     console.log('hello');
                 // }; 
-                colorpicker.oninput = () => {manualColor(cell.className);};
+                colorpicker.oninput = () => {manualColor(c);};
                 //could also try add event listener
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
