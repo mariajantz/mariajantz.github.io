@@ -95,6 +95,8 @@ function manualColor(cellname){
     console.log(this); 
     console.log(cellname)
     console.log(document.getElementsByClassName('col-1'))
+    //get all the elements of the same column and change their background colors
+    //based on colorblindness
     console.log(this.parent)
     console.log(this.closest)
     console.log(this.parent.location)
@@ -105,10 +107,33 @@ function manualColor(cellname){
 
 function toCB(rgbArr, cbType) {
     //where colorblindness type is 0 (normal), 1 (deut), 2 (prot), or 3 (trit)
-    //colorblind matrices
+    //colorblind matrices (Machado et al 2009)
+    let deut = [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]] //most common - green blind
+    let prot = [[.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]] //next most common - red blind
+    let trit = [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]] //least common - blue blind
 
     //matrix multiplication
 
+    //right now assume no translation, just return value
+    if (cbType==0) {
+        return rgbArr;
+    } else if (cbType == 1) {
+        console.log('convert to deut');
+        console.log(matrixDot(rgbArr, deut))
+    }
+}
+
+function matrixDot(A, B) {
+    //call: var a = [[8, 3], [2, 4], [3, 6]]
+    //var b = [[1, 2, 3], [4, 6, 8]]
+    //matrixDot(a,b)
+    var result = new Array(A.length).fill(0).map(row => new Array(B[0].length).fill(0));
+
+    return result.map((row, i) => {
+        return row.map((val, j) => {
+            return A[i].reduce((sum, elm, k) => sum + (elm * B[k][j]), 0)
+        })
+    })
 }
 
 function restoreDefaultValues() {
