@@ -103,7 +103,7 @@ function manualColor(cellnum){
 
     //get all the elements of the same column and change their background colors
     //based on colorblindness
-    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
+    let clr_deut = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 1);
     console.log(clr_deut)
 
 }
