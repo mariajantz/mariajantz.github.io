@@ -87,16 +87,28 @@ function updateColors() {
 
 function manualColor(cellnum){
     //get the button that was selected
+    var clr = document.getElementsByClassName('edit-color')[cellnum - 1].value; 
+    console.log(hexToRgb(clr))
+
     //get the parent div
-    //change its background color
-    console.log(cellnum)
     var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
     console.log(cols)
-    var cp = document.getElementsByClassName('color-picker')
-    console.log(cp)
+    
+    //change parent background color
+    cols[0].style.backgroundColor = clr.toString();
+
     //get all the elements of the same column and change their background colors
     //based on colorblindness
 
+}
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
 }
 
 function toCB(rgbArr, cbType) {
