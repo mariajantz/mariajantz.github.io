@@ -27,7 +27,7 @@ function genDivsGrid(cols) {
                 // colorpicker.oninput = function test() {
                 //     console.log('hello');
                 // }; 
-                colorpicker.oninput =  () => {manualColor();};
+                colorpicker.oninput = () => {manualColor(cell.className);};
                 //could also try add event listener
                 cell.appendChild(colorpicker); 
                 var checkbox = document.createElement('input');
@@ -87,12 +87,23 @@ function updateColors() {
 
 }
 
-function manualColor(){
+function manualColor(cellname){
     //get the button that was selected
     //get the parent div
     //change its background color
     console.log('hello')
     console.log(this); 
+    console.log(cellname)
+    console.log(this.parent())
+    console.log(this.closest())
+}
+
+function toCB(rgbArr, cbType) {
+    //where colorblindness type is 0 (normal), 1 (deut), 2 (prot), or 3 (trit)
+    //colorblind matrices
+
+    //matrix multiplication
+
 }
 
 function restoreDefaultValues() {
