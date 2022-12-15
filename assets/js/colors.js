@@ -87,8 +87,8 @@ function updateColors() {
 
 function manualColor(cellnum){
     //get the button that was selected
-    var clr = document.getElementsByClassName('edit-color')[cellnum - 1].value; 
-    console.log(hexToRgb(clr))
+    var clr_hex = document.getElementsByClassName('edit-color')[cellnum - 1].value; 
+    let clr_rgb = hexToRgb(clr_hex);
 
     //get the parent div
     var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
@@ -99,6 +99,8 @@ function manualColor(cellnum){
 
     //get all the elements of the same column and change their background colors
     //based on colorblindness
+    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]);
+    console.log(clr_deut)
 
 }
 

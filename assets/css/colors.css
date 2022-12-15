@@ -46,14 +46,14 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
 }
 
 .lock {
-    float: right;
+    float: left;
     cursor: pointer; 
     width: 1.5em; 
     height: 1.5em;
 }
 
 .edit-color {
-    float: left;
+    float: right;
 }
 
 /* Color and Images for Project Containers 
