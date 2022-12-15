@@ -24,6 +24,7 @@ function genDivsGrid(cols) {
                 var colorpicker = document.createElement('input');
                 colorpicker.type = 'color';
                 colorpicker.className = 'edit-color';
+                colorpicker.value = cell.style.backgroundColor;
                 colorpicker.oninput = () => {manualColor(colval);};
                 //colorpicker.addEventListener('click', manualColor)
                 //could also try add event listener
@@ -95,7 +96,7 @@ function manualColor(cellnum){
     console.log(cols)
     
     //change parent background color
-    cols[0].style.backgroundColor = clr.toString();
+    cols[0].style.backgroundColor = clr_hex.toString();
 
     //get all the elements of the same column and change their background colors
     //based on colorblindness
