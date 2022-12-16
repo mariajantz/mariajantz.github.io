@@ -140,7 +140,7 @@ function toCB(rgbArr, cbType) {
         return rgbArr;
     } else if (cbType == 1) {
         console.log('convert to deut');
-        let outval = dotproduct(rgbArr, deut);
+        let outval = mjdot(rgbArr, deut);
         return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
         Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
         Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
@@ -161,6 +161,13 @@ function toCB(rgbArr, cbType) {
     }
 }
 
+function mjdot(rgbArr, cbarr) {
+    for (var i=0; i<3; i++){ //row
+        console.log(cbarr[i]);
+        console.log(cbarr[0][i] * rgbArr[i] + cbarr[1][i] * rgbArr[i] + cbarr[2][i] * rgbArr[i]);
+        
+    }
+}
 function matrixDot(A, B) {
     //call: var a = [[8, 3], [2, 4], [3, 6]]
     //var b = [[1, 2, 3], [4, 6, 8]]
