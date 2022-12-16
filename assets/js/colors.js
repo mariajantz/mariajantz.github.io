@@ -12,7 +12,7 @@ function genDivsGrid(cols) {
             //name each cell so normal, extras get 
             cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
             const colval = c; 
-            cell.style.backgroundColor = genColor();
+            cell.style.backgroundColor = '#888888';
             //cell.innerHTML = r+c;
             if (c==0) {
                 cell.id = 'lbl';
@@ -24,7 +24,6 @@ function genDivsGrid(cols) {
                 var colorpicker = document.createElement('input');
                 colorpicker.type = 'color';
                 colorpicker.className = 'edit-color';
-                colorpicker.value = cell.style.backgroundColor;
                 colorpicker.oninput = () => {manualColor(colval);};
                 //colorpicker.addEventListener('click', manualColor)
                 //could also try add event listener
@@ -44,6 +43,8 @@ function genDivsGrid(cols) {
     e.style.gridTemplateRows = '250px 100px 100px 100px';
     e.style.gap = '10px';
     e.style.alignItems = 'stretch';
+
+    updateColors()
     //label column
     //e.style.gridTemplateAreas = '""';
 }
