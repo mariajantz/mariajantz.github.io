@@ -122,7 +122,7 @@ function addColumns(new_colCount) {
         const colval = c;
         cell.style.backgroundColor = '#888888';
         //location to insert after
-        lastcell = document.getElementsByClassName("row -" + r.toString() + ' col-' + (c-1).toString())
+        lastcell = document.getElementsByClassName("row -" + r.toString() + ' col-' + (c-1).toString())[0];
         console.log(cell.className)
         console.log(lastcell)
 
