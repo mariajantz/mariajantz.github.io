@@ -90,12 +90,14 @@ function updateColors() {
                     normblocks[c].childNodes[0].value = '#ffff00';
                 } //otherwise use same value as in row 0
                 else {
-                    
+                    console.log(normblocks[c].className.split('row-')[1])
+                    testStr = normblocks[c].className; 
+                    console.log(testStr.substring(testStr.indexOf('-') + 1))
                     // Choose correct separator
-                    let sep = rgb.indexOf(",") > -1 ? "," : " ";
+                    let sep = bgc.indexOf(",") > -1 ? "," : " ";
                     // Turn "rgb(r,g,b)" into [r,g,b]
-                    rgb = rgb.substr(4).split(")")[0].split(sep);
-                    console.log(toCB(rgb));
+                    bgc = bgc.substr(4).split(")")[0].split(sep);
+                    console.log(toCB(bgc), 1);
                 }
             }
         }
