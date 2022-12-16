@@ -72,7 +72,7 @@ function updateColors() {
     }
     //add array to update 
     var locked = [];
-
+    var clrs = [];
     for (var c = 1; c < normblocks.length; c++) {
         if (normblocks[c].id != 'lbl') {
             //check if that row is checked
