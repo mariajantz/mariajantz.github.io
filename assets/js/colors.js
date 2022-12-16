@@ -109,11 +109,11 @@ function manualColor(cellnum){
 
     let clr_prot = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 2);
     console.log(clr_prot)
-    cols[1].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
+    cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
 
     let clr_trit = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 3);
     console.log(clr_trit)
-    cols[1].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
+    cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 
 }
 
