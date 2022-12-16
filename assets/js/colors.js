@@ -105,6 +105,7 @@ function manualColor(cellnum){
     //based on colorblindness
     let clr_deut = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 1);
     console.log(clr_deut)
+    cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
 
 }
 
@@ -131,7 +132,24 @@ function toCB(rgbArr, cbType) {
         return rgbArr;
     } else if (cbType == 1) {
         console.log('convert to deut');
-        console.log(matrixDot(rgbArr, deut))
+        let outval = matrixDot(rgbArr, deut);
+        return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
+    }
+    else if (cbType == 2) {
+        console.log('convert to prot');
+        let outval = matrixDot(rgbArr, prot);
+        return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
+    }
+    else if (cbType == 3) {
+        console.log('convert to deut');
+        let outval = matrixDot(rgbArr, trit);
+        return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
     }
 }
 
