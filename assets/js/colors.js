@@ -125,12 +125,11 @@ function addColumns(new_colCount) {
         const colval = c;
         cell.style.backgroundColor = '#888888';
         //location to insert after
-        lcname = "row -" + r.toString() + ' col-' + (c - 1).toString();
+        lcname = "row-" + r.toString() + ' col-' + (c - 1).toString();
         console.log(lcname)
-        lastcell = document.getElementsByClassName(lcname);
+        lastcell = document.getElementsByClassName(lcname)[0];
         console.log(cell.className)
         console.log(lastcell)
-        console.log(lastcell[0])
 
         //if row 0 add a checkbox (locked/unlocked) to the grid cell
         if (r == 0) {
