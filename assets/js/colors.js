@@ -81,24 +81,25 @@ function updateColors() {
             if (!locked[c % num_cols - 1]) {
                 let bgc = genColor();
                 let bgc_hex = rgbToHex(bgc)
-                normblocks[c].style.backgroundColor = bgc_hex;
-                console.log(bgc)
-                console.log(bgc_hex)
-                console.log(normblocks[c].className); 
+                //console.log(bgc)
+                //console.log(bgc_hex)
+                console.log(normblocks[c].className);
                 if (normblocks[c].className.includes('row-0')) {
-                    console.log('inner')
-                    console.log(normblocks[c].childNodes[0].value)
+                    //console.log('inner')
+                    //console.log(normblocks[c].childNodes[0].value)
+                    normblocks[c].style.backgroundColor = bgc_hex;
                     normblocks[c].childNodes[0].value = bgc_hex;
                 } //otherwise use same value as in row 0
                 else {
-                    console.log(normblocks[c].className.split('row-')[1])
-                    testStr = normblocks[c].className; 
-                    console.log(testStr.substring(testStr.indexOf('-') + 1))
+                    rownum = parseInt(normblocks[c].className.split('row-')[1].charAt(0));
+                    console.log(rownum)
+
                     // Choose correct separator
                     let sep = bgc.indexOf(",") > -1 ? "," : " ";
                     // Turn "rgb(r,g,b)" into [r,g,b]
                     bgc = bgc.substr(4).split(")")[0].split(sep);
-                    console.log(toCB(bgc), 1);
+                    console.log(toCB(bgc, rownum));
+                    normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
                 }
             }
         }
@@ -261,6 +262,21 @@ function rgbToHex(rgb) {
     // Turn "rgb(r,g,b)" into [r,g,b]
     rgb = rgb.substr(4).split(")")[0].split(sep);
 
+    let r = (+rgb[0]).toString(16),
+        g = (+rgb[1]).toString(16),
+        b = (+rgb[2]).toString(16);
+
+    if (r.length == 1)
+        r = "0" + r;
+    if (g.length == 1)
+        g = "0" + g;
+    if (b.length == 1)
+        b = "0" + b;
+
+    return "#" + r + g + b;
+}
+
+function rgbArrToHex(rgb){
     let r = (+rgb[0]).toString(16),
         g = (+rgb[1]).toString(16),
         b = (+rgb[2]).toString(16);
