@@ -25,11 +25,13 @@ body {
 
 p {
     text-align: justify;
+    font-size: .8em;
 }
 
 
 form {
     display: inline-block; 
+    font-size: .8em;
 }
 /* Sizing for Project Containers - use js to edit. 
 Also, probably need to change all this to grid layout 

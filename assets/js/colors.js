@@ -120,7 +120,7 @@ function addColumns(new_colCount) {
     let col_lbl = new_colCount; 
     col_lbl++; 
     //let c = 5; 
-    for (var c = cur_cols; c < new_colCount; c++){
+    for (var c = cur_cols; c < (new_colCount+1); c++){
         console.log(new_colCount)
         console.log(col_lbl)
         console.log(c); 
