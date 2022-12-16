@@ -74,31 +74,25 @@ function updateColors() {
 
     for (var c = 1; c < normblocks.length; c++) {
         if (normblocks[c].id != 'lbl') {
-            //add here: check if that row is checked
+            //check if that row is checked
             if (normblocks[c].className.includes('row-0')) {
                 locked[c - 1] = normblocks[c].childNodes[1].checked;
+                clrs[c - 1] = genColor();
             }
             if (!locked[c % num_cols - 1]) {
-                let bgc = genColor();
-                let bgc_hex = rgbToHex(bgc)
-                //console.log(bgc)
-                //console.log(bgc_hex)
-                console.log(normblocks[c].className);
+                let bgc = clrs[c % num_cols - 1];
                 if (normblocks[c].className.includes('row-0')) {
-                    //console.log('inner')
-                    //console.log(normblocks[c].childNodes[0].value)
+                    let bgc_hex = rgbToHex(bgc)
                     normblocks[c].style.backgroundColor = bgc_hex;
                     normblocks[c].childNodes[0].value = bgc_hex;
                 } //otherwise use same value as in row 0
                 else {
                     rownum = parseInt(normblocks[c].className.split('row-')[1].charAt(0));
-                    console.log(rownum)
-
                     // Choose correct separator
                     let sep = bgc.indexOf(",") > -1 ? "," : " ";
                     // Turn "rgb(r,g,b)" into [r,g,b]
                     bgc = bgc.substring(4).split(")")[0].split(sep);
-                    console.log(toCB(bgc, rownum));
+                    bgc = bgc.map(Number);
                     normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
                 }
             }
