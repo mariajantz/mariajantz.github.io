@@ -65,10 +65,12 @@ function updateColors() {
     var normblocks = document.getElementById("target").childNodes;
     var num_clrs = document.getElementById('num_clrs').value;
     var num_cols = normblocks.length / 4;
-    console.log(num_cols)
-    console.log(num_clrs)
-    if ((num_cols - 1) != num_clrs) {
-        console.log('Repopulate columns')
+    if ((num_cols - 1) < num_clrs) {
+        console.log('Add columns')
+        addColumns(num_clrs);
+    } else if ((num_cols - 1) > num_clrs) {
+        console.log('Subtract columns')
+        addColumns(num_clrs);
     }
     //add array to update 
     var locked = [];
@@ -99,7 +101,86 @@ function updateColors() {
             }
         }
     }
+}
 
+function addColumns(new_colCount) {
+    //if it's necessary to update the number of columns, call this 
+    var e = document.getElementById("target");
+    var normblocks = e.childNodes;
+    var cur_cols = normblocks.length / 4;
+    var rows = 4;
+
+    //if larger, add as many columns of elements as desired
+    const col_lbl = new_colCount + 1;
+    for (var r = 0; r < rows; r++) {
+        for (var c = cur_cols; c < col_lbl; c++) {
+            var cell = document.createElement('div');
+            //name each cell so normal, extras get 
+            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
+            const colval = c;
+            cell.style.backgroundColor = '#888888';
+            //cell.innerHTML = r+c;
+            //else if row 0 add a checkbox (locked/unlocked) to the grid cell
+            if (r == 0) {
+                var colorpicker = document.createElement('input');
+                colorpicker.type = 'color';
+                colorpicker.className = 'edit-color';
+                colorpicker.oninput = () => { manualColor(colval); };
+                //colorpicker.addEventListener('click', manualColor)
+                //could also try add event listener
+                cell.appendChild(colorpicker);
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'lock';
+                cell.appendChild(checkbox);
+                cell.style.justifyItems = 'end';
+            }
+            e.appendChild(cell);
+        }
+    }
+
+    e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
+}
+
+function rmColumns(new_colCount) {
+    //if it's necessary to update the number of columns, call this 
+    var e = document.getElementById("target");
+    var normblocks = e.childNodes;
+    var cur_cols = normblocks.length / 4;
+    var rows = 4;
+
+    //if smaller, remove columns from end of list
+    const col_lbl = new_colCount + 1;
+    //there are always 4 rows specifically so remove those
+
+    for (var r = 0; r < rows; r++) {
+        for (var c = cur_cols; c < col_lbl; c++) {
+            var cell = document.createElement('div');
+            //name each cell so normal, extras get 
+            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
+            const colval = c;
+            cell.style.backgroundColor = '#888888';
+            //cell.innerHTML = r+c;
+            //else if row 0 add a checkbox (locked/unlocked) to the grid cell
+            if (r == 0) {
+                var colorpicker = document.createElement('input');
+                colorpicker.type = 'color';
+                colorpicker.className = 'edit-color';
+                colorpicker.oninput = () => { manualColor(colval); };
+                //colorpicker.addEventListener('click', manualColor)
+                //could also try add event listener
+                cell.appendChild(colorpicker);
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'lock';
+                cell.appendChild(checkbox);
+                cell.style.justifyItems = 'end';
+            }
+            e.appendChild(cell);
+        }
+    }
+
+    e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
 
 function manualColor(cellnum){
