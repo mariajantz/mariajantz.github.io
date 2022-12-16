@@ -103,16 +103,16 @@ function manualColor(cellnum){
 
     //get all the elements of the same column and change their background colors
     //based on colorblindness
-    let clr_deut = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 1);
+    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
     console.log(clr_deut)
     console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
     cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
 
-    let clr_prot = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 2);
+    let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
     console.log(clr_prot)
     cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
 
-    let clr_trit = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 3);
+    let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
     console.log(clr_trit)
 
     cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
@@ -124,7 +124,7 @@ function toCB(rgbArr, cbType) {
     //colorblind matrices (Machado et al 2009)
     let deut1 = [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]]; 
     let deut = [[0.367322,  0.280085, -0.01182], [0.860646,  0.672501,  0.04294], [-0.227968, 0.047413, 0.968881]] //most common - green blind
-    let prot = [[.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]] //next most common - red blind
+    let prot = [[0.152286,  0.114503, -0.003882], [1.052583, 0.786281, -0.048116], [-0.204868, 0.099216, 1.051998]]; //next most common - red blind
     let trit = [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]] //least common - blue blind
 
     //matrix multiplication
@@ -134,33 +134,33 @@ function toCB(rgbArr, cbType) {
         return rgbArr;
     } else if (cbType == 1) {
         console.log('convert to deut');
-        let outval = mjdot(rgbArr[0], deut);
-        return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
+        let outval = mjdot(rgbArr, deut);
+        return [Math.round(Math.max(0, Math.min(255, outval[0])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[1])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[2])) * 10) / 10];
     }
     else if (cbType == 2) {
         console.log('convert to prot');
-        let outval = mjdot(rgbArr[0], prot);
+        let outval = mjdot(rgbArr, prot);
         return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
+        Math.round(Math.max(0, Math.min(255, outval[1])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[2])) * 10) / 10];
     }
     else if (cbType == 3) {
-        console.log('convert to deut');
-        let outval = matrixDot(rgbArr, trit);
+        console.log('convert to trit');
+        let outval = mjdot(rgbArr, trit);
         return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[0][1])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[0][2])) * 10) / 10];
+        Math.round(Math.max(0, Math.min(255, outval[1])) * 10) / 10,
+        Math.round(Math.max(0, Math.min(255, outval[2])) * 10) / 10];
     }
 }
 
 function mjdot(rgbArr, cbarr) {
     var output = [];
     for (var i = 0; i < 3; i++) { //row
-        console.log(cbarr[i]);
-        output[i] = cbarr[0][i] * rgbArr[i] + cbarr[1][i] * rgbArr[i] + cbarr[2][i] * rgbArr[i];
-
+        //console.log(cbarr[i]);
+        //output[i] = cbarr[0][i] * rgbArr[i] + cbarr[1][i] * rgbArr[i] + cbarr[2][i] * rgbArr[i];
+        output[i] = cbarr[0][i] * rgbArr[0] + cbarr[1][i] * rgbArr[1] + cbarr[2][i] * rgbArr[2];
     }
     console.log(output);
     return output;
