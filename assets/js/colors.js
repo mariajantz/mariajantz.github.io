@@ -79,8 +79,12 @@ function updateColors() {
                 locked[c - 1] = normblocks[c].childNodes[1].checked;
             }
             if (!locked[c % num_cols - 1]) {
-                normblocks[c].style.backgroundColor = genColor();
+                let bgc = genColor();
+                normblocks[c].style.backgroundColor = bgc;
+                console.log(bgc)
+                console.log(rgbToHex(bgc))
                 if (normblocks[c].className.includes('row-0')) {
+                    console.log('inner')
                     console.log(normblocks[c].childNodes[0].value)
                     normblocks[c].childNodes[0].value = normblocks[c].style.backgroundColor;
                 }
