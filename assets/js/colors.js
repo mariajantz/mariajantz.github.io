@@ -97,7 +97,7 @@ function updateColors() {
                     // Choose correct separator
                     let sep = bgc.indexOf(",") > -1 ? "," : " ";
                     // Turn "rgb(r,g,b)" into [r,g,b]
-                    bgc = bgc.substr(4).split(")")[0].split(sep);
+                    bgc = bgc.substring(4).split(")")[0].split(sep);
                     console.log(toCB(bgc, rownum));
                     normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
                 }
@@ -260,7 +260,7 @@ function rgbToHex(rgb) {
     // Choose correct separator
     let sep = rgb.indexOf(",") > -1 ? "," : " ";
     // Turn "rgb(r,g,b)" into [r,g,b]
-    rgb = rgb.substr(4).split(")")[0].split(sep);
+    rgb = rgb.substring(4).split(")")[0].split(sep);
 
     let r = (+rgb[0]).toString(16),
         g = (+rgb[1]).toString(16),
