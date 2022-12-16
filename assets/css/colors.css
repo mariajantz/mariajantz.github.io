@@ -18,11 +18,14 @@ label {
 
 body {
     text-align: center;
+    color: #222;
+    width: 95%; 
 }
 
+
+
 form {
-    display: inline-block;
-    width: 95%; 
+    display: inline-block; 
 }
 /* Sizing for Project Containers - use js to edit. 
 Also, probably need to change all this to grid layout 
@@ -31,7 +34,6 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
 */
 
 #target {
-    width: 95%; 
     margin: auto;
 }
 
