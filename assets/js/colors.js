@@ -105,6 +105,7 @@ function manualColor(cellnum){
     //based on colorblindness
     let clr_deut = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 1);
     console.log(clr_deut)
+    console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
     cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
 
     let clr_prot = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 2);
@@ -113,17 +114,9 @@ function manualColor(cellnum){
 
     let clr_trit = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 3);
     console.log(clr_trit)
+
     cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 
-}
-
-function hexToRgb(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
 }
 
 function toCB(rgbArr, cbType) {
@@ -255,6 +248,37 @@ function rgb2lab(rgb) {
     z = (z > 0.008856) ? Math.pow(z, 1 / 3) : (7.787 * z) + 16 / 116;
 
     return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
+}
+
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+//add here: rgb to hex
+function rgbToHex(rgb) {
+    // Choose correct separator
+    let sep = rgb.indexOf(",") > -1 ? "," : " ";
+    // Turn "rgb(r,g,b)" into [r,g,b]
+    rgb = rgb.substr(4).split(")")[0].split(sep);
+
+    let r = (+rgb[0]).toString(16),
+        g = (+rgb[1]).toString(16),
+        b = (+rgb[2]).toString(16);
+
+    if (r.length == 1)
+        r = "0" + r;
+    if (g.length == 1)
+        g = "0" + g;
+    if (b.length == 1)
+        b = "0" + b;
+
+    return "#" + r + g + b;
 }
 
 // calculate the perceptual distance between colors in CIELAB
