@@ -123,9 +123,9 @@ function toCB(rgbArr, cbType) {
     //where colorblindness type is 0 (normal), 1 (deut), 2 (prot), or 3 (trit)
     //colorblind matrices (Machado et al 2009)
     let deut1 = [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]]; 
-    let deut = [[0.367322,  0.280085, -0.01182], [0.860646,  0.672501,  0.04294], [-0.227968, 0.047413, 0.968881]] //most common - green blind
+    let deut = [[0.367322,  0.280085, -0.01182], [0.860646,  0.672501,  0.04294], [-0.227968, 0.047413, 0.968881]]; //most common - green blind
     let prot = [[0.152286,  0.114503, -0.003882], [1.052583, 0.786281, -0.048116], [-0.204868, 0.099216, 1.051998]]; //next most common - red blind
-    let trit = [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]] //least common - blue blind
+    let trit = [[1.255528, -0.078411,  0.004733],[-0.076749,  0.930809,  0.691367], [-0.178779,  0.147602,  0.3039]]; //least common - blue blind
 
     //matrix multiplication
 
@@ -162,7 +162,7 @@ function mjdot(rgbArr, cbarr) {
         //output[i] = cbarr[0][i] * rgbArr[i] + cbarr[1][i] * rgbArr[i] + cbarr[2][i] * rgbArr[i];
         output[i] = cbarr[0][i] * rgbArr[0] + cbarr[1][i] * rgbArr[1] + cbarr[2][i] * rgbArr[2];
     }
-    console.log(output);
+    //console.log(output);
     return output;
 }
 
