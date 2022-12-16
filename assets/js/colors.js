@@ -107,6 +107,14 @@ function manualColor(cellnum){
     console.log(clr_deut)
     cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
 
+    let clr_prot = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 2);
+    console.log(clr_prot)
+    cols[1].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
+
+    let clr_trit = toCB([[clr_rgb['r'], clr_rgb['g'], clr_rgb['b']]], 1);
+    console.log(clr_trit)
+    cols[1].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
+
 }
 
 function hexToRgb(hex) {
