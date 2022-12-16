@@ -135,23 +135,23 @@ function toCB(rgbArr, cbType) {
     } else if (cbType == 1) {
         console.log('convert to deut');
         let outval = mjdot(rgbArr, deut);
-        return [Math.round(Math.max(0, Math.min(255, outval[0])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[1])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[2])) * 10) / 10];
+        return [Math.round(Math.max(0, Math.min(255, outval[0]))),
+        Math.round(Math.max(0, Math.min(255, outval[1]))),
+        Math.round(Math.max(0, Math.min(255, outval[2])))];
     }
     else if (cbType == 2) {
         console.log('convert to prot');
         let outval = mjdot(rgbArr, prot);
-        return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[1])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[2])) * 10) / 10];
+        return [Math.round(Math.max(0, Math.min(255, outval[0][0]))),
+        Math.round(Math.max(0, Math.min(255, outval[1]))),
+        Math.round(Math.max(0, Math.min(255, outval[2])))];
     }
     else if (cbType == 3) {
         console.log('convert to trit');
         let outval = mjdot(rgbArr, trit);
-        return [Math.round(Math.max(0, Math.min(255, outval[0][0])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[1])) * 10) / 10,
-        Math.round(Math.max(0, Math.min(255, outval[2])) * 10) / 10];
+        return [Math.round(Math.max(0, Math.min(255, outval[0][0]))),
+        Math.round(Math.max(0, Math.min(255, outval[1]))),
+        Math.round(Math.max(0, Math.min(255, outval[2])))];
     }
 }
 
