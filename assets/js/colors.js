@@ -272,6 +272,9 @@ function restoreDefaultValues() {
     document.getElementById('prot_check').checked = true;
     document.getElementById('trit_check').checked = true;
     document.getElementById('gb_check').checked = false;
+
+    document.getElementById('target').replaceChildren(); 
+    genDivsGrid(4);
 }
 
 
