@@ -80,13 +80,22 @@ function updateColors() {
             }
             if (!locked[c % num_cols - 1]) {
                 let bgc = genColor();
-                normblocks[c].style.backgroundColor = bgc;
+                normblocks[c].style.backgroundColor = rgbToHex(bgc);
                 console.log(bgc)
                 console.log(rgbToHex(bgc))
+                console.log(normblocks[c].className); 
                 if (normblocks[c].className.includes('row-0')) {
                     console.log('inner')
                     console.log(normblocks[c].childNodes[0].value)
                     normblocks[c].childNodes[0].value = '#ffff00';
+                } //otherwise use same value as in row 0
+                else {
+                    
+                    // Choose correct separator
+                    let sep = rgb.indexOf(",") > -1 ? "," : " ";
+                    // Turn "rgb(r,g,b)" into [r,g,b]
+                    rgb = rgb.substr(4).split(")")[0].split(sep);
+                    console.log(toCB(rgb));
                 }
             }
         }
@@ -109,17 +118,16 @@ function manualColor(cellnum){
     //get all the elements of the same column and change their background colors
     //based on colorblindness
     let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
-    console.log(clr_deut)
-    console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
+    //console.log(clr_deut)
+    //console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
     cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
 
     let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
-    console.log(clr_prot)
+    //console.log(clr_prot)
     cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
 
     let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
-    console.log(clr_trit)
-
+    //console.log(clr_trit)
     cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 
 }
@@ -137,21 +145,21 @@ function toCB(rgbArr, cbType) {
     if (cbType==0) {
         return rgbArr;
     } else if (cbType == 1) {
-        console.log('convert to deut');
+        //console.log('convert to deut');
         let outval = mjdot(rgbArr, deut);
         return [Math.round(Math.max(0, Math.min(255, outval[0]))),
         Math.round(Math.max(0, Math.min(255, outval[1]))),
         Math.round(Math.max(0, Math.min(255, outval[2])))];
     }
     else if (cbType == 2) {
-        console.log('convert to prot');
+        //console.log('convert to prot');
         let outval = mjdot(rgbArr, prot);
         return [Math.round(Math.max(0, Math.min(255, outval[0]))),
         Math.round(Math.max(0, Math.min(255, outval[1]))),
         Math.round(Math.max(0, Math.min(255, outval[2])))];
     }
     else if (cbType == 3) {
-        console.log('convert to trit');
+        //console.log('convert to trit');
         let outval = mjdot(rgbArr, trit);
         return [Math.round(Math.max(0, Math.min(255, outval[0]))),
         Math.round(Math.max(0, Math.min(255, outval[1]))),
@@ -163,31 +171,10 @@ function mjdot(rgbArr, cbarr) {
     var output = [];
     for (var i = 0; i < 3; i++) { //row
         //console.log(cbarr[i]);
-        //output[i] = cbarr[0][i] * rgbArr[i] + cbarr[1][i] * rgbArr[i] + cbarr[2][i] * rgbArr[i];
         output[i] = cbarr[0][i] * rgbArr[0] + cbarr[1][i] * rgbArr[1] + cbarr[2][i] * rgbArr[2];
     }
     //console.log(output);
     return output;
-}
-
-function matrixDot(A, B) {
-    //call: var a = [[8, 3], [2, 4], [3, 6]]
-    //var b = [[1, 2, 3], [4, 6, 8]]
-    //matrixDot(a,b)
-    var result = new Array(A.length).fill(0).map(row => new Array(B[0].length).fill(0));
-
-    return result.map((row, i) => {
-        return row.map((val, j) => {
-            return A[i].reduce((sum, elm, k) => sum + (elm * B[k][j]), 0)
-        })
-    })
-}
-
-
-function dotproduct(a, b) {
-    return a.map(function (x, i) {
-        return a[i] * b[i];
-    }).reduce(function (m, n) { return m + n; });
 }
 
 function restoreDefaultValues() {
