@@ -158,33 +158,12 @@ function rmColumns(new_colCount) {
 
     //if smaller, remove columns from end of list
     const col_lbl = new_colCount + 1;
-    //there are always 4 rows specifically so remove those
-
-    for (var r = 0; r < rows; r++) {
-        for (var c = cur_cols; c < col_lbl; c++) {
-            var cell = document.createElement('div');
-            //name each cell so normal, extras get 
-            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
-            const colval = c;
-            cell.style.backgroundColor = '#888888';
-            //cell.innerHTML = r+c;
-            //else if row 0 add a checkbox (locked/unlocked) to the grid cell
-            if (r == 0) {
-                var colorpicker = document.createElement('input');
-                colorpicker.type = 'color';
-                colorpicker.className = 'edit-color';
-                colorpicker.oninput = () => { manualColor(colval); };
-                //colorpicker.addEventListener('click', manualColor)
-                //could also try add event listener
-                cell.appendChild(colorpicker);
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'lock';
-                cell.appendChild(checkbox);
-                cell.style.justifyItems = 'end';
-            }
-            e.appendChild(cell);
-        }
+    //first assume just removing last column
+    let c = 5; 
+    const elements = document.getElementsByClassName(' col-' + c.toString());
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+        //probably need to also remove sub children? 
     }
 
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
