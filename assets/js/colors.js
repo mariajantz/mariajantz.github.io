@@ -124,40 +124,40 @@ function addColumns(new_colCount) {
         console.log(new_colCount)
         console.log(col_lbl)
         console.log(c); 
-    
-    for (var r = 0; r < rows; r++) {
-        //just add 1 column 
-        //name each cell
-        var cell = document.createElement('div');
-        cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
-        const colval = c;
-        cell.style.backgroundColor = '#888888';
-        //location to insert after
-        lcname = "row-" + r.toString() + ' col-' + (c - 1).toString();
-        console.log(lcname)
-        lastcell = document.getElementsByClassName(lcname)[0];
-        console.log(cell.className)
-        //console.log(lastcell)
-
-        //if row 0 add a checkbox (locked/unlocked) to the grid cell
-        if (r == 0) {
-            var colorpicker = document.createElement('input');
-            colorpicker.type = 'color';
-            colorpicker.className = 'edit-color';
-            colorpicker.oninput = () => { manualColor(colval); };
-            //colorpicker.addEventListener('click', manualColor)
-            //could also try add event listener
-            cell.appendChild(colorpicker);
-            var checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'lock';
-            cell.appendChild(checkbox);
-            cell.style.justifyItems = 'end';
-        }
-
-        e.insertBefore(cell, lastcell);
         
-    }
+        for (var r = 0; r < rows; r++) {
+            //just add 1 column 
+            //name each cell
+            var cell = document.createElement('div');
+            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
+            const colval = c;
+            cell.style.backgroundColor = '#888888';
+            //location to insert after
+            lcname = "row-" + r.toString() + ' col-' + (c - 1).toString();
+            console.log(lcname)
+            lastcell = document.getElementsByClassName(lcname)[0];
+            console.log(cell.className)
+            //console.log(lastcell)
+
+            //if row 0 add a checkbox (locked/unlocked) to the grid cell
+            if (r == 0) {
+                var colorpicker = document.createElement('input');
+                colorpicker.type = 'color';
+                colorpicker.className = 'edit-color';
+                colorpicker.oninput = () => { manualColor(colval); };
+                //colorpicker.addEventListener('click', manualColor)
+                //could also try add event listener
+                cell.appendChild(colorpicker);
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'lock';
+                cell.appendChild(checkbox);
+                cell.style.justifyItems = 'end';
+            }
+
+            e.insertBefore(cell, lastcell);
+            
+        }
     }
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
@@ -168,11 +168,11 @@ function rmColumns(new_colCount) {
     var normblocks = e.childNodes;
     var cur_cols = normblocks.length / 4;
     var rows = 4;
-
+    console.log(cur_cols)
     //if smaller, remove columns from end of list
     const col_lbl = new_colCount + 1;
     //first assume just removing last column
-    let c = 5; 
+    let c = cur_cols; 
     const elements = document.getElementsByClassName(' col-' + c.toString());
     while (elements.length > 0) {
         elements[0].parentNode.removeChild(elements[0]);
