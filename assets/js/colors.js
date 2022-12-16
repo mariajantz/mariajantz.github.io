@@ -120,7 +120,7 @@ function addColumns(new_colCount) {
     let col_lbl = new_colCount; 
     col_lbl++; 
     //let c = 5; 
-    for (var c=cur_cols; c<new_colCount; c++){
+    for (var c = cur_cols; c < new_colCount; c++){
         console.log(new_colCount)
         console.log(col_lbl)
         console.log(c); 
@@ -169,9 +169,16 @@ function rmColumns(new_colCount) {
     var cur_cols = normblocks.length / 4;
     var rows = 4;
     console.log(cur_cols)
+    let testvar = new_colCount;
     //if smaller, remove columns from end of list
     const col_lbl = new_colCount + 1;
+    console.log(col_lbl); 
+    console.log(new_colCount); 
+    console.log(testvar); 
+    console.log(testvar++); 
+    console.log(testvar); 
     //first assume just removing last column
+    //maybe just remove last column until reaching the new column count
     let c = cur_cols; 
     const elements = document.getElementsByClassName(' col-' + c.toString());
     while (elements.length > 0) {
