@@ -65,6 +65,8 @@ function updateColors() {
     var normblocks = document.getElementById("target").childNodes;
     var num_clrs = document.getElementById('num_clrs').value;
     var num_cols = normblocks.length / 4;
+    console.log(num_clrs)
+    console.log(num_cols)
     if ((num_cols - 1) < num_clrs) {
         console.log('Add columns')
         addColumns(num_clrs);
@@ -118,13 +120,17 @@ function addColumns(new_colCount) {
     for (var r = 0; r < rows; r++) {
         //just add 1 column 
         //name each cell
+        var cell = document.createElement('div');
         cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
         const colval = c;
         cell.style.backgroundColor = '#888888';
         //location to insert after
-        lastcell = document.getElementsByClassName("row -" + r.toString() + ' col-' + (c-1).toString())[0];
+        lcname = "row -" + r.toString() + ' col-' + (c - 1).toString();
+        console.log(lcname)
+        lastcell = document.getElementsByClassName(lcname);
         console.log(cell.className)
         console.log(lastcell)
+        console.log(lastcell[0])
 
         //if row 0 add a checkbox (locked/unlocked) to the grid cell
         if (r == 0) {
