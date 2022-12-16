@@ -81,6 +81,7 @@ function updateColors() {
             if (!locked[c % num_cols - 1]) {
                 normblocks[c].style.backgroundColor = genColor();
                 if (normblocks[c].className.includes('row-0')) {
+                    console.log(normblocks[c].childNodes[0].value)
                     normblocks[c].childNodes[0].value = normblocks[c].style.backgroundColor;
                 }
             }
@@ -122,7 +123,6 @@ function manualColor(cellnum){
 function toCB(rgbArr, cbType) {
     //where colorblindness type is 0 (normal), 1 (deut), 2 (prot), or 3 (trit)
     //colorblind matrices (Machado et al 2009)
-    let deut1 = [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]]; 
     let deut = [[0.367322,  0.280085, -0.01182], [0.860646,  0.672501,  0.04294], [-0.227968, 0.047413, 0.968881]]; //most common - green blind
     let prot = [[0.152286,  0.114503, -0.003882], [1.052583, 0.786281, -0.048116], [-0.204868, 0.099216, 1.051998]]; //next most common - red blind
     let trit = [[1.255528, -0.078411,  0.004733],[-0.076749,  0.930809,  0.691367], [-0.178779,  0.147602,  0.3039]]; //least common - blue blind
