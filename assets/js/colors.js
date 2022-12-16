@@ -107,6 +107,8 @@ function updateColors() {
 
 function addColumns(new_colCount) {
     //if it's necessary to update the number of columns, call this 
+    console.log('Adding cols')
+    console.log(new_colCount)
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
     var cur_cols = normblocks.length / 4;
@@ -117,6 +119,9 @@ function addColumns(new_colCount) {
     //need to insert these after the previous rows
     const col_lbl = new_colCount + 1;
     let c = 5; 
+    for (var x=cur_cols; x<new_colCount; x++){
+        console.log(x)
+    }
     for (var r = 0; r < rows; r++) {
         //just add 1 column 
         //name each cell
@@ -126,10 +131,10 @@ function addColumns(new_colCount) {
         cell.style.backgroundColor = '#888888';
         //location to insert after
         lcname = "row-" + r.toString() + ' col-' + (c - 1).toString();
-        console.log(lcname)
+        //console.log(lcname)
         lastcell = document.getElementsByClassName(lcname)[0];
-        console.log(cell.className)
-        console.log(lastcell)
+        //console.log(cell.className)
+        //console.log(lastcell)
 
         //if row 0 add a checkbox (locked/unlocked) to the grid cell
         if (r == 0) {
