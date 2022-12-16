@@ -117,11 +117,14 @@ function addColumns(new_colCount) {
 
     //if larger, add as many columns of elements as desired
     //need to insert these after the previous rows
-    const col_lbl = new_colCount + 1;
-    let c = 5; 
-    for (var x=cur_cols; x<new_colCount; x++){
-        console.log(x)
-    }
+    let col_lbl = new_colCount; 
+    col_lbl++; 
+    //let c = 5; 
+    for (var c=cur_cols; x<new_colCount; x++){
+        console.log(new_colCount)
+        console.log(col_lbl)
+        console.log(c); 
+    
     for (var r = 0; r < rows; r++) {
         //just add 1 column 
         //name each cell
@@ -131,9 +134,9 @@ function addColumns(new_colCount) {
         cell.style.backgroundColor = '#888888';
         //location to insert after
         lcname = "row-" + r.toString() + ' col-' + (c - 1).toString();
-        //console.log(lcname)
+        console.log(lcname)
         lastcell = document.getElementsByClassName(lcname)[0];
-        //console.log(cell.className)
+        console.log(cell.className)
         //console.log(lastcell)
 
         //if row 0 add a checkbox (locked/unlocked) to the grid cell
@@ -155,7 +158,7 @@ function addColumns(new_colCount) {
         e.insertBefore(cell, lastcell);
         
     }
-
+    }
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
 
