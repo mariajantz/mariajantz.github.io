@@ -70,7 +70,7 @@ function updateColors() {
         addColumns(num_clrs);
     } else if ((num_cols - 1) > num_clrs) {
         console.log('Subtract columns')
-        addColumns(num_clrs);
+        rmColumns(num_clrs);
     }
     //add array to update 
     var locked = [];
@@ -109,34 +109,41 @@ function addColumns(new_colCount) {
     var normblocks = e.childNodes;
     var cur_cols = normblocks.length / 4;
     var rows = 4;
+    console.log(cur_cols); 
 
     //if larger, add as many columns of elements as desired
+    //need to insert these after the previous rows
     const col_lbl = new_colCount + 1;
+    let c = 5; 
     for (var r = 0; r < rows; r++) {
-        for (var c = cur_cols; c < col_lbl; c++) {
-            var cell = document.createElement('div');
-            //name each cell so normal, extras get 
-            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
-            const colval = c;
-            cell.style.backgroundColor = '#888888';
-            //cell.innerHTML = r+c;
-            //else if row 0 add a checkbox (locked/unlocked) to the grid cell
-            if (r == 0) {
-                var colorpicker = document.createElement('input');
-                colorpicker.type = 'color';
-                colorpicker.className = 'edit-color';
-                colorpicker.oninput = () => { manualColor(colval); };
-                //colorpicker.addEventListener('click', manualColor)
-                //could also try add event listener
-                cell.appendChild(colorpicker);
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'lock';
-                cell.appendChild(checkbox);
-                cell.style.justifyItems = 'end';
-            }
-            e.appendChild(cell);
+        //just add 1 column 
+        //name each cell
+        cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
+        const colval = c;
+        cell.style.backgroundColor = '#888888';
+        //location to insert after
+        lastcell = document.getElementsByClassName("row -" + r.toString() + ' col-' + (c-1).toString())
+        console.log(cell.className)
+        console.log(lastcell)
+
+        //if row 0 add a checkbox (locked/unlocked) to the grid cell
+        if (r == 0) {
+            var colorpicker = document.createElement('input');
+            colorpicker.type = 'color';
+            colorpicker.className = 'edit-color';
+            colorpicker.oninput = () => { manualColor(colval); };
+            //colorpicker.addEventListener('click', manualColor)
+            //could also try add event listener
+            cell.appendChild(colorpicker);
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'lock';
+            cell.appendChild(checkbox);
+            cell.style.justifyItems = 'end';
         }
+
+        e.insertBefore(cell, lastcell);
+        
     }
 
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
