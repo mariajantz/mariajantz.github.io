@@ -86,7 +86,7 @@ function updateColors() {
                 if (normblocks[c].className.includes('row-0')) {
                     console.log('inner')
                     console.log(normblocks[c].childNodes[0].value)
-                    normblocks[c].childNodes[0].value = normblocks[c].style.backgroundColor;
+                    normblocks[c].childNodes[0].value = '#ffff00';
                 }
             }
         }
