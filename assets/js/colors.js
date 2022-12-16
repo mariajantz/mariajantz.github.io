@@ -80,14 +80,15 @@ function updateColors() {
             }
             if (!locked[c % num_cols - 1]) {
                 let bgc = genColor();
-                normblocks[c].style.backgroundColor = rgbToHex(bgc);
+                let bgc_hex = rgbToHex(bgc)
+                normblocks[c].style.backgroundColor = bgc_hex;
                 console.log(bgc)
-                console.log(rgbToHex(bgc))
+                console.log(bgc_hex)
                 console.log(normblocks[c].className); 
                 if (normblocks[c].className.includes('row-0')) {
                     console.log('inner')
                     console.log(normblocks[c].childNodes[0].value)
-                    normblocks[c].childNodes[0].value = '#ffff00';
+                    normblocks[c].childNodes[0].value = bgc_hex;
                 } //otherwise use same value as in row 0
                 else {
                     console.log(normblocks[c].className.split('row-')[1])
