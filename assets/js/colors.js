@@ -63,7 +63,7 @@ function updateColors() {
     //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var gridParent = document.getElementById('target'); 
-    var normblocks = e.childNodes;
+    var normblocks = gridParent.childNodes;
     var num_clrs = parseInt(document.getElementById('num_clrs').value);
     var num_cols = normblocks.length / 4 ;
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
@@ -199,45 +199,46 @@ function manualColor(cellnum){
     //get the parent div
     var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
     //console.log(cols)
+    updateColumnColors('col-' + cellnum.toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
     
     //change parent background color
-    cols[0].style.backgroundColor = clr_hex.toString();
+    // cols[0].style.backgroundColor = clr_hex.toString();
 
-    //get all the elements of the same column and change their background colors
-    //based on colorblindness
-    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
-    //console.log(clr_deut)
-    //console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
-    cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
+    // //get all the elements of the same column and change their background colors
+    // //based on colorblindness
+    // let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
+    // //console.log(clr_deut)
+    // //console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
+    // cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
 
-    let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
-    //console.log(clr_prot)
-    cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
+    // let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
+    // //console.log(clr_prot)
+    // cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
 
-    let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
-    //console.log(clr_trit)
-    cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
+    // let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
+    // //console.log(clr_trit)
+    // cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 
 }
 
 function updateColumnColors(colname, newRGBArr){
     //get the parent div
-    var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
+    var cols = document.getElementsByClassName(colname); 
     //change parent background color
-    cols[0].style.backgroundColor = rgbArrToHex(newRGBArr).toString();
+    cols[0].style.backgroundColor = rgbArrToHex(newRGBArr);
 
     //get all the elements of the same column and change their background colors
     //based on colorblindness
-    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
+    let clr_deut = toCB(newRGBArr, 1);
     //console.log(clr_deut)
     //console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
-    cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
+    cols[1].style.backgroundColor = rgbArrToHex(clr_deut); 
 
-    let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
+    let clr_prot = toCB(newRGBArr, 2);
     //console.log(clr_prot)
     cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
 
-    let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
+    let clr_trit = toCB(newRGBArr, 3);
     //console.log(clr_trit)
     cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 }
