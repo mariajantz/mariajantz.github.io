@@ -62,22 +62,23 @@ function updateColors() {
     //if not, delete any extra divs (last child in each row of target) and resize all of them 
     //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
-    var e = document.getElementById('target'); 
+    var gridParent = document.getElementById('target'); 
     var normblocks = e.childNodes;
     var num_clrs = parseInt(document.getElementById('num_clrs').value);
     var num_cols = normblocks.length / 4 ;
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
 
+
     if ((num_cols - 1) < num_clrs) {
         console.log('Add columns')
-        addColumns(num_clrs, num_cols, e);
+        addColumns(num_clrs, num_cols, gridParent);
     } else if ((num_cols - 1) > num_clrs) {
         console.log('Subtract columns')
-        rmColumns(num_clrs);
+        rmColumns(num_clrs, num_cols, gridParent);
     }
 
     //reload these values
-    var normblocks = e.childNodes;
+    var normblocks = gridParent.childNodes;
     var num_cols = normblocks.length / 4 ;
 
     //add array to update 
@@ -109,6 +110,13 @@ function updateColors() {
             }
         }
     }
+}
+
+function setLocked() {
+    //for each column (top row) except the label, check if the checkbox is locked
+    document.getElementsByClassName('row-0')
+    //if so, mark down the current color and uncheck the checkbox
+    //after going through all the columns, set each column to a color
 }
 
 function addColumns(new_colCount, cur_colCount, parentDiv) {
@@ -159,14 +167,15 @@ function addColumns(new_colCount, cur_colCount, parentDiv) {
     parentDiv.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
 
-function rmColumns(new_colCount) {
+function rmColumns(new_colCount, cur_colCount, parentDiv) {
     //if it's necessary to update the number of columns, call this 
     //TODO: pass elements into/out of this (normblocks, e)
-    var e = document.getElementById("target");
-    var normblocks = e.childNodes;
+    //var e = document.getElementById("target");
+    //var normblocks = e.childNodes;
     let start_col = new_colCount;
     start_col++; 
-    let end_col = normblocks.length / 4 - 1;
+    let end_col = cur_colCount - 1; 
+    //let end_col = normblocks.length / 4 - 1;
     //if smaller, remove columns from end of list
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
@@ -179,7 +188,7 @@ function rmColumns(new_colCount) {
         }
     }
 
-    e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
+    parentDiv.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
 
 function manualColor(cellnum){
@@ -209,6 +218,28 @@ function manualColor(cellnum){
     //console.log(clr_trit)
     cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 
+}
+
+function updateColumnColors(colname, newRGBArr){
+    //get the parent div
+    var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
+    //change parent background color
+    cols[0].style.backgroundColor = rgbArrToHex(newRGBArr).toString();
+
+    //get all the elements of the same column and change their background colors
+    //based on colorblindness
+    let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
+    //console.log(clr_deut)
+    //console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
+    cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
+
+    let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
+    //console.log(clr_prot)
+    cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
+
+    let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
+    //console.log(clr_trit)
+    cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
 }
 
 function toCB(rgbArr, cbType) {
