@@ -7,13 +7,13 @@ label {
 .c1 span {
     display: inline-block;
     text-align: right;
-    width: 300px;
+    width: 100%;
 }
 
 .c2 span {
     display: inline-block;
     text-align: left;
-    width: 300px;
+    width: 100%;
 }
 
 body {
@@ -26,8 +26,9 @@ body {
 
 p {
     text-align: justify;
-    font-size: .8em;
-    background-color: #ccc;
+    font-size: .9em;
+    background-color: #eee;
+    padding: 1em; 
 }
 
 .break {
