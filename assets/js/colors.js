@@ -64,7 +64,7 @@ function updateColors() {
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var e = document.getElementById('target'); 
     var normblocks = e.childNodes;
-    var num_clrs = document.getElementById('num_clrs').value;
+    var num_clrs = parseInt(document.getElementById('num_clrs').value);
     var num_cols = normblocks.length / 4 ;
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
 
