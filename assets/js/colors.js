@@ -119,8 +119,10 @@ function addColumns(new_colCount) {
     //need to insert these after the previous rows
     let col_lbl = new_colCount; 
     col_lbl++; 
+    console.log(col_lbl)
     //let c = 5; 
-    for (var c = cur_cols; c < (new_colCount+1); c++){
+    for (var c = cur_cols; c < col_lbl; c++){
+        console.log('loop')
         console.log(new_colCount)
         console.log(col_lbl)
         console.log(c); 
