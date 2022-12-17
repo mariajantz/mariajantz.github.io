@@ -178,8 +178,10 @@ function rmColumns(new_colCount) {
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
     let c = cur_cols; 
-    const elements = document.getElementsByClassName(' col-' + c.toString());
+    const elements = document.getElementsByClassName('col-' + c.toString());
+    console.log(elements)
     while (elements.length > 0) {
+        console.log('hello')
         console.log(elements)
         console.log(normblocks)
         elements[0].parentNode.removeChild(elements[0]);
