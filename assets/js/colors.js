@@ -64,9 +64,10 @@ function updateColors() {
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var normblocks = document.getElementById("target").childNodes;
     var num_clrs = document.getElementById('num_clrs').value;
-    var num_cols = normblocks.length / 4;
+    var num_cols = normblocks.length / 4 ;
     console.log(num_clrs)
     console.log(num_cols)
+    console.log(num_cols-1)
     if ((num_cols - 1) < num_clrs) {
         console.log('Add columns')
         addColumns(num_clrs);
