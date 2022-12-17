@@ -160,7 +160,8 @@ function addColumns(new_colCount) {
                 cell.style.justifyItems = 'end';
             }
 
-            e.insertBefore(cell, lastcell);
+            //e.insertBefore(cell, lastcell);
+            lastcell.after(cell);
             
         }
     }
