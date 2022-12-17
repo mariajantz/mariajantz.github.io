@@ -67,7 +67,7 @@ function updateColors() {
     var num_clrs = parseInt(document.getElementById('num_clrs').value);
     var num_cols = normblocks.length / 4 ;
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
-
+    setLocked(); 
 
     if ((num_cols - 1) < num_clrs) {
         console.log('Add columns')
@@ -114,9 +114,25 @@ function updateColors() {
 
 function setLocked() {
     //for each column (top row) except the label, check if the checkbox is locked
-    document.getElementsByClassName('row-0')
-    //if so, mark down the current color and uncheck the checkbox
-    //after going through all the columns, set each column to a color
+    var toprow = document.getElementsByClassName('row-0'); 
+    var clrs = []; 
+    for (var c = 1; c < toprow.length; c++) {
+        console.log(toprow[c].childNodes[0].checked); 
+        if (toprow[c].childNodes[0].checked){
+            //if so, mark down the current color and uncheck the checkbox
+            clrs.push(toprow[c].childNodes[1].value); 
+            console.log(clrs)
+        }
+    }
+    
+    //after going through all the columns, set each column to a color, check those
+    for (var i = 0; i < clrs.length; i++){
+        console.log(clrs[i]); 
+        toprow[(i+1)].childNodes[1].value = clrs[i]; 
+        let clr_rgb = hexToRgb(clrs[i]);
+        //get the parent div
+        updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+    }
 }
 
 function addColumns(new_colCount, cur_colCount, parentDiv) {
