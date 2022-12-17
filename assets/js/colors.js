@@ -49,13 +49,35 @@ function genDivsGrid(cols) {
     //e.style.gridTemplateAreas = '""';
 }
 
-function genColor(){
+function randColor(){
     // for now just random color
-    r = Math.floor(Math.random()*255)
+    r = Math.floor(Math.random() * 255)
     g = Math.floor(Math.random() * 255)
     b = Math.floor(Math.random() * 255)
     return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
 }
+
+function genCandidates(num_clrs){
+    //generate a set of x rgb colors for Mitchell's best-candidate algorithm
+    for (var i = 0; i<num_clrs; i++) {
+        randColor()
+    }
+
+    //convert all to colorblind (in spaces currently checked)
+
+    //convert all of these to lab
+
+}
+
+function runMitchell(){
+    //generate colors
+    let num_gen = 10; 
+    genCandidates(num_gen); 
+
+    //for each of the color spaces, find the distance to the existing colors
+    //keep the one that's 
+}
+
 
 function updateColors() {
     //first check if the number of colors included is the same as the number of divs
@@ -89,7 +111,7 @@ function updateColors() {
             //check if that row is checked
             if (normblocks[c].className.includes('row-0')) {
                 locked[c - 1] = normblocks[c].childNodes[1].checked;
-                clrs[c - 1] = genColor();
+                clrs[c - 1] = randColor();
             }
             if (!locked[c % num_cols - 1]) {
                 let bgc = clrs[c % num_cols - 1];
@@ -116,11 +138,12 @@ function setLocked() {
     //for each column (top row) except the label, check if the checkbox is locked
     var toprow = document.getElementsByClassName('row-0'); 
     var clrs = []; 
+    console.log(toprow); 
     for (var c = 1; c < toprow.length; c++) {
-        console.log(toprow[c].childNodes[0].checked); 
-        if (toprow[c].childNodes[0].checked){
+        console.log(toprow[c].childNodes[1].checked); 
+        if (toprow[c].childNodes[1].checked){
             //if so, mark down the current color and uncheck the checkbox
-            clrs.push(toprow[c].childNodes[1].value); 
+            clrs.push(toprow[c].childNodes[0].value); 
             console.log(clrs)
         }
     }
@@ -128,7 +151,7 @@ function setLocked() {
     //after going through all the columns, set each column to a color, check those
     for (var i = 0; i < clrs.length; i++){
         console.log(clrs[i]); 
-        toprow[(i+1)].childNodes[1].value = clrs[i]; 
+        toprow[(i+1)].childNodes[0].value = clrs[i]; 
         let clr_rgb = hexToRgb(clrs[i]);
         //get the parent div
         updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
@@ -185,17 +208,9 @@ function addColumns(new_colCount, cur_colCount, parentDiv) {
 
 function rmColumns(new_colCount, cur_colCount, parentDiv) {
     //if it's necessary to update the number of columns, call this 
-    //TODO: pass elements into/out of this (normblocks, e)
-    //var e = document.getElementById("target");
-    //var normblocks = e.childNodes;
     let start_col = new_colCount;
     start_col++; 
     let end_col = cur_colCount - 1; 
-    //let end_col = normblocks.length / 4 - 1;
-    //if smaller, remove columns from end of list
-    //first assume just removing last column
-    //maybe just remove last column until reaching the new column count
-    //let c = end_col; 
     for (var c = start_col; c <= end_col; c++){
         const elements = document.getElementsByClassName('col-' + c.toString());
         while (elements.length > 0) {
@@ -216,25 +231,6 @@ function manualColor(cellnum){
     var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
     //console.log(cols)
     updateColumnColors('col-' + cellnum.toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
-    
-    //change parent background color
-    // cols[0].style.backgroundColor = clr_hex.toString();
-
-    // //get all the elements of the same column and change their background colors
-    // //based on colorblindness
-    // let clr_deut = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 1);
-    // //console.log(clr_deut)
-    // //console.log(rgbToHex('rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'));
-    // cols[1].style.backgroundColor = 'rgb(' + clr_deut[0].toString() + ', ' + clr_deut[1].toString() + ', ' + clr_deut[2].toString() + ')'; 
-
-    // let clr_prot = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 2);
-    // //console.log(clr_prot)
-    // cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
-
-    // let clr_trit = toCB([clr_rgb['r'], clr_rgb['g'], clr_rgb['b']], 3);
-    // //console.log(clr_trit)
-    // cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
-
 }
 
 function updateColumnColors(colname, newRGBArr){
