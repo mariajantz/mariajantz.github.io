@@ -27,6 +27,7 @@ body {
 p {
     text-align: justify;
     font-size: .8em;
+    background-color: #ccc;
 }
 
 .break {
