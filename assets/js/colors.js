@@ -40,7 +40,7 @@ function genDivsGrid(cols) {
     //style table
     e.style.display = 'grid';
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(cols);
-    e.style.gridTemplateRows = '250px 100px 100px 100px';
+    e.style.gridTemplateRows = '20em 5em 5em 5em';
     e.style.gap = '10px';
     e.style.alignItems = 'stretch';
 
@@ -62,19 +62,22 @@ function updateColors() {
     //if not, delete any extra divs (last child in each row of target) and resize all of them 
     //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
-    var normblocks = document.getElementById("target").childNodes;
+    var e = document.getElementById('target'); 
+    var normblocks = e.childNodes;
     var num_clrs = document.getElementById('num_clrs').value;
     var num_cols = normblocks.length / 4 ;
+    //check for locked columns: set the first x columns of the array to be locked and assign the colors there
+
     if ((num_cols - 1) < num_clrs) {
         console.log('Add columns')
-        addColumns(num_clrs);
+        addColumns(num_clrs, num_cols, e);
     } else if ((num_cols - 1) > num_clrs) {
         console.log('Subtract columns')
         rmColumns(num_clrs);
     }
 
     //reload these values
-    var normblocks = document.getElementById("target").childNodes;
+    var normblocks = e.childNodes;
     var num_cols = normblocks.length / 4 ;
 
     //add array to update 
@@ -108,11 +111,13 @@ function updateColors() {
     }
 }
 
-function addColumns(new_colCount) {
+function addColumns(new_colCount, cur_colCount, parentDiv) {
     //if it's necessary to update the number of columns, call this 
-    var e = document.getElementById("target");
-    var normblocks = e.childNodes;
-    var start_col = normblocks.length / 4 + 1;
+    //var e = document.getElementById("target");
+    //var normblocks = parentDiv.childNodes;
+    //var start_col = normblocks.length / 4 + 1;
+    var start_col = cur_colCount; 
+    start_col++; 
     var rows = 4;
 
     //if larger, add as many columns of elements as desired
@@ -151,37 +156,24 @@ function addColumns(new_colCount) {
             lastcell.after(cell);
         }
     }
-    e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
+    parentDiv.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
 
 function rmColumns(new_colCount) {
     //if it's necessary to update the number of columns, call this 
-    //TODO: allow delete/add multiple columns at once
     //TODO: pass elements into/out of this (normblocks, e)
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
     let start_col = new_colCount;
     start_col++; 
     let end_col = normblocks.length / 4 - 1;
-    console.log(end_col)
-    let testvar = new_colCount;
-    testvar++; 
     //if smaller, remove columns from end of list
-    console.log(testvar); 
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
     //let c = end_col; 
-    console.log('start, end')
-    console.log(start_col)
-    console.log(end_col)
     for (var c = start_col; c <= end_col; c++){
-        console.log(c)
         const elements = document.getElementsByClassName('col-' + c.toString());
-        console.log(elements)
         while (elements.length > 0) {
-            console.log('hello')
-            console.log(elements)
-            console.log(normblocks)
             elements[0].parentNode.removeChild(elements[0]);
             //probably need to also remove sub children? 
         }
