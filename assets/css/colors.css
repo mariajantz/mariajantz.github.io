@@ -28,6 +28,11 @@ p {
     width: 95%; 
 }
 
+.break {
+    width: 100%; 
+    height: 10px; 
+}
+
 
 form {
     display: inline-block; 
