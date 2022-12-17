@@ -112,9 +112,9 @@ function addColumns(new_colCount) {
     console.log(new_colCount)
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
-    var start_cols = normblocks.length / 4 + 1;
+    var start_col = normblocks.length / 4 + 1;
     var rows = 4;
-    console.log(start_cols); 
+    console.log(start_col); 
 
     //if larger, add as many columns of elements as desired
     //need to insert these after the previous rows
@@ -122,7 +122,7 @@ function addColumns(new_colCount) {
     col_lbl++; 
     console.log(col_lbl)
     //let c = 5; 
-    for (var c = start_cols; c <= col_lbl; c++){
+    for (var c = start_col; c <= col_lbl; c++){
         console.log('loop')
         console.log(new_colCount)
         console.log(col_lbl)
@@ -171,16 +171,16 @@ function rmColumns(new_colCount) {
     //if it's necessary to update the number of columns, call this 
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
-    var cur_cols = normblocks.length / 4;
-    var rows = 4;
-    console.log(cur_cols)
+    let start_col = new_colCount+1; 
+    let end_col = normblocks.length / 4 - 1;
+    console.log(end_col)
     let testvar = new_colCount;
     testvar++; 
     //if smaller, remove columns from end of list
     console.log(testvar); 
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
-    let c = cur_cols; 
+    let c = end_col; 
     const elements = document.getElementsByClassName('col-' + c.toString());
     console.log(elements)
     while (elements.length > 0) {
