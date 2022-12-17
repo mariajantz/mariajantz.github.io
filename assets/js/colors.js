@@ -127,16 +127,18 @@ function addColumns(new_colCount) {
         console.log(new_colCount)
         console.log(col_lbl)
         console.log(c); 
+        console.log((c-1))
+        console.log((c-1).toString())
         
         for (var r = 0; r < rows; r++) {
             //just add 1 column 
             //name each cell
             var cell = document.createElement('div');
-            cell.className = "grid-cell row-" + r.toString() + ' col-' + c.toString();
-            const colval = c;
+            cell.className = "grid-cell row-" + r.toString() + ' col-' + (c - 1).toString();
+            const colval = c-1;
             cell.style.backgroundColor = '#888888';
             //location to insert after
-            lcname = "row-" + r.toString() + ' col-' + (c - 1).toString();
+            lcname = "row-" + r.toString() + ' col-' + (c - 2).toString();
             console.log(lcname)
             lastcell = document.getElementsByClassName(lcname)[0];
             console.log(cell.className)
