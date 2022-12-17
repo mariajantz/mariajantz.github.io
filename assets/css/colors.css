@@ -7,13 +7,11 @@ label {
 .c1 span {
     display: inline-block;
     text-align: right;
-    width: 100%;
 }
 
 .c2 span {
     display: inline-block;
     text-align: left;
-    width: 100%;
 }
 
 body {
@@ -40,6 +38,7 @@ p {
 form {
     display: inline-block; 
     font-size: .8em;
+    width: 100%; 
 }
 /* Sizing for Project Containers - use js to edit. 
 Also, probably need to change all this to grid layout 
