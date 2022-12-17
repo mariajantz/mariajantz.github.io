@@ -172,18 +172,15 @@ function rmColumns(new_colCount) {
     var rows = 4;
     console.log(cur_cols)
     let testvar = new_colCount;
+    testvar++; 
     //if smaller, remove columns from end of list
-    const col_lbl = new_colCount + 1;
-    console.log(col_lbl); 
-    console.log(new_colCount); 
-    console.log(testvar); 
-    console.log(testvar++); 
     console.log(testvar); 
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
     let c = cur_cols; 
     const elements = document.getElementsByClassName(' col-' + c.toString());
     while (elements.length > 0) {
+        console.log(elements)
         elements[0].parentNode.removeChild(elements[0]);
         //probably need to also remove sub children? 
     }
