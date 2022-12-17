@@ -157,9 +157,11 @@ function addColumns(new_colCount) {
 function rmColumns(new_colCount) {
     //if it's necessary to update the number of columns, call this 
     //TODO: allow delete/add multiple columns at once
+    //TODO: pass elements into/out of this (normblocks, e)
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
-    let start_col = new_colCount+1; 
+    let start_col = new_colCount;
+    start_col++; 
     let end_col = normblocks.length / 4 - 1;
     console.log(end_col)
     let testvar = new_colCount;
