@@ -65,9 +65,6 @@ function updateColors() {
     var normblocks = document.getElementById("target").childNodes;
     var num_clrs = document.getElementById('num_clrs').value;
     var num_cols = normblocks.length / 4 ;
-    console.log(num_clrs)
-    console.log(num_cols)
-    console.log(num_cols-1)
     if ((num_cols - 1) < num_clrs) {
         console.log('Add columns')
         addColumns(num_clrs);
@@ -75,6 +72,11 @@ function updateColors() {
         console.log('Subtract columns')
         rmColumns(num_clrs);
     }
+
+    //reload these values
+    var normblocks = document.getElementById("target").childNodes;
+    var num_cols = normblocks.length / 4 ;
+
     //add array to update 
     var locked = [];
     var clrs = [];
@@ -108,27 +110,16 @@ function updateColors() {
 
 function addColumns(new_colCount) {
     //if it's necessary to update the number of columns, call this 
-    console.log('Adding cols')
-    console.log(new_colCount)
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
     var start_col = normblocks.length / 4 + 1;
     var rows = 4;
-    console.log(start_col); 
 
     //if larger, add as many columns of elements as desired
     //need to insert these after the previous rows
     let col_lbl = new_colCount; 
     col_lbl++; 
-    console.log(col_lbl)
-    //let c = 5; 
     for (var c = start_col; c <= col_lbl; c++){
-        console.log('loop')
-        console.log(new_colCount)
-        console.log(col_lbl)
-        console.log(c); 
-        console.log((c-1))
-        console.log((c-1).toString())
         
         for (var r = 0; r < rows; r++) {
             //just add 1 column 
@@ -139,10 +130,7 @@ function addColumns(new_colCount) {
             cell.style.backgroundColor = '#888888';
             //location to insert after
             lcname = "row-" + r.toString() + ' col-' + (c - 2).toString();
-            console.log(lcname)
             lastcell = document.getElementsByClassName(lcname)[0];
-            console.log(cell.className)
-            //console.log(lastcell)
 
             //if row 0 add a checkbox (locked/unlocked) to the grid cell
             if (r == 0) {
@@ -160,9 +148,7 @@ function addColumns(new_colCount) {
                 cell.style.justifyItems = 'end';
             }
 
-            //e.insertBefore(cell, lastcell);
             lastcell.after(cell);
-            
         }
     }
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
@@ -170,6 +156,7 @@ function addColumns(new_colCount) {
 
 function rmColumns(new_colCount) {
     //if it's necessary to update the number of columns, call this 
+    //TODO: allow delete/add multiple columns at once
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
     let start_col = new_colCount+1; 
@@ -181,7 +168,8 @@ function rmColumns(new_colCount) {
     console.log(testvar); 
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
-    let c = end_col; 
+    //let c = end_col; 
+    for (var c = start_col; c <= end_col; c++){
     const elements = document.getElementsByClassName('col-' + c.toString());
     console.log(elements)
     while (elements.length > 0) {
@@ -191,6 +179,7 @@ function rmColumns(new_colCount) {
         elements[0].parentNode.removeChild(elements[0]);
         //probably need to also remove sub children? 
     }
+}
 
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
