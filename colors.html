@@ -9,6 +9,18 @@
 <body>
     <h1 id="test">Colorblind-friendly color palette generator</h1>
 
+    <p><b>Instructions:</b> 
+        This tool generates a random set of colors and displays a selection of them that are
+        most distinguishable across multiple different types of color vision. Each column displays a color for several
+        types of color vision. To select your own colors, use the color selector in the top right of a column, and to 
+        keep a color despite regenerating the rest of the set, check the box at the top of a column to lock it. At the 
+        bottom of the page are a couple of simulated plots in the color set, as well as the RGB and HEX values.
+        <br/>
+        some potential punny things: RGBetter (lame but catchy), huemongus; 
+        provide a "simulated plot" option like the one
+        in viz palette. (scroll down to see? Do scatter plot w/overlap and lines.)
+    </p>
+    
     <form>
         <div class="form-column">
         <label class="c1">
@@ -51,18 +63,6 @@
     <button type="button" onclick="updateColors()">Generate colors</button>
     <button type="button">Clear locked colors</button>
     <button type="button" onclick="restoreDefaultValues()">Restore default values</button>
-
-    <p><b>Instructions:</b> 
-        This tool generates a random set of colors and displays a selection of them that are
-        most distinguishable across multiple different types of color vision. Each column displays a color for several
-        types of color vision. To select your own colors, use the color selector in the top right of a column, and to 
-        keep a color despite regenerating the rest of the set, check the box at the top of a column to lock it. At the 
-        bottom of the page are a couple of simulated plots in the color set, as well as the RGB and HEX values.
-        <br/>
-        some potential punny things: RGBetter (lame but catchy), huemongus; 
-        provide a "simulated plot" option like the one
-        in viz palette. (scroll down to see? Do scatter plot w/overlap and lines.)
-    </p>
 
     <div id="target"></div>
     <div id="target2"></div>

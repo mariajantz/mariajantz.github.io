@@ -19,19 +19,20 @@ label {
 body {
     text-align: center;
     color: #222;
-    width: 95%; 
     font-family: Arial, Helvetica, sans-serif;
 }
 
 p {
     text-align: justify;
     font-size: .8em;
+    width: 95%; 
 }
 
 
 form {
     display: inline-block; 
     font-size: .8em;
+    width: 95%; 
 }
 /* Sizing for Project Containers - use js to edit. 
 Also, probably need to change all this to grid layout 
@@ -41,6 +42,7 @@ https: //css-tricks.com/snippets/css/complete-guide-grid/
 
 #target {
     margin: auto;
+    width: 95%; 
 }
 
 .lbl {
