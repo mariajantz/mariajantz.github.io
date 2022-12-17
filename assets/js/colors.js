@@ -111,9 +111,9 @@ function addColumns(new_colCount) {
     console.log(new_colCount)
     var e = document.getElementById("target");
     var normblocks = e.childNodes;
-    var cur_cols = normblocks.length / 4;
+    var start_cols = normblocks.length / 4 + 1;
     var rows = 4;
-    console.log(cur_cols); 
+    console.log(start_cols); 
 
     //if larger, add as many columns of elements as desired
     //need to insert these after the previous rows
@@ -121,7 +121,7 @@ function addColumns(new_colCount) {
     col_lbl++; 
     console.log(col_lbl)
     //let c = 5; 
-    for (var c = cur_cols; c < col_lbl; c++){
+    for (var c = start_cols; c <= col_lbl; c++){
         console.log('loop')
         console.log(new_colCount)
         console.log(col_lbl)
