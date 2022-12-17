@@ -169,17 +169,21 @@ function rmColumns(new_colCount) {
     //first assume just removing last column
     //maybe just remove last column until reaching the new column count
     //let c = end_col; 
+    console.log('start, end')
+    console.log(start_col)
+    console.log(end_col)
     for (var c = start_col; c <= end_col; c++){
-    const elements = document.getElementsByClassName('col-' + c.toString());
-    console.log(elements)
-    while (elements.length > 0) {
-        console.log('hello')
+        console.log(c)
+        const elements = document.getElementsByClassName('col-' + c.toString());
         console.log(elements)
-        console.log(normblocks)
-        elements[0].parentNode.removeChild(elements[0]);
-        //probably need to also remove sub children? 
+        while (elements.length > 0) {
+            console.log('hello')
+            console.log(elements)
+            console.log(normblocks)
+            elements[0].parentNode.removeChild(elements[0]);
+            //probably need to also remove sub children? 
+        }
     }
-}
 
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(new_colCount);
 }
