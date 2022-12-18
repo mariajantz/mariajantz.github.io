@@ -55,6 +55,7 @@ function randColor(){
     g = Math.floor(Math.random() * 255)
     b = Math.floor(Math.random() * 255)
     //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
+    console.log([r, g, b])
     return [r, g, b];
 }
 
@@ -64,17 +65,19 @@ function genCandidates(num_clrs, cur_clrs){
     var minlist = []; 
 
     //get which colorblindness types are checked (d, p, t) in addition to normal min distance
-
+    const cb_inc = [document.getElementById('deut_check').value, 
+        document.getElementById('prot_check').value, 
+        document.getElementById('trit_check').value]
 
     for (var i = 0; i<num_clrs; i++) {
         cands[i] = randColor(); 
+        //get distances of each from existing set of colors
 
         //convert all to colorblind (in spaces currently checked) and to lab
-        d = rgb2lab(toCB(cands[i], 1));
-        p = rgb2lab(toCB(cands[i], 2)); 
-        t = rgb2lab(toCB(cands[i], 3)); 
-
-        //get distances of each from existing set of colors
+        for (var j = 1; j <= cb_inc.length; j++){
+            cb = rgb2lab(toCB(cands[i], j));
+            //get distances of each from existing set of colors
+        }
 
         //add minimum of d, p, t, and norm to the list
 
@@ -167,6 +170,7 @@ function setLocked() {
         console.log(clrs[i]); 
         toprow[(i+1)].childNodes[0].value = clrs[i]; 
         let clr_rgb = hexToRgb(clrs[i]);
+        console.log(clr_rgb); 
         //get the parent div
         updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
     }
