@@ -129,12 +129,12 @@ function updateColors() {
             //check if that row is checked
             if (normblocks[c].className.includes('row-0')) {
                 locked[c - 1] = normblocks[c].childNodes[1].checked;
-                clrs[c - 1] = rgbArrToHex(randColor());
+                clrs[c - 1] = randColor();
             }
             if (!locked[c % num_cols - 1]) {
                 let bgc = clrs[c % num_cols - 1];
                 if (normblocks[c].className.includes('row-0')) {
-                    let bgc_hex = rgbToHex(bgc)
+                    let bgc_hex = rgbArrToHex(bgc)
                     normblocks[c].style.backgroundColor = bgc_hex;
                     normblocks[c].childNodes[0].value = bgc_hex;
                 } //otherwise use same value as in row 0
