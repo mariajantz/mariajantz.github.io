@@ -54,18 +54,33 @@ function randColor(){
     r = Math.floor(Math.random() * 255)
     g = Math.floor(Math.random() * 255)
     b = Math.floor(Math.random() * 255)
-    return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
+    //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
+    return [r, g, b];
 }
 
-function genCandidates(num_clrs){
+function genCandidates(num_clrs, cur_clrs){
     //generate a set of x rgb colors for Mitchell's best-candidate algorithm
+    var cands = []; 
+    var minlist = []; 
+
+    //get which colorblindness types are checked (d, p, t) in addition to normal min distance
+
+
     for (var i = 0; i<num_clrs; i++) {
-        randColor()
+        cands[i] = randColor(); 
+
+        //convert all to colorblind (in spaces currently checked) and to lab
+        d = rgb2lab(toCB(cands[i], 1));
+        p = rgb2lab(toCB(cands[i], 2)); 
+        t = rgb2lab(toCB(cands[i], 3)); 
+
+        //get distances of each from existing set of colors
+
+        //add minimum of d, p, t, and norm to the list
+
     }
 
-    //convert all to colorblind (in spaces currently checked)
-
-    //convert all of these to lab
+    //return the max from the minlist
 
 }
 
@@ -85,9 +100,9 @@ function updateColors() {
     //if it is the same number, regenerate each child element
     //get all the existing divs in target - normal, then update the colors (for now use random colors)
     var gridParent = document.getElementById('target'); 
-    var normblocks = gridParent.childNodes;
+    //var normblocks = gridParent.childNodes;
     var num_clrs = parseInt(document.getElementById('num_clrs').value);
-    var num_cols = normblocks.length / 4 ;
+    var num_cols = gridParent.childElementCount / 4 ;
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
     setLocked(); 
 
@@ -111,7 +126,7 @@ function updateColors() {
             //check if that row is checked
             if (normblocks[c].className.includes('row-0')) {
                 locked[c - 1] = normblocks[c].childNodes[1].checked;
-                clrs[c - 1] = randColor();
+                clrs[c - 1] = rgbArrToHex(randColor());
             }
             if (!locked[c % num_cols - 1]) {
                 let bgc = clrs[c % num_cols - 1];
@@ -138,18 +153,17 @@ function setLocked() {
     //for each column (top row) except the label, check if the checkbox is locked
     var toprow = document.getElementsByClassName('row-0'); 
     var clrs = []; 
-    console.log(toprow); 
     for (var c = 1; c < toprow.length; c++) {
-        console.log(toprow[c].childNodes[1].checked); 
         if (toprow[c].childNodes[1].checked){
             //if so, mark down the current color and uncheck the checkbox
             clrs.push(toprow[c].childNodes[0].value); 
-            console.log(clrs)
+            toprow[c].childNodes[1].checked = false; 
         }
     }
     
     //after going through all the columns, set each column to a color, check those
     for (var i = 0; i < clrs.length; i++){
+        console.log(i)
         console.log(clrs[i]); 
         toprow[(i+1)].childNodes[0].value = clrs[i]; 
         let clr_rgb = hexToRgb(clrs[i]);
