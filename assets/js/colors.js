@@ -143,8 +143,8 @@ function updateColors() {
                     // Choose correct separator
                     let sep = bgc.indexOf(",") > -1 ? "," : " ";
                     // Turn "rgb(r,g,b)" into [r,g,b]
-                    bgc = bgc.substring(4).split(")")[0].split(sep);
-                    bgc = bgc.map(Number);
+                    // bgc = bgc.substring(4).split(")")[0].split(sep);
+                    // bgc = bgc.map(Number);
                     normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
                 }
             }
