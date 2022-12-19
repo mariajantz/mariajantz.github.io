@@ -55,23 +55,26 @@ function randColor(){
     g = Math.floor(Math.random() * 255)
     b = Math.floor(Math.random() * 255)
     //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
-    console.log([r, g, b])
+    // console.log([r, g, b])
     return [r, g, b];
 }
 
-function genCandidates(num_clrs, cur_clrs){
+function genCandidates(num_clrs, cur_clrsRgb){
     //generate a set of x rgb colors for Mitchell's best-candidate algorithm
     var cands = []; 
     var minlist = []; 
+    //convert current color array to lab
 
     //get which colorblindness types are checked (d, p, t) in addition to normal min distance
     const cb_inc = [document.getElementById('deut_check').value, 
         document.getElementById('prot_check').value, 
         document.getElementById('trit_check').value]
+    
+    //convert current color array to colorblind lab spaces
 
     for (var i = 0; i<num_clrs; i++) {
         cands[i] = randColor(); 
-        //get distances of each from existing set of colors
+        //get distances from existing set of colors
 
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
@@ -84,8 +87,8 @@ function genCandidates(num_clrs, cur_clrs){
     }
 
     //return the max from the minlist
-
 }
+
 
 function runMitchell(){
     //generate colors
@@ -266,11 +269,13 @@ function updateColumnColors(colname, newRGBArr){
 
     let clr_prot = toCB(newRGBArr, 2);
     //console.log(clr_prot)
-    cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
+    //cols[2].style.backgroundColor = 'rgb(' + clr_prot[0].toString() + ', ' + clr_prot[1].toString() + ', ' + clr_prot[2].toString() + ')'; 
+    cols[2].style.backgroundColor = rgbArrToHex(clr_prot); 
 
     let clr_trit = toCB(newRGBArr, 3);
     //console.log(clr_trit)
-    cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
+    //cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
+    cols[3].style.backgroundColor = rgbArrToHex(clr_trit); 
 }
 
 function toCB(rgbArr, cbType) {
@@ -429,7 +434,7 @@ function rgbArrToHex(rgb){
     if (b.length == 1)
         b = "0" + b;
 
-    console.log(r+g+b)
+    // console.log(r+g+b)
     return "#" + r + g + b;
 }
 
