@@ -62,38 +62,56 @@ function randColor(){
 function genCandidates(num_clrs, cur_clrsRgb){
     //generate a set of x rgb colors for Mitchell's best-candidate algorithm
     var cands = []; 
-    var minlist = []; 
-    //convert current color array to lab
+    var minlist = []; //list of minimum distances
+    //convert current color array to lab (normal)
+    var nRgb = []; 
+    for (var j = 0; j<cur_clrsRgb.length; j++) {
+        nRgb.push(rgb2lab(cur_clrsRgb[j])); 
+        console.log(nRgb)
+    }
 
     //get which colorblindness types are checked (d, p, t) in addition to normal min distance
     const cb_inc = [document.getElementById('deut_check').value, 
         document.getElementById('prot_check').value, 
         document.getElementById('trit_check').value]
-    
+    console.log(cb_inc); 
     //convert current color array to colorblind lab spaces
+    for (var i = 0; i<cb_inc.length; i++) {
+        if (cb_inc[i]) {
+            //convert and add the array
+            for (var j = 0; j<cur_clrsRgb.length; j++) {
+                tmp = rgb2lab(toCB(cur_clrsRgb[j], i)); 
+                console.log(tmp)
+            }
+        }
+    }
 
     for (var i = 0; i<num_clrs; i++) {
         cands[i] = randColor(); 
         //get distances from existing set of colors
-
+        for (var k = 0; k<cur_clrsRgb.length; k++) {
+            minlist.push(deltaE(cands[i], nRgb[k])); 
+            //TODO decide whether to normalize this minimum value for each space
+            console.log(minlist)
+        }
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
             cb = rgb2lab(toCB(cands[i], j));
-            //get distances of each from existing set of colors
+            //get distances of each from existing set of colors; set to minlist if lower than current value
         }
 
-        //add minimum of d, p, t, and norm to the list
-
     }
-
+    //temporary testing: display these colors and their respective values onscreen (set inner html of each)
     //return the max from the minlist
+    
 }
 
 
 function runMitchell(){
     //generate colors
     let num_gen = 10; 
-    genCandidates(num_gen); 
+    let tmp_first = [randColor()]; 
+    genCandidates(num_gen, tmp_first); 
 
     //for each of the color spaces, find the distance to the existing colors
     //keep the one that's 
