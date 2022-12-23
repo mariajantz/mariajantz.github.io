@@ -61,11 +61,14 @@ function randColor(){
 
 function genCandidates(num_clrs, cur_clrsRgb){
     //generate a set of x rgb colors for Mitchell's best-candidate algorithm
+    //for troubleshooting, make a new set of divs
+    var testdivs = document.createElement('div')
     var cands = []; 
     var minlist = []; //list of minimum distances
     //convert current color array to lab (normal)
     var nRgb = []; 
     for (var j = 0; j<cur_clrsRgb.length; j++) {
+        console.log('normal ' + j)
         nRgb.push(rgb2lab(cur_clrsRgb[j])); 
         console.log(nRgb)
     }
@@ -74,22 +77,31 @@ function genCandidates(num_clrs, cur_clrsRgb){
     const cb_inc = [document.getElementById('deut_check').value, 
         document.getElementById('prot_check').value, 
         document.getElementById('trit_check').value]
+    console.log('colorblind t/f')
     console.log(cb_inc); 
+    var cb_current = []
     //convert current color array to colorblind lab spaces
     for (var i = 0; i<cb_inc.length; i++) {
+        console.log('convert to cb')
         if (cb_inc[i]) {
             //convert and add the array
+            cb_current.push([])
             for (var j = 0; j<cur_clrsRgb.length; j++) {
+
                 tmp = rgb2lab(toCB(cur_clrsRgb[j], i)); 
                 console.log(tmp)
+                cb_current.push(tmp)
+                console.log(cb_current)
             }
         }
     }
 
     for (var i = 0; i<num_clrs; i++) {
+        console.log('generate candidates')
         cands[i] = randColor(); 
         //get distances from existing set of colors
         for (var k = 0; k<cur_clrsRgb.length; k++) {
+            console.log('dist')
             minlist.push(deltaE(cands[i], nRgb[k])); 
             //TODO decide whether to normalize this minimum value for each space
             console.log(minlist)
