@@ -68,16 +68,14 @@ function genCandidates(num_clrs, cur_clrsRgb){
     //convert current color array to lab (normal)
     var nRgb = []; 
     for (var j = 0; j<cur_clrsRgb.length; j++) {
-        console.log('normal ' + j)
         nRgb.push(rgb2lab(cur_clrsRgb[j])); 
-        console.log(nRgb)
     }
 
     //get which colorblindness types are checked (d, p, t) in addition to normal min distance
     const cb_inc = [document.getElementById('deut_check').value, 
         document.getElementById('prot_check').value, 
         document.getElementById('trit_check').value]
-    console.log('colorblind t/f')
+    console.log('colorblind t/f make sure this is right')
     console.log(cb_inc); 
     var cb_current = []
     //convert current color array to colorblind lab spaces
@@ -94,22 +92,33 @@ function genCandidates(num_clrs, cur_clrsRgb){
             }
         }
     }
-
+    //generate candidate colors (randomly) and pick the one that has the highest min distance
     for (var i = 0; i<num_clrs; i++) {
         console.log('generate candidates')
         cands[i] = randColor(); 
-        //get distances from existing set of colors
+        //get distances from existing set of colors, normal vision
         for (var k = 0; k<cur_clrsRgb.length; k++) {
             console.log('dist')
-            minlist.push(deltaE(cands[i], nRgb[k])); 
+            minlist.push(deltaE(rgb2lab(cands[i]), nRgb[k])); 
             //TODO decide whether to normalize this minimum value for each space
             console.log(minlist)
         }
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
-            cb = rgb2lab(toCB(cands[i], j));
-            //get distances of each from existing set of colors; set to minlist if lower than current value
+            if (cb_inc[j]){
+                for (var k = 0; k < cur_clrsRgb.length; k++) {
+                    let cb = rgb2lab(toCB(cands[i], j));
+                    //get distances of each from existing set of colors; set to minlist if lower than current value
+                    let cmin = deltaE(cb, cb_current[j][k]); 
+                    if (cmin<minlist[k]){
+                        //then the new minimum distance is in these terms
+                        minlist[k] = cmin; 
+                    }
+                }
+            }
         }
+        console.log('new mins')
+        console.log(minlist)
 
     }
     //temporary testing: display these colors and their respective values onscreen (set inner html of each)
