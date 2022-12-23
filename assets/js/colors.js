@@ -83,14 +83,13 @@ function genCandidates(num_clrs, cur_clrsRgb){
     //convert current color array to colorblind lab spaces
     for (var i = 0; i<cb_inc.length; i++) {
         console.log('convert to cb')
+        cb_current.push([])
         if (cb_inc[i]) {
             //convert and add the array
-            cb_current.push([])
             for (var j = 0; j<cur_clrsRgb.length; j++) {
-
                 tmp = rgb2lab(toCB(cur_clrsRgb[j], i)); 
                 console.log(tmp)
-                cb_current.push(tmp)
+                cb_current[i].push(tmp)
                 console.log(cb_current)
             }
         }
