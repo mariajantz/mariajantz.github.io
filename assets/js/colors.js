@@ -72,9 +72,9 @@ function genCandidates(num_clrs, cur_clrsRgb){
     }
 
     //get which colorblindness types are checked (d, p, t) in addition to normal min distance
-    const cb_inc = [document.getElementById('deut_check').value, 
-        document.getElementById('prot_check').value, 
-        document.getElementById('trit_check').value]
+    const cb_inc = [document.getElementById('deut_check').checked, 
+        document.getElementById('prot_check').checked, 
+        document.getElementById('trit_check').checked]
     console.log('colorblind t/f make sure this is right')
     console.log(cb_inc); 
     var cb_current = []
