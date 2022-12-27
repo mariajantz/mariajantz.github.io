@@ -112,6 +112,7 @@ function validBright(elem){
 
 function genCandidates(num_clrs, cur_clrsRgb){
     //generate a set of x rgb colors for Mitchell's best-candidate algorithm
+    console.log('gen')
     var cands = []; 
     var minlist = []; //list of minimum distances
     //convert current color array to lab (normal)
