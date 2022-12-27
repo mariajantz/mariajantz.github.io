@@ -34,11 +34,11 @@
         </label>
         <label class="c1">
             <span>Minimum brightness (0-100, 0=black)</span>
-            <input id='min_bright' type="number" value="30" min="0" max="100">
+            <input id='min_bright' type="number" value="30" min="0" max="90" onchange="document.getElementById('max_bright').min=this.value;">
         </label>
         <label class="c1">
             <span>Maximum brightness (0-100, 100=white)</span>
-            <input id='max_bright' type="number" value="80" min="0" max="100">
+            <input id='max_bright' type="number" value="80" min="10" max="100" onchange="document.getElementById('min_bright').max=this.value;">
         </label>
         <label class="c1">
             <span>Minimum distance from other colors</span>

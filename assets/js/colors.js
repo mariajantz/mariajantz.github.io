@@ -68,6 +68,9 @@ function randColor(){
     let minL = document.getElementById('min_bright').value; 
     let maxL = document.getElementById('max_bright').value; 
     let labclr = rgb2lab([r, g, b])
+    if (minL>maxL) {
+        console.log('add pass here? should really do an alert of some kind')
+    }
     console.log('brightness')
     console.log(minL)
     console.log(maxL)
