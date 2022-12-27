@@ -193,9 +193,9 @@ function runMitchell(){
     let tmp = genCandidates(num_gen, tmp_first); 
     
     //temporarily: just show these (update colors of cols)
-    updateColumnColors('col-' + (1).toString(), tmp_first[0])
-    updateColumnColors('col-' + (2).toString(), tmp_first[1])
-    updateColumnColors('col-' + (3).toString(), tmp)
+    updateColumnColors('col-' + (1).toString(), rgbArrToHex(tmp_first[0]))
+    updateColumnColors('col-' + (2).toString(), rgbArrToHex(tmp_first[1]))
+    updateColumnColors('col-' + (3).toString(), rgbArrToHex(tmp))
     //okay, so now that I have a set of candidates that should be relatively separated...
     //sort these candidates by distance in each color space
     //remove the least-distinguishable x number in each space
