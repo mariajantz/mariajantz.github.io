@@ -116,8 +116,10 @@ function validBright(elem){
         console.log(e.value)
         if (elem.id.includes('max')) {
             console.log('max')
+            document.getElementById('min_bright').value = e.value - 10; 
         } else if (elem.id.includes('min')) {
             console.log('min')
+            document.getElementById('max_bright').value = e.value + 10; 
         } 
     }
 }

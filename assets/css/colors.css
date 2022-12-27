@@ -9,7 +9,7 @@ label {
     text-align: right;
 }
 
-label .c1 {
+label.c1 {
     text-align: right;
 }
 
@@ -18,8 +18,9 @@ label .c1 {
     text-align: left;
 }
 
-label .c1 {
+label.c2 {
     text-align: left;
+    padding-left: 5em;
 }
 
 body {
