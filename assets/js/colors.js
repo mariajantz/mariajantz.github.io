@@ -100,17 +100,13 @@ function validBright(elem){
     }
 
     if (minL >= (maxL - 10)) {
-        console.log('update')
         //if the calling element is max, then change min; if the calling element is min, then change max
         //require at least 10 between them
-        console.log(elem.id)
         let e = document.getElementById(elem.id)
-        console.log(e.value)
+
         if (elem.id.includes('max')) {
-            console.log('max')
             document.getElementById('min_bright').value = +e.value - 10; 
         } else if (elem.id.includes('min')) {
-            console.log('min')
             document.getElementById('max_bright').value = +e.value + 10; 
         } 
     }
