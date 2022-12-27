@@ -68,7 +68,7 @@ function randColor(){
     let minL = document.getElementById('min_bright').value; 
     let maxL = document.getElementById('max_bright').value; 
     let labclr = rgb2lab([r, g, b])
-    if (minL>maxL) {
+    if (minL>=(maxL-5)) {
         console.log('add pass here? should really do an alert of some kind')
     }
     console.log('brightness')
@@ -85,13 +85,18 @@ function randColor(){
         minL = document.getElementById('min_bright').value;
         maxL = document.getElementById('max_bright').value;
         labclr = rgb2lab([r, g, b])
-        console.log('brightness')
-        console.log(minL)
-        console.log(maxL)
-        console.log(labclr)
     }
     // console.log([r, g, b])
     return [r, g, b];
+}
+
+function validBright(elem){
+    let minL = document.getElementById('min_bright').value;
+    let maxL = document.getElementById('max_bright').value;
+    console.log(elem)
+    console.log(this)
+
+    //if the calling element is max, then change min; if the calling element is min, then change max
 }
 
 function genCandidates(num_clrs, cur_clrsRgb){
