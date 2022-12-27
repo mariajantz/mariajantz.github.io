@@ -189,11 +189,14 @@ function runMitchell(){
     let num_gen = 3; //number of candidates to run mitchell's on
     let tmp_first = [randColor(), randColor()]; 
     let total_cands = (+document.getElementById('num_clrs').value)*3 //extra candidates to generate before sorting all
+    console.log('total')
     console.log(total_cands)
     //here, run this x number of times to get more candidates than called for
     let tmp = genCandidates(num_gen, tmp_first); 
     
     //temporarily: just show these (update colors of cols)
+    console.log(tmp_first[0])
+    console.log(tmp)
     updateColumnColors('col-' + (1).toString(), rgbArrToHex(tmp_first[0]))
     updateColumnColors('col-' + (2).toString(), rgbArrToHex(tmp_first[1]))
     updateColumnColors('col-' + (3).toString(), rgbArrToHex(tmp))
