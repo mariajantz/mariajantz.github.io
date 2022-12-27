@@ -1,6 +1,16 @@
 
 genDivsGrid(4);
 
+/*current TODOs: 
+Fix set locked - make it move to beginning of column and re lock that
+generate single candidates based on mitchell's
+generate a set of candidates and choose a subset from those
+actually show these candidates instead of the random stuff
+make sure candidates play nice with locking and such
+reduce incidence of grays + browns
+add minimum/maximum brightness
+*/
+
 function genDivsGrid(cols) {
     var e = document.getElementById("target");
     var rows = 4;
@@ -110,6 +120,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
                     //get distances of each from existing set of colors; set to minlist if lower than current value
                     let cmin = deltaE(cb, cb_current[j][k]); 
                     console.log(cmin, minlist[k])
+                    //todo this is somehow only changing the first index of minlist? write out what j, k, i are
                     if (cmin<minlist[k]){
                         //then the new minimum distance is in these terms
                         minlist[k] = cmin; 
@@ -212,13 +223,12 @@ function setLocked() {
     
     //after going through all the columns, set each column to a color, check those
     for (var i = 0; i < clrs.length; i++){
-        console.log(i)
-        console.log(clrs[i]); 
         toprow[(i+1)].childNodes[0].value = clrs[i]; 
         let clr_rgb = hexToRgb(clrs[i]);
         console.log(clr_rgb); 
         //get the parent div
         updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+        toprow[i+1].childNodes[1].checked = true; 
     }
 }
 
