@@ -75,7 +75,7 @@ function randColor(){
     console.log(minL)
     console.log(maxL)
     console.log(labclr)
-    while (minL>labclr[0]) {
+    while (minL>labclr[0] || maxL<labclr[0]) {
         console.log('loop')
         r = Math.floor(Math.random() * 255)
         g = Math.floor(Math.random() * 255)
