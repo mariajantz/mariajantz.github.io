@@ -2,13 +2,12 @@
 genDivsGrid(4);
 
 /*current TODOs: 
-Fix set locked - make it move to beginning of column and re lock that
 generate single candidates based on mitchell's
 generate a set of candidates and choose a subset from those
 actually show these candidates instead of the random stuff
 make sure candidates play nice with locking and such
-reduce incidence of grays + browns
-add minimum/maximum brightness
+reduce incidence of grays + browns (in randcolor)
+add minimum/maximum brightness (in randcolor)
 */
 
 function genDivsGrid(cols) {
@@ -65,6 +64,29 @@ function randColor(){
     g = Math.floor(Math.random() * 255)
     b = Math.floor(Math.random() * 255)
     //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
+    //check brightness (in LAB space)
+    let minL = document.getElementById('min_bright').value; 
+    let maxL = document.getElementById('max_bright').value; 
+    let labclr = rgb2lab([r, g, b])
+    console.log('brightness')
+    console.log(minL)
+    console.log(maxL)
+    console.log(labclr)
+    while (minL>labclr[0]) {
+        console.log('loop')
+        r = Math.floor(Math.random() * 255)
+        g = Math.floor(Math.random() * 255)
+        b = Math.floor(Math.random() * 255)
+        //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
+        //check brightness (in LAB space)
+        minL = document.getElementById('min_bright').value;
+        maxL = document.getElementById('max_bright').value;
+        labclr = rgb2lab([r, g, b])
+        console.log('brightness')
+        console.log(minL)
+        console.log(maxL)
+        console.log(labclr)
+    }
     // console.log([r, g, b])
     return [r, g, b];
 }
@@ -146,10 +168,12 @@ function runMitchell(){
     //generate colors
     let num_gen = 10; 
     let tmp_first = [randColor()]; 
+    //here, run this x number of times to get more candidates than called for
     genCandidates(num_gen, tmp_first); 
 
-    //for each of the color spaces, find the distance to the existing colors
-    //keep the one that's 
+    //okay, so now that I have a set of candidates that should be relatively separated...
+    //sort these candidates by distance in each color space
+    //remove the least-distinguishable x number in each space
 }
 
 
