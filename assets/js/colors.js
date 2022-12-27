@@ -93,17 +93,33 @@ function randColor(){
 function validBright(elem){
     let minL = document.getElementById('min_bright').value;
     let maxL = document.getElementById('max_bright').value;
-    console.log(elem.id)
-    let e = document.getElementById(elem.id)
-    console.log(e.value)
-    if (elem.id.includes('max')){
-        console.log('max')
-    } else if (elem.id.includes('min')){
-        console.log('min')
+    //also reset if out of range, which is allowed manually but not clicking
+    if (minL > 90){
+        document.getElementById('min_bright').value = 90; 
     }
-    //if the calling element is max, then change min; if the calling element is min, then change max
-    //require at least 10 between them
+    if (maxL > 100) {
+        document.getElementById('max_bright').value = 100;
+    }
+    if (minL < 0) {
+        document.getElementById('min_bright').value = 0;
+    }
+    if (maxL < 10) {
+        document.getElementById('max_bright').value = 10;
+    }
 
+    if (minL >= (maxL - 10)) {
+        console.log('update')
+        //if the calling element is max, then change min; if the calling element is min, then change max
+        //require at least 10 between them
+        console.log(elem.id)
+        let e = document.getElementById(elem.id)
+        console.log(e.value)
+        if (elem.id.includes('max')) {
+            console.log('max')
+        } else if (elem.id.includes('min')) {
+            console.log('min')
+        } 
+    }
 }
 
 function genCandidates(num_clrs, cur_clrsRgb){
