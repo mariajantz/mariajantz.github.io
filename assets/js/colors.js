@@ -93,10 +93,11 @@ function randColor(){
 function validBright(elem){
     let minL = document.getElementById('min_bright').value;
     let maxL = document.getElementById('max_bright').value;
-    console.log(elem)
-    console.log(this)
+    console.log(elem.id)
 
     //if the calling element is max, then change min; if the calling element is min, then change max
+    //require at least 10 between them
+
 }
 
 function genCandidates(num_clrs, cur_clrsRgb){
