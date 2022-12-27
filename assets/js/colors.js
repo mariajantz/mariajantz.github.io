@@ -94,7 +94,13 @@ function validBright(elem){
     let minL = document.getElementById('min_bright').value;
     let maxL = document.getElementById('max_bright').value;
     console.log(elem.id)
-
+    let e = document.getElementById(elem.id)
+    console.log(e.value)
+    if (elem.id.includes('max')){
+        console.log('max')
+    } else if (elem.id.includes('min')){
+        console.log('min')
+    }
     //if the calling element is max, then change min; if the calling element is min, then change max
     //require at least 10 between them
 
