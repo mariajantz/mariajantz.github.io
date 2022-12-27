@@ -83,8 +83,6 @@ function genCandidates(num_clrs, cur_clrsRgb){
     const cb_inc = [document.getElementById('deut_check').checked, 
         document.getElementById('prot_check').checked, 
         document.getElementById('trit_check').checked]
-    console.log('colorblind t/f make sure this is right')
-    console.log(cb_inc); 
     var cb_current = []
     //convert current color array to colorblind lab spaces
     for (var i = 0; i<cb_inc.length; i++) {
@@ -94,12 +92,11 @@ function genCandidates(num_clrs, cur_clrsRgb){
             //convert and add the array
             for (var j = 0; j<cur_clrsRgb.length; j++) {
                 tmp = rgb2lab(toCB(cur_clrsRgb[j], i)); 
-                //console.log(tmp)
                 cb_current[i].push(tmp)
-                console.log(cb_current)
             }
         }
     }
+    console.log(cb_current)
     //generate candidate colors (randomly) and pick the one that has the highest min distance
     for (var i = 0; i<num_clrs; i++) {
         console.log('generate candidate')
@@ -111,6 +108,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
             //console.log(minlist)
         }
         console.log(minlist)
+        console.log(i)
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
             console.log('cb mins')
@@ -122,6 +120,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
                     console.log(cmin, minlist[k])
                     //todo this is somehow only changing the first index of minlist? write out what j, k, i are
                     if (cmin<minlist[k]){
+                        console.log('change ' + k)
                         //then the new minimum distance is in these terms
                         minlist[k] = cmin; 
                     }
