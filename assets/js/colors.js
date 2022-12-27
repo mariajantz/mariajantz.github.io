@@ -179,17 +179,22 @@ function genCandidates(num_clrs, cur_clrsRgb){
     console.log(maxval); 
     console.log(idx)
     console.log(cands)
-    console.log(cands[idx])
+    return cands[idx]
 }
 
 
 function runMitchell(){
     //generate colors
-    let num_gen = 3; 
-    let tmp_first = [randColor()]; 
+    let num_gen = 3; //number of candidates to run mitchell's on
+    let tmp_first = [randColor(), randColor()]; 
+    let total_cands = (+document.getElementById('num_clrs').value)*3 //extra candidates to generate before sorting all
+    console.log(total_cands)
     //here, run this x number of times to get more candidates than called for
-    genCandidates(num_gen, tmp_first); 
-
+    let tmp = genCandidates(num_gen, tmp_first); 
+    
+    //temporarily: just show these (update colors of cols)
+    updateColumnColors('col-' + (1).toString(), tmp_first)
+    updateColumnColors('col-' + (2).toString(), tmp)
     //okay, so now that I have a set of candidates that should be relatively separated...
     //sort these candidates by distance in each color space
     //remove the least-distinguishable x number in each space
