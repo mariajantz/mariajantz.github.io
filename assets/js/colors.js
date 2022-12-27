@@ -6,8 +6,6 @@ generate single candidates based on mitchell's
 generate a set of candidates and choose a subset from those
 actually show these candidates instead of the random stuff
 make sure candidates play nice with locking and such
-reduce incidence of grays + browns (in randcolor)
-add minimum/maximum brightness (in randcolor)
 */
 
 function genDivsGrid(cols) {
@@ -187,7 +185,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
 
 function runMitchell(){
     //generate colors
-    let num_gen = 10; 
+    let num_gen = 3; 
     let tmp_first = [randColor()]; 
     //here, run this x number of times to get more candidates than called for
     genCandidates(num_gen, tmp_first); 
@@ -211,10 +209,10 @@ function updateColors() {
     setLocked(); 
 
     if ((num_cols - 1) < num_clrs) {
-        console.log('Add columns')
+        //console.log('Add columns')
         addColumns(num_clrs, num_cols, gridParent);
     } else if ((num_cols - 1) > num_clrs) {
-        console.log('Subtract columns')
+        //console.log('Subtract columns')
         rmColumns(num_clrs, num_cols, gridParent);
     }
 
