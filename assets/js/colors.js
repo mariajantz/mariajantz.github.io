@@ -71,19 +71,11 @@ function randColor(){
     if (minL>=(maxL-5)) {
         console.log('add pass here? should really do an alert of some kind')
     }
-    console.log('brightness')
-    console.log(minL)
-    console.log(maxL)
-    console.log(labclr)
     while (minL>labclr[0] || maxL<labclr[0]) {
-        console.log('loop')
         r = Math.floor(Math.random() * 255)
         g = Math.floor(Math.random() * 255)
         b = Math.floor(Math.random() * 255)
-        //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
         //check brightness (in LAB space)
-        minL = document.getElementById('min_bright').value;
-        maxL = document.getElementById('max_bright').value;
         labclr = rgb2lab([r, g, b])
     }
     // console.log([r, g, b])
@@ -116,10 +108,10 @@ function validBright(elem){
         console.log(e.value)
         if (elem.id.includes('max')) {
             console.log('max')
-            document.getElementById('min_bright').value = e.value - 10; 
+            document.getElementById('min_bright').value = +e.value - 10; 
         } else if (elem.id.includes('min')) {
             console.log('min')
-            document.getElementById('max_bright').value = e.value + 10; 
+            document.getElementById('max_bright').value = +e.value + 10; 
         } 
     }
 }
@@ -440,7 +432,7 @@ function restoreDefaultValues() {
     document.getElementById('deut_check').checked = true;
     document.getElementById('prot_check').checked = true;
     document.getElementById('trit_check').checked = true;
-    document.getElementById('gb_check').checked = false;
+    //document.getElementById('gb_check').checked = false;
 
     document.getElementById('target').replaceChildren(); 
     genDivsGrid(4);
