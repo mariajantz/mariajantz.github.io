@@ -61,8 +61,6 @@ function randColor(){
 
 function genCandidates(num_clrs, cur_clrsRgb){
     //generate a set of x rgb colors for Mitchell's best-candidate algorithm
-    //for troubleshooting, make a new set of divs
-    var testdivs = document.createElement('div')
     var cands = []; 
     var minlist = []; //list of minimum distances
     //convert current color array to lab (normal)
@@ -86,7 +84,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
             //convert and add the array
             for (var j = 0; j<cur_clrsRgb.length; j++) {
                 tmp = rgb2lab(toCB(cur_clrsRgb[j], i)); 
-                console.log(tmp)
+                //console.log(tmp)
                 cb_current[i].push(tmp)
                 console.log(cb_current)
             }
@@ -94,22 +92,24 @@ function genCandidates(num_clrs, cur_clrsRgb){
     }
     //generate candidate colors (randomly) and pick the one that has the highest min distance
     for (var i = 0; i<num_clrs; i++) {
-        console.log('generate candidates')
+        console.log('generate candidate')
         cands[i] = randColor(); 
         //get distances from existing set of colors, normal vision
         for (var k = 0; k<cur_clrsRgb.length; k++) {
-            console.log('dist')
             minlist.push(deltaE(rgb2lab(cands[i]), nRgb[k])); 
             //TODO decide whether to normalize this minimum value for each space
-            console.log(minlist)
+            //console.log(minlist)
         }
+        console.log(minlist)
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
+            console.log('cb mins')
             if (cb_inc[j]){
                 for (var k = 0; k < cur_clrsRgb.length; k++) {
                     let cb = rgb2lab(toCB(cands[i], j));
                     //get distances of each from existing set of colors; set to minlist if lower than current value
                     let cmin = deltaE(cb, cb_current[j][k]); 
+                    console.log(cmin, minlist[k])
                     if (cmin<minlist[k]){
                         //then the new minimum distance is in these terms
                         minlist[k] = cmin; 
@@ -123,7 +123,12 @@ function genCandidates(num_clrs, cur_clrsRgb){
     }
     //temporary testing: display these colors and their respective values onscreen (set inner html of each)
     //return the max from the minlist
-    
+    const maxval = Math.max(...minlist); 
+    const idx = minlist.indexOf(maxval);
+    console.log(maxval); 
+    console.log(idx)
+    console.log(cands)
+    console.log(cands[idx])
 }
 
 
