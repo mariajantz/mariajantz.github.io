@@ -465,7 +465,7 @@ function rgbToHex(rgb) {
 }
 
 function rgbArrToHex(rgb){
-    console.log(rgb)
+    //console.log(rgb)
     let r = (+rgb[0]).toString(16),
         g = (+rgb[1]).toString(16),
         b = (+rgb[2]).toString(16);
