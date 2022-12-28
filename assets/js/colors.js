@@ -178,9 +178,6 @@ function genCandidates(num_clrs, cur_clrsRgb){
     //return the max from the minlist
     const maxval = Math.max(...minlist); 
     const idx = minlist.indexOf(maxval);
-    console.log(maxval); 
-    console.log(idx)
-    console.log(cands)
     return cands[idx]
 }
 
@@ -188,6 +185,16 @@ function genCandidates(num_clrs, cur_clrsRgb){
 function runMitchell(){
     //generate colors
     let num_gen = 3; //number of candidates to run mitchell's on
+    //get any locked colors
+    var row0 = document.getElementsByClassName('row-0'); 
+    var locked = [];
+    for (var c = 1; c<row0.length; c++){
+        locked[c - 1] = row0[c].childNodes[1].checked;
+    }
+    console.log(locked); 
+
+    //if there are locked elements, use those as starting colors; otherwise use rand color
+
     let tmp_first = [randColor(), randColor()]; 
     let total_cands = (+document.getElementById('num_clrs').value)*3 //extra candidates to generate before sorting all
     console.log('total')
