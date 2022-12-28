@@ -128,7 +128,6 @@ function genCandidates(num_clrs, cur_clrsRgb){
     var cb_current = []
     //convert current color array to colorblind lab spaces
     for (var i = 0; i<cb_inc.length; i++) {
-        console.log('convert to cb')
         cb_current.push([])
         if (cb_inc[i]) {
             //convert and add the array
@@ -138,17 +137,18 @@ function genCandidates(num_clrs, cur_clrsRgb){
             }
         }
     }
-    console.log(cb_current)
     //generate candidate colors (randomly) and pick the one that has the highest min distance
     for (var i = 0; i<num_clrs; i++) {
         console.log('generate candidate')
         cands[i] = randColor(); 
         //get distances from existing set of colors, normal vision
+        let tmpmins = []; 
         for (var k = 0; k<cur_clrsRgb.length; k++) {
-            minlist.push(deltaE(rgb2lab(cands[i]), nRgb[k])); 
+            tmpmins.push(deltaE(rgb2lab(cands[i]), nRgb[k])); 
             //TODO decide whether to normalize this minimum value for each space
             //console.log(minlist)
         }
+        minlist.push(Math.min(...tmpmins)) //only add the closest neighbor
         console.log(minlist)
         console.log(i)
         //convert all to colorblind (in spaces currently checked) and to lab
