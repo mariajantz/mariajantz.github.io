@@ -155,7 +155,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
             console.log('cb mins')
-            if (cb_inc[j]){
+            if (cb_inc[(j-1)]){
                 for (var k = 0; k < cur_clrsRgb.length; k++) {
                     let cb = rgb2lab(toCB(cands[i], j));
                     //get distances of each from existing set of colors; set to minlist if lower than current value
@@ -186,14 +186,19 @@ function runMitchell(){
     //generate colors
     let num_gen = 3; //number of candidates to run mitchell's on
     //get any locked colors
-    var row0 = document.getElementsByClassName('row-0'); 
-    var locked = [];
-    for (var c = 1; c<row0.length; c++){
-        locked[c - 1] = row0[c].childNodes[1].checked;
-    }
-    console.log(locked); 
-
     //if there are locked elements, use those as starting colors; otherwise use rand color
+    var row0 = document.getElementsByClassName('row-0'); 
+    var st_clrs = []; 
+    for (var c = 1; c<row0.length; c++){
+        if (row0[c].childNodes[1].checked) {
+            st_clrs.push(hexToRgbArr(row0[c].childNodes[0].value));
+        }
+    }
+    console.log(st_clrs); 
+    if (st_clrs.length==0) {
+        st_clrs.push(randColor()); 
+    }
+
 
     let tmp_first = [randColor(), randColor()]; 
     let total_cands = (+document.getElementById('num_clrs').value)*3 //extra candidates to generate before sorting all
@@ -513,6 +518,11 @@ function hexToRgb(hex) {
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16)
     } : null;
+}
+
+function hexToRgbArr(hex) {
+    var clr_rgb = hexToRgb(hex); 
+    return [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']];
 }
 
 //add here: rgb to hex
