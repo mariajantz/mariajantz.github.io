@@ -153,11 +153,11 @@ function genCandidates(num_clrs, cur_clrsRgb){
     }
     for (var i=0; i<num_clrs; i++){
         //convert all to colorblind (in spaces currently checked) and to lab
-        for (var j = 1; j <= cb_inc.length; j++){
-            console.log('cb mins')
-            if (cb_inc[(j-1)]){
+        for (var j = 0; j < cb_inc.length; j++){
+            console.log('cb mins type ' + j)
+            if (cb_inc[j]){
                 for (var k = 0; k < cur_clrsRgb.length; k++) {
-                    let cb = rgb2lab(toCB(cands[i], j));
+                    let cb = rgb2lab(toCB(cands[i], (j+1)));
                     //get distances of each from existing set of colors; set to minlist if lower than current value
                     let cmin = deltaE(cb, cb_current[j][k]); 
                     console.log(cmin, minlist[k])
@@ -211,6 +211,8 @@ function runMitchell(){
     console.log(tmp_first[0])
     console.log(tmp)
     updateColumnColors('col-' + (1).toString(), tmp_first[0])
+    let e = document.getElementsByClassName('row-0.col-' + (1).toString());
+    e[0].childNodes[0].value = rgbArrToHex(tmp_first[0]);
     updateColumnColors('col-' + (2).toString(), tmp_first[1])
     updateColumnColors('col-' + (3).toString(), tmp)
     //okay, so now that I have a set of candidates that should be relatively separated...
