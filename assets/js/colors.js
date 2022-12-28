@@ -150,7 +150,8 @@ function genCandidates(num_clrs, cur_clrsRgb){
         }
         minlist.push(Math.min(...tmpmins)) //only add the closest neighbor
         console.log(minlist)
-        console.log(i)
+    }
+    for (var i=0; i<num_clrs; i++){
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 1; j <= cb_inc.length; j++){
             console.log('cb mins')
@@ -171,8 +172,8 @@ function genCandidates(num_clrs, cur_clrsRgb){
         }
         console.log('new mins')
         console.log(minlist)
-
     }
+    
     //temporary testing: display these colors and their respective values onscreen (set inner html of each)
     //return the max from the minlist
     const maxval = Math.max(...minlist); 
