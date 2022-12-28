@@ -198,9 +198,9 @@ function runMitchell(){
     //temporarily: just show these (update colors of cols)
     console.log(tmp_first[0])
     console.log(tmp)
-    updateColumnColors('col-' + (1).toString(), rgbArrToHex(tmp_first[0]))
-    updateColumnColors('col-' + (2).toString(), rgbArrToHex(tmp_first[1]))
-    updateColumnColors('col-' + (3).toString(), rgbArrToHex(tmp))
+    updateColumnColors('col-' + (1).toString(), tmp_first[0])
+    updateColumnColors('col-' + (2).toString(), tmp_first[1])
+    updateColumnColors('col-' + (3).toString(), tmp)
     //okay, so now that I have a set of candidates that should be relatively separated...
     //sort these candidates by distance in each color space
     //remove the least-distinguishable x number in each space
@@ -363,6 +363,8 @@ function manualColor(cellnum){
 function updateColumnColors(colname, newRGBArr){
     //get the parent div
     var cols = document.getElementsByClassName(colname); 
+    // console.log('update ')
+    // console.log(cols)
     //change parent background color
     cols[0].style.backgroundColor = rgbArrToHex(newRGBArr);
 
