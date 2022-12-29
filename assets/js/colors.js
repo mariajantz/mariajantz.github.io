@@ -65,18 +65,21 @@ function randColor(){
     b = Math.floor(Math.random() * 255)
     //return 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')'
     //check brightness (in LAB space)
-    let minL = document.getElementById('min_bright').value; 
-    let maxL = document.getElementById('max_bright').value; 
+    let minL = +document.getElementById('min_bright').value; 
+    let maxL = +document.getElementById('max_bright').value; 
     let labclr = rgb2lab([r, g, b])
-    if (minL>=(maxL-5)) {
-        console.log('add pass here? should really do an alert of some kind')
-    }
+
     while (minL>labclr[0] || maxL<labclr[0]) {
         r = Math.floor(Math.random() * 255)
         g = Math.floor(Math.random() * 255)
         b = Math.floor(Math.random() * 255)
         //check brightness (in LAB space)
         labclr = rgb2lab([r, g, b])
+        //clear out if too gray
+        tmp = Math.max(r, g, b) / Math.min(r, g, b);
+        if (tmp > 1.3) {
+            labclr[0] = minL-1; 
+        }
     }
     // console.log([r, g, b])
     return [r, g, b];
@@ -113,7 +116,7 @@ function validBright(elem){
 }
 
 function genCandidates(num_clrs, cur_clrsRgb){
-    //generate a set of x rgb colors for Mitchell's best-candidate algorithm
+    //generate a set of x rgb colors for Mitchell's best-candidate algorithm and return the best one
     console.log('gen')
     var cands = []; 
     var minlist = []; //list of minimum distances
@@ -141,42 +144,31 @@ function genCandidates(num_clrs, cur_clrsRgb){
     }
     //generate candidate colors (randomly) and pick the one that has the highest min distance
     for (var i = 0; i<num_clrs; i++) {
-        //console.log('generate candidate')
         cands[i] = randColor(); 
         //get distances from existing set of colors, normal vision
         let tmpmins = []; 
         for (var k = 0; k<cur_clrsRgb.length; k++) {
             tmpmins.push(deltaE(rgb2lab(cands[i]), nRgb[k])); 
             //TODO decide whether to normalize this minimum value for each space
-            //console.log(minlist)
         }
         minlist.push(Math.min(...tmpmins)) //only add the closest neighbor
-        //console.log(minlist)
     }
     for (var i=0; i<num_clrs; i++){
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 0; j < cb_inc.length; j++){
-            //console.log('cb mins type ' + j)
             if (cb_inc[j]){
                 for (var k = 0; k < cur_clrsRgb.length; k++) {
                     let cb = rgb2lab(toCB(cands[i], (j+1)));
                     //get distances of each from existing set of colors; set to minlist if lower than current value
                     let cmin = deltaE(cb, cb_current[j][k]); 
-                    //console.log(cmin, minlist[k])
-                    //todo this is somehow only changing the first index of minlist? write out what j, k, i are
                     if (cmin<minlist[k]){
-                        //console.log('change ' + k)
                         //then the new minimum distance is in these terms
                         minlist[k] = cmin; 
                     }
                 }
             }
         }
-        //console.log('new mins')
-        //console.log(minlist)
     }
-    
-    //temporary testing: display these colors and their respective values onscreen (set inner html of each)
     //return the max from the minlist
     const maxval = Math.max(...minlist); 
     const idx = minlist.indexOf(maxval);
@@ -196,17 +188,13 @@ function runMitchell(){
             st_clrs.push(hexToRgbArr(row0[c].childNodes[0].value));
         }
     }
-    //let keepclrs = st_clrs; //determine whether st colors are prioritized in sorting
-    let keepclrs = JSON.parse(JSON.stringify(st_clrs)); 
+    let keepclrs = JSON.parse(JSON.stringify(st_clrs)); //locked colors deep copy
     if (st_clrs.length==0) {
         st_clrs.push(randColor()); 
     }
 
-    //let tmp_first = [randColor(), randColor()]; 
     let num_clrs = +document.getElementById('num_clrs').value;
     let total_cands = (num_clrs-keepclrs.length)*3 //extra candidates to generate before sorting all
-    console.log('total')
-    console.log(total_cands)
     //here, run this x number of times to get more candidates than called for
     for (var i = 0; i<total_cands; i++){
         st_clrs.push(genCandidates(num_gen, st_clrs)); 
