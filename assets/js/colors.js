@@ -218,6 +218,7 @@ function runMitchell(){
         //get minimum distance between every color across all checked color spaces
         //sort by maximum
         //OR get minimum across all checked color spaces, eliminate the worst ones for each space, then combine
+        let new_clrs = sortColors(st_clrs); 
     } else {
         //sort with locked
         console.log('partial sort')
@@ -239,8 +240,20 @@ function runMitchell(){
 function sortColors(clr_list) {
     //inputs: an rgb list of colors
     //I think, based on python tests, that the best way to do this is: 
+    //first, remove grays/browns
+    let tmp = 0; 
+    let newlist = [];
+    for (var i = 0; i<clr_list.length; i++){
+        tmp = Math.max(...clr_list[i]) / Math.min(...clr_list[i]); 
+        if (tmp>1.3){
+            newlist.push(tmp); 
+        }
+    }
+    //if the 180/140 1.38, 115/90 1.27, 210/170 1.23
     //knock out the least distinguishable x number of colors in each color space
     //then knock out pairs of colors
+
+    return newlist
 }
 
 function updateColors() {
