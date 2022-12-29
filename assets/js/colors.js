@@ -253,12 +253,13 @@ function sortColors(clr_list, ref_clrs) {
         tmp = Math.max(...clr_list[i]) / Math.min(...clr_list[i]); 
         console.log(tmp)
         if (tmp>1.3){
-            newlist.push(tmp); 
+            newlist.push(clr_list[i]); 
         }
     }
     //knock out the least distinguishable x number of colors in each color space
-    //then knock out pairs of colors
-    console.log([...ref_clrs, ...newlist])
+    let x = 2; 
+    //then knock out one of a pair of colors that is difficult to distinguish in any space
+    //console.log([...ref_clrs, ...newlist])
     return [...ref_clrs, ...newlist] //combine the locked colors with the sorted ones
 }
 
