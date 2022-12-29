@@ -221,13 +221,12 @@ function runMitchell(){
         //get minimum distance between every color across all checked color spaces
         //sort by maximum
         //OR get minimum across all checked color spaces, eliminate the worst ones for each space, then combine
-        let new_clrs = sortColors(st_clrs, []); 
-        console.log(new_clrs)
+        var new_clrs = sortColors(st_clrs, []); 
     } else {
         //sort with locked
         console.log('partial sort')
         //loop - get minimum distance to locked colors, get next minimum distance including that color
-        let new_clrs = sortColors(st_clrs.slice(keepclrs.length), keepclrs)
+        var new_clrs = sortColors(st_clrs.slice(keepclrs.length), keepclrs)
     }
     console.log(new_clrs)
     //temporarily: just show these (update colors of cols)
