@@ -245,6 +245,7 @@ function sortColors(clr_list) {
     let newlist = [];
     for (var i = 0; i<clr_list.length; i++){
         tmp = Math.max(...clr_list[i]) / Math.min(...clr_list[i]); 
+        console.log(tmp)
         if (tmp>1.3){
             newlist.push(tmp); 
         }
