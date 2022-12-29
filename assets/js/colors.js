@@ -218,18 +218,18 @@ function runMitchell(){
         //get minimum distance between every color across all checked color spaces
         //sort by maximum
         //OR get minimum across all checked color spaces, eliminate the worst ones for each space, then combine
-        let new_clrs = sortColors(st_clrs); 
+        let new_clrs = sortColors(st_clrs, []); 
     } else {
         //sort with locked
         console.log('partial sort')
         //loop - get minimum distance to locked colors, get next minimum distance including that color
+        let new_clrs = sortColors(st_clrs.slice(keepclrs.length), keepclrs)
     }
-    
     //temporarily: just show these (update colors of cols)
     for (var i = 0; i<num_clrs; i++){
-        updateColumnColors('col-' + (i+1).toString(), st_clrs[i])
+        updateColumnColors('col-' + (i+1).toString(), new_clrs[i])
         let e = document.getElementsByClassName('row-0 col-' + (i+1).toString());
-        e[0].childNodes[0].value = rgbArrToHex(st_clrs[i]);
+        e[0].childNodes[0].value = rgbArrToHex(new_clrs[i]);
     }
 
     //okay, so now that I have a set of candidates that should be relatively separated...
@@ -237,10 +237,12 @@ function runMitchell(){
     //remove the least-distinguishable x number in each space
 }
 
-function sortColors(clr_list) {
-    //inputs: an rgb list of colors
+function sortColors(clr_list, ref_clrs) {
+    //inputs: an rgb list of colors, an rgb list of locked colors
     //I think, based on python tests, that the best way to do this is: 
     //first, remove grays/browns
+    console.log(clr_list)
+    console.log(ref_clrs)
     let tmp = 0; 
     let newlist = [];
     for (var i = 0; i<clr_list.length; i++){
