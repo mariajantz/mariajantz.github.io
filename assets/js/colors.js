@@ -1,3 +1,5 @@
+//if you're reading this, I just want you to know I used this project to
+//to teach myself javascript (and procrastinate on my dissertation) so it's a bit messy
 
 genDivsGrid(4);
 
@@ -212,6 +214,7 @@ function runMitchell(){
     console.log(st_clrs); 
 
     //now sort them; if certain colors are locked then make those required and get dists from everything else
+    console.log(keepclrs.length)
     if (keepclrs.length == 0) {
         //sort with no locked
         console.log('sort no lock')
@@ -219,12 +222,14 @@ function runMitchell(){
         //sort by maximum
         //OR get minimum across all checked color spaces, eliminate the worst ones for each space, then combine
         let new_clrs = sortColors(st_clrs, []); 
+        console.log(new_clrs)
     } else {
         //sort with locked
         console.log('partial sort')
         //loop - get minimum distance to locked colors, get next minimum distance including that color
         let new_clrs = sortColors(st_clrs.slice(keepclrs.length), keepclrs)
     }
+    console.log(new_clrs)
     //temporarily: just show these (update colors of cols)
     for (var i = 0; i<num_clrs; i++){
         updateColumnColors('col-' + (i+1).toString(), new_clrs[i])
@@ -240,7 +245,7 @@ function runMitchell(){
 function sortColors(clr_list, ref_clrs) {
     //inputs: an rgb list of colors, an rgb list of locked colors
     //I think, based on python tests, that the best way to do this is: 
-    //first, remove grays/browns
+    //first, remove grays
     console.log(clr_list)
     console.log(ref_clrs)
     let tmp = 0; 
@@ -252,11 +257,10 @@ function sortColors(clr_list, ref_clrs) {
             newlist.push(tmp); 
         }
     }
-    //if the 180/140 1.38, 115/90 1.27, 210/170 1.23
     //knock out the least distinguishable x number of colors in each color space
     //then knock out pairs of colors
-
-    return newlist
+    console.log([...ref_clrs, ...newlist])
+    return [...ref_clrs, ...newlist] //combine the locked colors with the sorted ones
 }
 
 function updateColors() {
