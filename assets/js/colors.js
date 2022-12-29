@@ -139,7 +139,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
     }
     //generate candidate colors (randomly) and pick the one that has the highest min distance
     for (var i = 0; i<num_clrs; i++) {
-        console.log('generate candidate')
+        //console.log('generate candidate')
         cands[i] = randColor(); 
         //get distances from existing set of colors, normal vision
         let tmpmins = []; 
@@ -149,29 +149,29 @@ function genCandidates(num_clrs, cur_clrsRgb){
             //console.log(minlist)
         }
         minlist.push(Math.min(...tmpmins)) //only add the closest neighbor
-        console.log(minlist)
+        //console.log(minlist)
     }
     for (var i=0; i<num_clrs; i++){
         //convert all to colorblind (in spaces currently checked) and to lab
         for (var j = 0; j < cb_inc.length; j++){
-            console.log('cb mins type ' + j)
+            //console.log('cb mins type ' + j)
             if (cb_inc[j]){
                 for (var k = 0; k < cur_clrsRgb.length; k++) {
                     let cb = rgb2lab(toCB(cands[i], (j+1)));
                     //get distances of each from existing set of colors; set to minlist if lower than current value
                     let cmin = deltaE(cb, cb_current[j][k]); 
-                    console.log(cmin, minlist[k])
+                    //console.log(cmin, minlist[k])
                     //todo this is somehow only changing the first index of minlist? write out what j, k, i are
                     if (cmin<minlist[k]){
-                        console.log('change ' + k)
+                        //console.log('change ' + k)
                         //then the new minimum distance is in these terms
                         minlist[k] = cmin; 
                     }
                 }
             }
         }
-        console.log('new mins')
-        console.log(minlist)
+        //console.log('new mins')
+        //console.log(minlist)
     }
     
     //temporary testing: display these colors and their respective values onscreen (set inner html of each)
@@ -184,7 +184,7 @@ function genCandidates(num_clrs, cur_clrsRgb){
 
 function runMitchell(){
     //generate colors
-    let num_gen = 3; //number of candidates to run mitchell's on
+    let num_gen = 10; //number of candidates to run mitchell's on
     //get any locked colors
     //if there are locked elements, use those as starting colors; otherwise use rand color
     var row0 = document.getElementsByClassName('row-0'); 
