@@ -195,7 +195,7 @@ function runMitchell(){
         }
     }
     console.log(st_clrs); 
-    let keepclrs = st_clrs; //value to determine whether st colors are prioritized in sorting
+    let keepclrs = st_clrs; //determine whether st colors are prioritized in sorting
     if (st_clrs.length==0) {
         st_clrs.push(randColor()); 
     }
@@ -210,14 +210,27 @@ function runMitchell(){
     console.log('total')
     console.log(total_cands)
     //here, run this x number of times to get more candidates than called for
-    let tmp = genCandidates(num_gen, st_clrs); 
+    for (var i = 0; i<total_cands; i++){
+        st_clrs.push(genCandidates(num_gen, st_clrs)); 
+    }
+    console.log(st_clrs); 
+
+    //now sort them; if certain colors are locked then make those required and get dists from everything else
+    if (keepclrs.length == 0) {
+        //sort with no locked
+        console.log('sort no lock')
+    } else {
+        //sort with locked
+        console.log('partial sort')
+    }
     
     //temporarily: just show these (update colors of cols)
-    updateColumnColors('col-' + (1).toString(), tmp_first[0])
-    let e = document.getElementsByClassName('row-0 col-' + (1).toString());
-    e[0].childNodes[0].value = rgbArrToHex(tmp_first[0]);
-    updateColumnColors('col-' + (2).toString(), tmp_first[1])
-    updateColumnColors('col-' + (3).toString(), tmp)
+    for (var i = 0; i<num_clrs; i++){
+        updateColumnColors('col-' + (i+1).toString(), st_clrs[i])
+        let e = document.getElementsByClassName('row-0 col-' + (i+1).toString());
+        e[0].childNodes[0].value = rgbArrToHex(st_clrs[i]);
+    }
+
     //okay, so now that I have a set of candidates that should be relatively separated...
     //sort these candidates by distance in each color space
     //remove the least-distinguishable x number in each space
