@@ -195,7 +195,8 @@ function runMitchell(){
         }
     }
     console.log(st_clrs); 
-    let keepclrs = st_clrs; //determine whether st colors are prioritized in sorting
+    //let keepclrs = st_clrs; //determine whether st colors are prioritized in sorting
+    let keepclrs = JSON.parse(JSON.stringify(st_clrs)); 
     if (st_clrs.length==0) {
         st_clrs.push(randColor()); 
     }
@@ -219,9 +220,13 @@ function runMitchell(){
     if (keepclrs.length == 0) {
         //sort with no locked
         console.log('sort no lock')
+        //get minimum distance between every color across all checked color spaces
+        //sort by maximum
+        //OR get minimum across all checked color spaces, eliminate the worst ones for each space, then combine
     } else {
         //sort with locked
         console.log('partial sort')
+        //loop - get minimum distance to locked colors, get next minimum distance including that color
     }
     
     //temporarily: just show these (update colors of cols)
@@ -236,6 +241,9 @@ function runMitchell(){
     //remove the least-distinguishable x number in each space
 }
 
+function sortColors() {
+
+}
 
 function updateColors() {
     //first check if the number of colors included is the same as the number of divs
