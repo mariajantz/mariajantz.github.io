@@ -211,7 +211,7 @@ function runMitchell(){
     console.log(tmp_first[0])
     console.log(tmp)
     updateColumnColors('col-' + (1).toString(), tmp_first[0])
-    let e = document.getElementsByClassName('row-0.col-' + (1).toString());
+    let e = document.getElementsByClassName('row-0 col-' + (1).toString());
     e[0].childNodes[0].value = rgbArrToHex(tmp_first[0]);
     updateColumnColors('col-' + (2).toString(), tmp_first[1])
     updateColumnColors('col-' + (3).toString(), tmp)
