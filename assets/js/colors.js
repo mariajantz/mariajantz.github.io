@@ -195,21 +195,24 @@ function runMitchell(){
         }
     }
     console.log(st_clrs); 
+    let keepclrs = st_clrs; //value to determine whether st colors are prioritized in sorting
     if (st_clrs.length==0) {
         st_clrs.push(randColor()); 
     }
+    console.log(keepclrs); 
+    st_clrs.push([1, 2, 4]); 
+    console.log(keepclrs)
+    console.log(st_clrs);
 
-
-    let tmp_first = [randColor(), randColor()]; 
-    let total_cands = (+document.getElementById('num_clrs').value)*3 //extra candidates to generate before sorting all
+    //let tmp_first = [randColor(), randColor()]; 
+    let num_clrs = +document.getElementById('num_clrs').value;
+    let total_cands = (num_clrs-st_clrs.length)*3 //extra candidates to generate before sorting all
     console.log('total')
     console.log(total_cands)
     //here, run this x number of times to get more candidates than called for
-    let tmp = genCandidates(num_gen, tmp_first); 
+    let tmp = genCandidates(num_gen, st_clrs); 
     
     //temporarily: just show these (update colors of cols)
-    console.log(tmp_first[0])
-    console.log(tmp)
     updateColumnColors('col-' + (1).toString(), tmp_first[0])
     let e = document.getElementsByClassName('row-0 col-' + (1).toString());
     e[0].childNodes[0].value = rgbArrToHex(tmp_first[0]);
