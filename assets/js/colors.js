@@ -194,20 +194,15 @@ function runMitchell(){
             st_clrs.push(hexToRgbArr(row0[c].childNodes[0].value));
         }
     }
-    console.log(st_clrs); 
     //let keepclrs = st_clrs; //determine whether st colors are prioritized in sorting
     let keepclrs = JSON.parse(JSON.stringify(st_clrs)); 
     if (st_clrs.length==0) {
         st_clrs.push(randColor()); 
     }
-    console.log(keepclrs); 
-    st_clrs.push([1, 2, 4]); 
-    console.log(keepclrs)
-    console.log(st_clrs);
 
     //let tmp_first = [randColor(), randColor()]; 
     let num_clrs = +document.getElementById('num_clrs').value;
-    let total_cands = (num_clrs-st_clrs.length)*3 //extra candidates to generate before sorting all
+    let total_cands = (num_clrs-keepclrs.length)*3 //extra candidates to generate before sorting all
     console.log('total')
     console.log(total_cands)
     //here, run this x number of times to get more candidates than called for
@@ -241,8 +236,11 @@ function runMitchell(){
     //remove the least-distinguishable x number in each space
 }
 
-function sortColors() {
-
+function sortColors(clr_list) {
+    //inputs: an rgb list of colors
+    //I think, based on python tests, that the best way to do this is: 
+    //knock out the least distinguishable x number of colors in each color space
+    //then knock out pairs of colors
 }
 
 function updateColors() {
@@ -473,7 +471,7 @@ function restoreDefaultValues() {
     document.getElementById("num_clrs").value = 4; 
     document.getElementById('min_bright').value = 30;  
     document.getElementById("max_bright").value = 80;
-    document.getElementById('min_dist').value = 0; 
+    //document.getElementById('min_dist').value = 0; 
     document.getElementById('deut_check').checked = true;
     document.getElementById('prot_check').checked = true;
     document.getElementById('trit_check').checked = true;
