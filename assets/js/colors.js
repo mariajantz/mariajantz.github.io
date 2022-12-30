@@ -84,9 +84,9 @@ function randColor(){
         console.log('tmp', tmp)
         if (tmp < 1.3) { //try some numbers up to about 1.8
             console.log('rm color')
-            console.log(minL-1, labclr)
             labclr[0] = minL-1; 
-            console.log(minL - 1, labclr)
+            console.log(minL - 1, labclr, [r, g, b])
+            console.log(minL > labclr[0])
         }
     }
     // console.log([r, g, b])
