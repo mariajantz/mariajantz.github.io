@@ -77,7 +77,8 @@ function randColor(){
         labclr = rgb2lab([r, g, b])
         //clear out if too gray
         tmp = Math.max(r, g, b) / Math.min(r, g, b);
-        if (tmp > 1.3) {
+        if (tmp > 1.3) { //try some numbers up to about 1.8
+            console.log('rm color '+tmp)
             labclr[0] = minL-1; 
         }
     }
@@ -233,22 +234,19 @@ function sortColors(clr_list, ref_clrs) {
     //inputs: an rgb list of colors, an rgb list of locked colors
     //I think, based on python tests, that the best way to do this is: 
     //first, remove grays
-    console.log(clr_list)
-    console.log(ref_clrs)
-    let tmp = 0; 
-    let newlist = [];
-    for (var i = 0; i<clr_list.length; i++){
-        tmp = Math.max(...clr_list[i]) / Math.min(...clr_list[i]); 
-        console.log(tmp)
-        if (tmp>1.3){
-            newlist.push(clr_list[i]); 
-        }
-    }
+    let all_clrs = [...ref_clrs, ...clr_list]; 
+
     //knock out the least distinguishable x number of colors in each color space
     let x = 2; 
+    //find distances between everything
+    for (var i=0; i<all_clrs.length; i++){
+        for (var j=0; j<all_clrs.length; j++){
+            console.log(i, j)
+        }
+    }
     //then knock out one of a pair of colors that is difficult to distinguish in any space
     //console.log([...ref_clrs, ...newlist])
-    return [...ref_clrs, ...newlist] //combine the locked colors with the sorted ones
+    return all_clrs //combine the locked colors with the sorted ones
 }
 
 function updateColors() {
