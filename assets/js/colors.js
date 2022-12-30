@@ -8,10 +8,11 @@ rand no gray
 sort and choose a subset from cands
 actually show these candidates instead of the random stuff
 design site input pretty
-add sim plots
 add export hex, rgb, hsl
 cb resources
 scale dists?
+shuffle order 
+generate plots
 */
 
 function genDivsGrid(cols) {
@@ -73,7 +74,7 @@ function randColor(){
     let maxL = +document.getElementById('max_bright').value; 
     let labclr = rgb2lab([r, g, b]);
 
-    let cutoff = 1.8;
+    let cutoff = 1.5;
     let tmp = Math.max(r, g, b) / Math.min(r, g, b);
     if (tmp < cutoff) { //try some numbers up to about 1.8
         console.log('rm color')
@@ -289,34 +290,36 @@ function updateColors() {
     var num_cols = normblocks.length / 4 ;
 
     //add array to update 
-    var locked = [];
-    var clrs = [];
-    for (var c = 1; c < normblocks.length; c++) {
-        if (normblocks[c].id != 'lbl') {
-            //check if that row is checked
-            if (normblocks[c].className.includes('row-0')) {
-                locked[c - 1] = normblocks[c].childNodes[1].checked;
-                clrs[c - 1] = randColor();
-            }
-            if (!locked[c % num_cols - 1]) {
-                let bgc = clrs[c % num_cols - 1];
-                if (normblocks[c].className.includes('row-0')) {
-                    let bgc_hex = rgbArrToHex(bgc)
-                    normblocks[c].style.backgroundColor = bgc_hex;
-                    normblocks[c].childNodes[0].value = bgc_hex;
-                } //otherwise use same value as in row 0
-                else {
-                    rownum = parseInt(normblocks[c].className.split('row-')[1].charAt(0));
-                    // Choose correct separator
-                    let sep = bgc.indexOf(",") > -1 ? "," : " ";
-                    // Turn "rgb(r,g,b)" into [r,g,b]
-                    // bgc = bgc.substring(4).split(")")[0].split(sep);
-                    // bgc = bgc.map(Number);
-                    normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
-                }
-            }
-        }
-    }
+    runMitchell();
+
+    // var locked = [];
+    // var clrs = [];
+    // for (var c = 1; c < normblocks.length; c++) {
+    //     if (normblocks[c].id != 'lbl') {
+    //         //check if that row is checked
+    //         if (normblocks[c].className.includes('row-0')) {
+    //             locked[c - 1] = normblocks[c].childNodes[1].checked;
+    //             clrs[c - 1] = randColor();
+    //         }
+    //         if (!locked[c % num_cols - 1]) {
+    //             let bgc = clrs[c % num_cols - 1];
+    //             if (normblocks[c].className.includes('row-0')) {
+    //                 let bgc_hex = rgbArrToHex(bgc)
+    //                 normblocks[c].style.backgroundColor = bgc_hex;
+    //                 normblocks[c].childNodes[0].value = bgc_hex;
+    //             } //otherwise use same value as in row 0
+    //             else {
+    //                 rownum = parseInt(normblocks[c].className.split('row-')[1].charAt(0));
+    //                 // Choose correct separator
+    //                 let sep = bgc.indexOf(",") > -1 ? "," : " ";
+    //                 // Turn "rgb(r,g,b)" into [r,g,b]
+    //                 // bgc = bgc.substring(4).split(")")[0].split(sep);
+    //                 // bgc = bgc.map(Number);
+    //                 normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 function setLocked() {
