@@ -77,9 +77,12 @@ function randColor(){
         labclr = rgb2lab([r, g, b])
         //clear out if too gray
         tmp = Math.max(r, g, b) / Math.min(r, g, b);
+        console.log(tmp)
         if (tmp > 1.3) { //try some numbers up to about 1.8
-            console.log('rm color '+tmp)
+            console.log('rm color')
+            console.log(minL-1, labclr)
             labclr[0] = minL-1; 
+            console.log(minL - 1, labclr)
         }
     }
     // console.log([r, g, b])
@@ -239,11 +242,14 @@ function sortColors(clr_list, ref_clrs) {
     //knock out the least distinguishable x number of colors in each color space
     let x = 2; 
     //find distances between everything
+    var cdist = []
     for (var i=0; i<all_clrs.length; i++){
+        cdist.push([])
         for (var j=0; j<all_clrs.length; j++){
-            console.log(i, j)
+            cdist[i].push(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
         }
     }
+    console.log(cdist)
     //then knock out one of a pair of colors that is difficult to distinguish in any space
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
