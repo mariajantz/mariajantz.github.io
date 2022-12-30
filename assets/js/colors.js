@@ -4,10 +4,14 @@
 genDivsGrid(4);
 
 /*current TODOs: 
-generate single candidates based on mitchell's
-generate a set of candidates and choose a subset from those
+rand no gray
+sort and choose a subset from cands
 actually show these candidates instead of the random stuff
-make sure candidates play nice with locking and such
+design site input pretty
+add sim plots
+add export hex, rgb, hsl
+cb resources
+scale dists?
 */
 
 function genDivsGrid(cols) {
@@ -76,8 +80,8 @@ function randColor(){
         //check brightness (in LAB space)
         labclr = rgb2lab([r, g, b])
         //clear out if too gray
-        tmp = Math.max(r, g, b) / Math.min(r, g, b);
-        console.log(tmp)
+        let tmp = Math.max(r, g, b) / Math.min(r, g, b);
+        console.log('tmp', tmp)
         if (tmp > 1.3) { //try some numbers up to about 1.8
             console.log('rm color')
             console.log(minL-1, labclr)
