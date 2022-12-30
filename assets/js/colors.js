@@ -71,7 +71,14 @@ function randColor(){
     //check brightness (in LAB space)
     let minL = +document.getElementById('min_bright').value; 
     let maxL = +document.getElementById('max_bright').value; 
-    let labclr = rgb2lab([r, g, b])
+    let labclr = rgb2lab([r, g, b]);
+
+    let tmp = Math.max(r, g, b) / Math.min(r, g, b);
+    console.log('tmp', tmp)
+    if (tmp < 1.3) { //try some numbers up to about 1.8
+        console.log('rm color')
+        labclr[0] = minL - 1;
+    }
 
     while (minL>labclr[0] || maxL<labclr[0]) {
         r = Math.floor(Math.random() * 255)
@@ -80,13 +87,12 @@ function randColor(){
         //check brightness (in LAB space)
         labclr = rgb2lab([r, g, b])
         //clear out if too gray
-        let tmp = Math.max(r, g, b) / Math.min(r, g, b);
-        console.log('tmp', tmp)
+        tmp = Math.max(r, g, b) / Math.min(r, g, b);
+        //console.log('tmp', tmp)
         if (tmp < 1.3) { //try some numbers up to about 1.8
             console.log('rm color')
             labclr[0] = minL-1; 
             console.log(minL - 1, labclr, [r, g, b])
-            console.log(minL > labclr[0])
         }
     }
     // console.log([r, g, b])
