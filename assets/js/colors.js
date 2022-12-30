@@ -73,9 +73,9 @@ function randColor(){
     let maxL = +document.getElementById('max_bright').value; 
     let labclr = rgb2lab([r, g, b]);
 
+    let cutoff = 1.8;
     let tmp = Math.max(r, g, b) / Math.min(r, g, b);
-    console.log('tmp', tmp)
-    if (tmp < 1.3) { //try some numbers up to about 1.8
+    if (tmp < cutoff) { //try some numbers up to about 1.8
         console.log('rm color')
         labclr[0] = minL - 1;
     }
@@ -89,10 +89,9 @@ function randColor(){
         //clear out if too gray
         tmp = Math.max(r, g, b) / Math.min(r, g, b);
         //console.log('tmp', tmp)
-        if (tmp < 1.3) { //try some numbers up to about 1.8
+        if (tmp < cutoff) { //try some numbers up to about 1.8
             console.log('rm color')
             labclr[0] = minL-1; 
-            console.log(minL - 1, labclr, [r, g, b])
         }
     }
     // console.log([r, g, b])
