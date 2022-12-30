@@ -82,7 +82,7 @@ function randColor(){
         //clear out if too gray
         let tmp = Math.max(r, g, b) / Math.min(r, g, b);
         console.log('tmp', tmp)
-        if (tmp > 1.3) { //try some numbers up to about 1.8
+        if (tmp < 1.3) { //try some numbers up to about 1.8
             console.log('rm color')
             console.log(minL-1, labclr)
             labclr[0] = minL-1; 
