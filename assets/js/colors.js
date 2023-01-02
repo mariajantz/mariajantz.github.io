@@ -13,6 +13,7 @@ cb resources
 scale dists?
 shuffle order 
 generate plots
+add a bar for grayscale
 */
 
 function genDivsGrid(cols) {
@@ -77,7 +78,7 @@ function randColor(){
     let cutoff = 1.5;
     let tmp = Math.max(r, g, b) / Math.min(r, g, b);
     if (tmp < cutoff) { //try some numbers up to about 1.8
-        console.log('rm color')
+        //console.log('rm color')
         labclr[0] = minL - 1;
     }
 
@@ -91,7 +92,7 @@ function randColor(){
         tmp = Math.max(r, g, b) / Math.min(r, g, b);
         //console.log('tmp', tmp)
         if (tmp < cutoff) { //try some numbers up to about 1.8
-            console.log('rm color')
+            //console.log('rm color')
             labclr[0] = minL-1; 
         }
     }
@@ -255,9 +256,11 @@ function sortColors(clr_list, ref_clrs) {
     var cdist = []
     for (var i=0; i<all_clrs.length; i++){
         cdist.push([])
+        //todo this is non symmetrical why
         for (var j=0; j<all_clrs.length; j++){
             cdist[i].push(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
         }
+        console.log(cdist)
     }
     console.log(cdist)
     //then knock out one of a pair of colors that is difficult to distinguish in any space
