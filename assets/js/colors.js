@@ -258,7 +258,7 @@ function sortColors(clr_list, ref_clrs) {
         cdist.push([])
         //todo this is non symmetrical why
         for (var j=0; j<all_clrs.length; j++){
-            cdist[i].push(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
+            cdist[j].push(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
         }
         console.log(cdist)
     }
