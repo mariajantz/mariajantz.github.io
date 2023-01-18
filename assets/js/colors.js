@@ -4,7 +4,6 @@
 genDivsGrid(4);
 
 /*current TODOs: 
-rand no gray
 sort and choose a subset from cands
 actually show these candidates instead of the random stuff
 design site input pretty
@@ -14,6 +13,7 @@ scale dists?
 shuffle order 
 generate plots
 add a bar for grayscale
+add a "show hues" that gets the same color in lab space, diff brightness
 */
 
 function genDivsGrid(cols) {
@@ -296,35 +296,6 @@ function updateColors() {
 
     //add array to update 
     runMitchell();
-
-    // var locked = [];
-    // var clrs = [];
-    // for (var c = 1; c < normblocks.length; c++) {
-    //     if (normblocks[c].id != 'lbl') {
-    //         //check if that row is checked
-    //         if (normblocks[c].className.includes('row-0')) {
-    //             locked[c - 1] = normblocks[c].childNodes[1].checked;
-    //             clrs[c - 1] = randColor();
-    //         }
-    //         if (!locked[c % num_cols - 1]) {
-    //             let bgc = clrs[c % num_cols - 1];
-    //             if (normblocks[c].className.includes('row-0')) {
-    //                 let bgc_hex = rgbArrToHex(bgc)
-    //                 normblocks[c].style.backgroundColor = bgc_hex;
-    //                 normblocks[c].childNodes[0].value = bgc_hex;
-    //             } //otherwise use same value as in row 0
-    //             else {
-    //                 rownum = parseInt(normblocks[c].className.split('row-')[1].charAt(0));
-    //                 // Choose correct separator
-    //                 let sep = bgc.indexOf(",") > -1 ? "," : " ";
-    //                 // Turn "rgb(r,g,b)" into [r,g,b]
-    //                 // bgc = bgc.substring(4).split(")")[0].split(sep);
-    //                 // bgc = bgc.map(Number);
-    //                 normblocks[c].style.backgroundColor = rgbArrToHex(toCB(bgc, rownum));
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 function setLocked() {
@@ -418,9 +389,6 @@ function manualColor(cellnum){
     //get the button that was selected
     var clr_hex = document.getElementsByClassName('edit-color')[cellnum - 1].value; 
     let clr_rgb = hexToRgb(clr_hex);
-
-    //get the parent div
-    var cols = document.getElementsByClassName('col-' + cellnum.toString()); 
     //console.log(cols)
     updateColumnColors('col-' + cellnum.toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
 }
@@ -449,6 +417,32 @@ function updateColumnColors(colname, newRGBArr){
     //console.log(clr_trit)
     //cols[3].style.backgroundColor = 'rgb(' + clr_trit[0].toString() + ', ' + clr_trit[1].toString() + ', ' + clr_trit[2].toString() + ')'; 
     cols[3].style.backgroundColor = rgbArrToHex(clr_trit); 
+}
+
+function lblColors() {
+    //go through top row of array, get color values in the format requested
+    //first make selector
+
+}
+
+function showDropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("myDropdown");
+    a = div.getElementsByTagName("a");
+    for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
 }
 
 function toCB(rgbArr, cbType) {

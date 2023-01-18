@@ -63,9 +63,24 @@
     <button type="button" onclick="restoreDefaultValues()">Restore default values</button>
     <button type="button" onclick="runMitchell()">Test</button>
     <div class="break"></div>
-    <div class="testing"></div>
-    <div class="break"></div>
     <div id="target"></div>
+    <div class="break"></div>
+    <div class="export">
+        <h2>Export color values</h2>
+        <div class="dropdown">
+            <button onclick="showDropdown()" class="dropbtn">Dropdown</button>
+            <div id="myDropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                <a href="#about">About</a>
+                <a href="#base">Base</a>
+                <a href="#blog">Blog</a>
+                <a href="#contact">Contact</a>
+                <a href="#custom">Custom</a>
+                <a href="#support">Support</a>
+                <a href="#tools">Tools</a>
+            </div>
+        </div>
+    </div>
 
     <p><b>More information about colorblindness</b>
         Red, Green, Blue-blind; commonness, 100% vs partial. 
