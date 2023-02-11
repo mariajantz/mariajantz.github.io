@@ -10,7 +10,7 @@
 <body>
     <h1 id="test">Chameleon: Colorblind-friendly color palette generator</h1>
 
-    <p><b>Instructions:</b> 
+    <p id="instruct"><b>Instructions:</b> 
         This tool generates a random set of colors and displays a selection of them that are
         most distinguishable across multiple different types of color vision. Because it is randomly generating each set, 
         some color sets will include colors that are not as distinguishable, so please choose colors at your own discretion. 
@@ -29,7 +29,7 @@
         <div class="form-column">
         <label class="c1">
             <span>Number of colors</span>
-            <input id='num_clrs' type="number" value=4 min=2 max="12">
+            <input id='num_clrs' type="number" value=5 min=2 max="12">
         </label>
         <label class="c1">
             <span>Minimum brightness (0-100, 0=black)</span>
@@ -65,7 +65,7 @@
     <div class="break"></div>
     <div class="export">
         <h2>Export color values</h2>
-        <form>
+        <form id="export_form">
             <p>Please select your favorite Web language:</p>
                 <input type="radio" id="rgb" name="export_values" value="rgb" checked>
                 <label for="rgb">RGB</label><br>
@@ -75,6 +75,7 @@
                 <label for="hex">Hex</label>
                 <button type="button" onclick="exportVals()">Submit</button>
         </form>
+        <p id="export_text"></p>
     </div>
 
     <p><b>More information about colorblindness: </b> <br/>

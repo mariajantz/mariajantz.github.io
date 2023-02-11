@@ -31,6 +31,14 @@ body {
     margin: auto; 
 }
 
+.instruct {
+    width: 70%; 
+}
+
+.export {
+    text-align: left;
+}
+
 p {
     text-align: justify;
     font-size: .9em;

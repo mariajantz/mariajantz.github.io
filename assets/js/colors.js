@@ -195,11 +195,18 @@ function genCandidates(num_clrs, cur_clrsRgb){
 
 function exportVals(){
     var radios = document.getElementsByClassName('export_values'); 
-    console.log(radios)
+    console.log(radios); 
 
     //depending which radio button is selected, cycle through the colors and get their values in that format
+    var row0 = document.getElementsByClassName('row-0'); 
+    console.log(clrs); 
+    for (var c = 1; c<row0.length; c++){
+        console.log(row0[c].backgroundColor); 
+    }
 
-    //TODO then print them to the screen
+    //TODO then print them to the screen in the designated column
+    var output = document.getElementById('export_text')
+    output.innerHTML = 'hello'
 }
 
 function runMitchell(){
@@ -502,7 +509,7 @@ function mjdot(rgbArr, cbarr) {
 }
 
 function restoreDefaultValues() {
-    document.getElementById("num_clrs").value = 4; 
+    document.getElementById("num_clrs").value = 5; 
     document.getElementById('min_bright').value = 30;  
     document.getElementById("max_bright").value = 80;
     //document.getElementById('min_dist').value = 0; 
