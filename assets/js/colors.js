@@ -199,14 +199,14 @@ function exportVals(){
 
     //depending which radio button is selected, cycle through the colors and get their values in that format
     var row0 = document.getElementsByClassName('row-0'); 
-    console.log(row0); 
+    var clst = []; 
     for (var c = 1; c<row0.length; c++){
-        console.log(row0[c].backgroundColor); 
+        clst.push(row0[c].style.backgroundColor); 
     }
 
     //TODO then print them to the screen in the designated column
     var output = document.getElementById('export_text')
-    output.innerHTML = 'hello'
+    output.innerHTML = clst;
 }
 
 function runMitchell(){
