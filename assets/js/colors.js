@@ -195,21 +195,26 @@ function genCandidates(num_clrs, cur_clrsRgb){
 
 function exportVals(){
     var radios = document.getElementsByClassName('export_values'); 
+    var rchoose = 0;
     for (var r = 0; r<radios.length; r++){
         if (radios[r].checked){
-            console.log(r); 
+            rchoose = r;
         }
     }
-    console.log(radios); 
+    console.log(rchoose); 
 
     //depending which radio button is selected, cycle through the colors and get their values in that format
     var row0 = document.getElementsByClassName('row-0'); 
     var clst = []; 
     for (var c = 1; c<row0.length; c++){
-        clst.push(row0[c].style.backgroundColor); 
+        if (rchoose==0){
+            clst.push(row0[c].style.backgroundColor); 
+        } else if (rchoose==1){
+            clst.push(rgbToHex(row0[c].style.backgroundColor)); 
+        } 
     }
 
-    //TODO then print them to the screen in the designated column
+    //TODO format: then print them to the screen in the designated column
     var output = document.getElementById('export_text')
     output.innerHTML = clst;
 }
