@@ -199,7 +199,7 @@ function exportVals(){
 
     //depending which radio button is selected, cycle through the colors and get their values in that format
     var row0 = document.getElementsByClassName('row-0'); 
-    console.log(clrs); 
+    console.log(row0); 
     for (var c = 1; c<row0.length; c++){
         console.log(row0[c].backgroundColor); 
     }
