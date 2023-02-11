@@ -14,12 +14,12 @@
         This tool generates a random set of colors and displays a selection of them that are
         most distinguishable across multiple different types of color vision. Because it is randomly generating each set, 
         some color sets will include colors that are not as distinguishable, so please choose colors at your own discretion. 
-        <br />
+        <br /> <br />
         Colors are randomly generated each time the "Generate colors" button is pressed based on a calculation of how distinguishable they are 
         from each other in normal vision and with color vision deficiencies. Inputs can change the number of colors generated, 
         the default color value range (ie lighter or darker colors overall), and
         to ignore a certain type of color vision in the calculation of color distinguishability uncheck that box.
-        <br/>
+        <br/> <br />
         Each column displays a color with the simulated view of several
         types of color vision. To select your own colors, use the color selector in the top right of a column, and to 
         lock a color into the set, check the box at the top left of the column. 
@@ -65,25 +65,23 @@
     <div class="break"></div>
     <div class="export">
         <h2>Export color values</h2>
-        <div class="dropdown">
-            <button onclick="showDropdown()" class="dropbtn">Dropdown</button>
-            <div id="myDropdown" class="dropdown-content">
-                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                <a href="#about">About</a>
-                <a href="#base">Base</a>
-                <a href="#blog">Blog</a>
-                <a href="#contact">Contact</a>
-                <a href="#custom">Custom</a>
-                <a href="#support">Support</a>
-                <a href="#tools">Tools</a>
-            </div>
-        </div>
+        <form action="/action_page.php">
+            <p>Please select your favorite Web language:</p>
+                <input type="radio" id="rgb" name="export_values" value="rgb">
+                <label for="rgb">RGB</label><br>
+                <input type="radio" id="hsl" name="export_values" value="hsl">
+                <label for="hsl">HSL</label><br>
+                <input type="radio" id="hex" name="export_values" value="hex">
+                <label for="hex">Hex</label>
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
+        </form>
     </div>
 
-    <p><b>More information about colorblindness</b>
-        Red, Green, Blue-blind; commonness, 100% vs partial. 
-        specific resources on colorblindness and also generating colors. 
-        export colors above this and example displays
+    <p><b>More information about colorblindness (Beta: will add to this info): </b> <br/>
+        <a href="http://mkweb.bcgsc.ca/colorblind/index.mhtml">Understanding color vision and example color palettes</a>
+        <a href="https://www.datylon.com/blog/data-visualization-for-colorblind-readers">More on design for colorblindness</a>
     </p>
 
     <script src="assets/js/colors.js"></script>

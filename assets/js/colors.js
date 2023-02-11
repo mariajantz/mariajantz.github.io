@@ -1,7 +1,7 @@
 //if you're reading this, I just want you to know I used this project to
 //to teach myself javascript (and procrastinate on my dissertation) so it's a bit messy
 
-genDivsGrid(4);
+genDivsGrid(5);
 
 /*current TODOs: 
 sort and choose a subset from cands
@@ -57,7 +57,7 @@ function genDivsGrid(cols) {
     //style table
     e.style.display = 'grid';
     e.style.gridTemplateColumns = '100px' + ' auto'.repeat(cols);
-    e.style.gridTemplateRows = '20em 5em 5em 5em';
+    e.style.gridTemplateRows = '15em 4em 4em 4em';
     e.style.gap = '10px';
     e.style.alignItems = 'stretch';
 
