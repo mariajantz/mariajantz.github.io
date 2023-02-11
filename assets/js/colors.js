@@ -195,6 +195,11 @@ function genCandidates(num_clrs, cur_clrsRgb){
 
 function exportVals(){
     var radios = document.getElementsByClassName('export_values'); 
+    for (var r = 0; r<radios.length; r++){
+        if (radios[r].checked){
+            console.log(r); 
+        }
+    }
     console.log(radios); 
 
     //depending which radio button is selected, cycle through the colors and get their values in that format
