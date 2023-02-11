@@ -65,22 +65,20 @@
     <div class="break"></div>
     <div class="export">
         <h2>Export color values</h2>
-        <form action="/action_page.php">
+        <form>
             <p>Please select your favorite Web language:</p>
-                <input type="radio" id="rgb" name="export_values" value="rgb">
+                <input type="radio" id="rgb" name="export_values" value="rgb" checked>
                 <label for="rgb">RGB</label><br>
                 <input type="radio" id="hsl" name="export_values" value="hsl">
                 <label for="hsl">HSL</label><br>
                 <input type="radio" id="hex" name="export_values" value="hex">
                 <label for="hex">Hex</label>
-                    <div>
-                        <button type="submit">Submit</button>
-                    </div>
+                <button type="button" onclick="exportVals()">Submit</button>
         </form>
     </div>
 
-    <p><b>More information about colorblindness (Beta: will add to this info): </b> <br/>
-        <a href="http://mkweb.bcgsc.ca/colorblind/index.mhtml">Understanding color vision and example color palettes</a>
+    <p><b>More information about colorblindness: </b> <br/>
+        <a href="http://mkweb.bcgsc.ca/colorblind/index.mhtml">Understanding color vision and example color palettes</a> <br />
         <a href="https://www.datylon.com/blog/data-visualization-for-colorblind-readers">More on design for colorblindness</a>
     </p>
 

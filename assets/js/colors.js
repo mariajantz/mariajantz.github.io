@@ -2,6 +2,7 @@
 //to teach myself javascript (and procrastinate on my dissertation) so it's a bit messy
 
 genDivsGrid(5);
+exportVals(); 
 
 /*current TODOs: 
 sort and choose a subset from cands
@@ -192,6 +193,14 @@ function genCandidates(num_clrs, cur_clrsRgb){
     return cands[idx]
 }
 
+function exportVals(){
+    var radios = document.getElementsByClassName('export_values'); 
+    console.log(radios)
+
+    //depending which radio button is selected, cycle through the colors and get their values in that format
+
+    //TODO then print them to the screen
+}
 
 function runMitchell(){
     //generate colors
