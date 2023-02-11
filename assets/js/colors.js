@@ -14,6 +14,8 @@ shuffle order
 generate plots
 add a bar for grayscale
 add a "show hues" that gets the same color in lab space, diff brightness
+drag and drop colors to change order (like this) https://stackoverflow.com/questions/73251435/drag-and-drop-cells-on-css-grid-only-works-properly-when-moving-a-cell-to-the-ri
+duplicate a color
 */
 
 function genDivsGrid(cols) {

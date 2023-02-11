@@ -8,22 +8,21 @@
 </head>
 
 <body>
-    <h1 id="test">Colorblind-friendly color palette generator</h1>
+    <h1 id="test">Chameleon: Colorblind-friendly color palette generator</h1>
 
     <p><b>Instructions:</b> 
         This tool generates a random set of colors and displays a selection of them that are
         most distinguishable across multiple different types of color vision. Because it is randomly generating each set, 
         some color sets will include colors that are not as distinguishable, so please choose colors at your own discretion. 
-        Each column displays a color including the simulated view for several
-        types of color vision; if you don't want to include a certain type of color vision in the calculation of color distinguisability
-        you can uncheck that box. To select your own colors, use the color selector in the top right of a column, and to 
-        keep a color despite regenerating the rest of the set, check the box at the top of a column to lock it. 
-        
-        At the bottom of the page are a couple of simulated plots in the color set, as well as the RGB and HEX values.
+        <br />
+        Colors are randomly generated each time the "Generate colors" button is pressed based on a calculation of how distinguishable they are 
+        from each other in normal vision and with color vision deficiencies. Inputs can change the number of colors generated, 
+        the default color value range (ie lighter or darker colors overall), and
+        to ignore a certain type of color vision in the calculation of color distinguishability uncheck that box.
         <br/>
-        some potential punny things: RGBetter (lame but catchy), huemongus; 
-        provide a "simulated plot" option like the one
-        in viz palette. (scroll down to see? Do scatter plot w/overlap and lines.)
+        Each column displays a color with the simulated view of several
+        types of color vision. To select your own colors, use the color selector in the top right of a column, and to 
+        lock a color into the set, check the box at the top left of the column. 
     </p>
 
     <form>
@@ -61,7 +60,6 @@
     <div class="break"></div>
     <button type="button" onclick="updateColors()">Generate colors</button>
     <button type="button" onclick="restoreDefaultValues()">Restore default values</button>
-    <button type="button" onclick="runMitchell()">Test</button>
     <div class="break"></div>
     <div id="target"></div>
     <div class="break"></div>
