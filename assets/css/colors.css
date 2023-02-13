@@ -49,7 +49,7 @@ p {
 }
 
 #info {
-    clear: below; 
+    clear: left; 
 }
 
 #export_text {
