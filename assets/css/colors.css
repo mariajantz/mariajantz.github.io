@@ -39,6 +39,22 @@ body {
     text-align: left;
     float: left;
     width: 50%; 
+    padding: 5px;
+}
+
+#export_form label {
+    float:right; 
+}
+
+#export_form input {
+    float: right; 
+    clear: both; 
+}
+
+#update_export {
+    float: right;
+    clear: both; 
+    margin: 5px;
 }
 
 p {
