@@ -324,6 +324,9 @@ function updateColors() {
 
     //add array to update 
     runMitchell();
+
+    //update export
+    exportVals(); 
 }
 
 function setLocked() {
@@ -520,7 +523,7 @@ function mjdot(rgbArr, cbarr) {
 
 function restoreDefaultValues() {
     document.getElementById("num_clrs").value = 5; 
-    document.getElementById('min_bright').value = 30;  
+    document.getElementById('min_bright').value = 40;  
     document.getElementById("max_bright").value = 80;
     //document.getElementById('min_dist').value = 0; 
     document.getElementById('deut_check').checked = true;

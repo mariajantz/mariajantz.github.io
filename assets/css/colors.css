@@ -44,6 +44,7 @@ body {
 
 #export_form label {
     float:right; 
+    margin: 0.2em;
 }
 
 #export_form input {
@@ -71,7 +72,10 @@ p {
 #export_text {
     width: 40%; 
     float: left;
-    margin: 0;
+    margin: 0 1em;
+    border: solid;
+    background-color: white;
+    border-color: gray
 }
 
 .break {
