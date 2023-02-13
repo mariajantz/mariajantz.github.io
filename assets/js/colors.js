@@ -422,6 +422,7 @@ function manualColor(cellnum){
     let clr_rgb = hexToRgb(clr_hex);
     //console.log(cols)
     updateColumnColors('col-' + cellnum.toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+    exportVals(); 
 }
 
 function updateColumnColors(colname, newRGBArr){
