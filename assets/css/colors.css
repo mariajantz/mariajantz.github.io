@@ -48,6 +48,10 @@ p {
     padding: 1em; 
 }
 
+#info {
+    clear: below; 
+}
+
 #export_text {
     width: 50%; 
     float: left;
