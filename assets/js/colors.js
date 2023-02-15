@@ -5,18 +5,15 @@ genDivsGrid(5);
 exportVals(); 
 
 /*current TODOs: 
-sort and choose a subset from cands
+1. sort and choose a subset from cands
 actually show these candidates instead of the random stuff
+2. drag and drop colors to change order (like this) https://stackoverflow.com/questions/73251435/drag-and-drop-cells-on-css-grid-only-works-properly-when-moving-a-cell-to-the-ri
+3. add a "color scale" or interp or something that uniformly spaces between two colors
+4. add a bar for grayscale
+5. add a "show hues" that gets the same color in lab space, diff brightness
+6. generate plots
 design site input pretty
-add export hex, rgb, hsl
-cb resources
 scale dists?
-shuffle order 
-generate plots
-add a bar for grayscale
-add a "show hues" that gets the same color in lab space, diff brightness
-drag and drop colors to change order (like this) https://stackoverflow.com/questions/73251435/drag-and-drop-cells-on-css-grid-only-works-properly-when-moving-a-cell-to-the-ri
-duplicate a color
 */
 
 function genDivsGrid(cols) {
