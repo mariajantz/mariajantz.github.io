@@ -334,6 +334,7 @@ function sortColors(clr_list, ref_clrs) {
     console.log(closemedians)
     //find the instances where values list here are >1, if any
     for (var i=0; i<clrcount.keys().length; i++){
+        console.log('loop')
         console.log(clrcount.keys()[i]);
         if (clrcount.keys()[i]==-1){
             //pass
