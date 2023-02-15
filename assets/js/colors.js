@@ -273,14 +273,14 @@ function sortColors(clr_list, ref_clrs) {
     //inputs: an rgb list of colors, an rgb list of locked colors
     //by default this sorts in terms of rgb and deuteranopia, which are the most common, regardless of what is checked
     //I think, based on python tests, that the best way to do this is: 
-    //first, remove grays
+    //what if I knock out least distinguishable and then just sort by the median? 
     let all_clrs = [...ref_clrs, ...clr_list]; 
 
     //knock out the least distinguishable x number of colors in each color space
     let x = 2; 
     //find distances between everything
-    var cdist = []
-    for (var i=0; i<all_clrs.length; i++){
+    var cdist = [] //change below to i<all_clrs.length
+    for (var i=0; i<3; i++){
         cdist.push([])
         //todo this is non symmetrical why
         for (var j=0; j<all_clrs.length; j++){
