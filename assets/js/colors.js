@@ -374,6 +374,15 @@ function sortColors(clr_list, ref_clrs) {
     }
     console.log(cmedians)
     //then remove any columns in the arrays that correspond to zeroed medians
+    //for all zeroed medians
+    for (var i = 0; i<cmedians.length; i++){
+        if (cmedians[i]==0){
+            //remove them from each array
+            cdist.map(x => x.slice(0, i).concat(x.slice(i+1)))
+        }
+    }
+    var cmedian2 = cdist.map(x => median(x));
+    console.log(cmedian2)
 
     //recalculate all medians
     //put the zeroed values at the end
