@@ -312,7 +312,7 @@ function sortColors(clr_list, ref_clrs) {
         let tmpVal = Math.min(...tmpArr); 
         if (tmpVal<15){ //perceptible distance for large boxes of color is about 6; this gives some wiggle room
             //mark these ones and later remove/put at end the one with the lower median
-            const closeClr = cdist[i].indexOf(tmpVal); //TODO FIX THIS
+            const closeClr = cdist[i].indexOf(tmpVal);
             console.log('close', i, tmpVal)
             console.log(closeClr);
             closelbl[i] = closeClr;
@@ -322,7 +322,7 @@ function sortColors(clr_list, ref_clrs) {
     var cmedians = cdist.map(x => median(x));
     console.log('median')
     console.log(cmedians)
-    console.log(sortIndex(cmedians))
+    console.log(sortIndex(cmedians)) //TODO FIX THIS
     console.log(closelbl)
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
@@ -341,9 +341,14 @@ function median(numbers) {
 
 function sortIndex(numbers) {
     const sorted = Array.from(numbers).sort((a, b) => a - b);
-    const map2 = sorted.map(x => numbers.indexOf(x));
+    //const map2 = sorted.map(x => numbers.indexOf(x));
+    var outval = []; 
+    for (var i =0; i<numbers.length; i++){
+        //get index of numbers value in sorted array
+        outval.push(sorted.indexOf(numbers[i])); 
+    }
     //return the sorted indices without changing original array
-    return map2
+    return outval
 }
 
 function updateColors() {
