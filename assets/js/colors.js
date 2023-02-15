@@ -352,12 +352,13 @@ function sortColors(clr_list, ref_clrs) {
     //remove 1/3 of the list of close values based on medians
     var closemedians = Object.keys(clrcount).map(x => cmedians[x]);
     console.log(closemedians)
+    closemedians = closemedians.filter(Boolean);
     closemedians.sort((a, b) => a - b)
     console.log(closemedians)
     closemedians.splice(0, Math.floor(closemedians.length / 3))
     console.log(closemedians)
     for (var i=0; i<closemedians.length; i++){
-        let idx = cmedians.findIndex(closemedians[i]); 
+        let idx = cmedians.indexOf(closemedians[i]); 
         cmedians[idx] = 0; 
     }
 
@@ -365,6 +366,10 @@ function sortColors(clr_list, ref_clrs) {
     console.log(ref_clrs)
     console.log(clr_list)
     //finally, ignore the rows with zeroed medians, recalc all medians, sort, and preserve the reference/locked colors
+    //if 0 value occurs before length of ref_clrs, replace it with its median
+    //then remove any columns in the arrays that correspond to zeroed medians
+    //recalculate all medians
+    //put the zeroed values at the end
     //console.log([...ref_clrs, ...clr_list])
     return all_clrs //combine the locked colors with the sorted ones
 }
