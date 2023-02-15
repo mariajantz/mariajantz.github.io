@@ -280,24 +280,28 @@ function sortColors(clr_list, ref_clrs) {
     let x = 2; 
     //find distances between everything
     var cdist = [] //change below to i<all_clrs.length
-    for (var i=0; i<3; i++){
+    for (var i=0; i<5; i++){
         cdist.push([])
         //todo this is non symmetrical why
-        for (var j=0; j<all_clrs.length; j++){
+        for (var j=0; j<5; j++){
             console.log(all_clrs[i], all_clrs[j])
             var rgbtmp = Math.min(deltaE(rgb2lab(all_clrs[i]), rgb2lab(all_clrs[j])), deltaE(rgb2lab(all_clrs[j]), rgb2lab(all_clrs[i]))); 
             var dtmp = Math.min(deltaE(rgb2lab(toCB(all_clrs[i], 1)), rgb2lab(toCB(all_clrs[j], 1))), deltaE(rgb2lab(toCB(all_clrs[j], 1)), rgb2lab(toCB(all_clrs[i], 1)))); 
 
             cdist[i].push(Math.min(dtmp, rgbtmp))
-            console.log(deltaE(rgb2lab(all_clrs[i]), rgb2lab(all_clrs[j])))
-            console.log(deltaE(rgb2lab(all_clrs[j]), rgb2lab(all_clrs[i])))
+            console.log(rgbtmp)
+            console.log(dtmp)
         }
         console.log('inner')
         console.log(cdist)
     }
     console.log('outer')
     console.log(cdist)
-    //then knock out one of a pair of colors that is difficult to distinguish in any space
+    //then knock out one of a pair of colors that is difficult to distinguish in any space, but only allow knocking out clr_list colors not ref (locked)
+    //then return the list sorted by median distance
+    for (var i=ref_clrs.length; i<5; i++){
+        console.log(all_clrs[i])
+    }
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
 }
