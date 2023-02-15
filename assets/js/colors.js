@@ -280,6 +280,7 @@ function sortColors(clr_list, ref_clrs) {
     let x = 2; 
     //find distances between everything
     var cdist = [] //change below to i<all_clrs.length
+    var cmedians = []
     for (var i=0; i<5; i++){
         cdist.push([])
         //todo this is non symmetrical why
@@ -289,21 +290,37 @@ function sortColors(clr_list, ref_clrs) {
             var dtmp = Math.min(deltaE(rgb2lab(toCB(all_clrs[i], 1)), rgb2lab(toCB(all_clrs[j], 1))), deltaE(rgb2lab(toCB(all_clrs[j], 1)), rgb2lab(toCB(all_clrs[i], 1)))); 
 
             cdist[i].push(Math.min(dtmp, rgbtmp))
-            console.log(rgbtmp)
-            console.log(dtmp)
         }
-        console.log('inner')
-        console.log(cdist)
     }
     console.log('outer')
     console.log(cdist)
     //then knock out one of a pair of colors that is difficult to distinguish in any space, but only allow knocking out clr_list colors not ref (locked)
     //then return the list sorted by median distance
-    for (var i=ref_clrs.length; i<5; i++){
-        console.log(all_clrs[i])
+    //change to i=ref_clrs.length; i<all_clrs.length
+    for (var i=0; i<5; i++){
+        //calculate the median distances in each row, and if there are any values in the row less than 10
+        //they are not likely to be distinguishable so subtract from median to move it down the list?
+        //but that should only apply to one of a pair
+        cmedians[i] = median(cdist[i]);
+        
+        const closeClr = cdist[i].indexOf(Math.min(...cdist[i])); 
+        console.log(closeClr);
+
     }
+    console.log(cmedians)
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
+}
+
+function median(numbers) {
+    const sorted = Array.from(numbers).sort((a, b) => a - b);
+    const middle = Math.floor(sorted.length / 2);
+
+    if (sorted.length % 2 === 0) {
+        return (sorted[middle - 1] + sorted[middle]) / 2;
+    }
+
+    return sorted[middle];
 }
 
 function updateColors() {
