@@ -301,13 +301,15 @@ function sortColors(clr_list, ref_clrs) {
         //calculate the median distances in each row, and if there are any values in the row less than 10
         //they are not likely to be distinguishable so subtract from median to move it down the list?
         //but that should only apply to one of a pair
-        cmedians[i] = median(cdist[i]);
-        
-        const closeClr = cdist[i].indexOf(Math.min(...cdist[i])); 
+        cmedians.push(median(cdist[i]));
+        let tmpArr = cdist[i].slice(0, i).concat(cdist[i].slice(-(cdist[i].length - i - 1))); //ignore 0s on diagonal
+        const closeClr = cdist[i].indexOf(Math.min(...tmpArr)); 
         console.log(closeClr);
 
     }
+    console.log('median')
     console.log(cmedians)
+    console.log(sortIndex(cmedians))
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
 }
@@ -321,6 +323,13 @@ function median(numbers) {
     }
 
     return sorted[middle];
+}
+
+function sortIndex(numbers) {
+    const sorted = Array.from(numbers).sort((a, b) => a - b);
+    const map2 = numbers.map(x => sorted.indexOf(x));
+    //return the sorted indices without changing original array
+    return map2
 }
 
 function updateColors() {
