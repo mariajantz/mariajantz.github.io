@@ -414,9 +414,14 @@ function sortColorsKM(clr_list, ref_clrs, n) {
     //by default this sorts in terms of rgb and deuteranopia, which are the most common, regardless of what is checked
     //Sort colors using k-means clustering; freeze the reference colors
     let all_clrs = [...ref_clrs, ...clr_list];
+    //TODO convert to LAB
+    console.log('try kmeans')
     //find distances between everything
     let result = kmeans(all_clrs, n)
     console.log(result)
+    //TODO add some method to deal with distances in deut space too...what if I do this but kmeans the deut space??
+    //thus: kmeans to get groups in deut lab space, then get groups of the checked colors, then pick the maximum distance in regular space for other groups
+    //TODO figure out which group the checked colors belong to and do those distances? 
 
     return all_clrs
 }
@@ -589,6 +594,7 @@ function recalculateCentroids(dataSet, labels, k) {
 }
 
 function kmeans(dataset, k, useNaiveSharding = true) {
+    const MAX_ITERATIONS = 50; 
     if (dataset.length && dataset[0].length && dataset.length > k) {
         // Initialize book keeping variables
         let iterations = 0;
