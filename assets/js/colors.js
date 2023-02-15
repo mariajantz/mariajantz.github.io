@@ -332,11 +332,9 @@ function sortColors(clr_list, ref_clrs) {
     for (const num of closelbl) {
         clrcount[num] = clrcount[num] ? clrcount[num] + 1 : 1;
     }
-    console.log(Object.keys(clrcount))
-    console.log(Object.values(clrcount))
-    Object.keys(clrcount).length
-    var closemedians = Object.keys(clrcount).map(x => cmedians[x]);
-    console.log(closemedians)
+    // console.log(Object.keys(clrcount))
+    // console.log(Object.values(clrcount))
+    // Object.keys(clrcount).length
     //find the instances where values list here are >1, if any
     for (var i=0; i<Object.keys(clrcount).length; i++){
         console.log('loop')
@@ -344,15 +342,24 @@ function sortColors(clr_list, ref_clrs) {
         if (Object.keys(clrcount)[i]==-1){
             //pass
         }else if (Object.values(clrcount)[i]>1){
-            console.log(cmedians[Object.keys(clrcount)[i]]);
+            // console.log(cmedians[Object.keys(clrcount)[i]]);
             //push relevant key to end of list (this just doesn't do anything if it's locked)
             cmedians[Object.keys(clrcount)[i]] = 0; 
         }
     }
+    console.log(cmedians)
+    console.log('now do close part')
     //remove 1/3 of the list of close values based on medians
+    var closemedians = Object.keys(clrcount).map(x => cmedians[x]);
+    console.log(closemedians)
     closemedians.sort((a, b) => a - b)
     console.log(closemedians)
-    console.log(closemedians.slice(0, Math.floor(closemedians.length/3)))
+    closemedians.splice(0, Math.floor(closemedians.length / 3))
+    console.log(closemedians)
+    for (var i=0; i<closemedians.length; i++){
+        let idx = cmedians.findIndex(closemedians[i]); 
+        cmedians[idx] = 0; 
+    }
 
     console.log(cmedians)
     console.log(ref_clrs)
