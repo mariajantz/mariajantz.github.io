@@ -392,6 +392,10 @@ function sortColors(clr_list, ref_clrs) {
             cmedian2[i] = 0; 
         }
     }
+    //also set the reference/locked colors to high value so they stay in order
+    for (var i = 0; i<ref_clrs.length; i++){
+        cmedian2[i] = 200-i; //subtract i so they rank in order
+    }
     var sorted_idx = sortIndex(cmedian2); 
     sorted_idx.reverse();
     console.log(sorted_idx); 
