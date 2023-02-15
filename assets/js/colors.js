@@ -283,12 +283,14 @@ function sortColors(clr_list, ref_clrs) {
         cdist.push([])
         //todo this is non symmetrical why
         for (var j=0; j<all_clrs.length; j++){
-            cdist[i].push(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
+            cdist[i].push(Math.min(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]), deltaE(rgb2lab(all_clrs[j]), all_clrs[i])))
             console.log(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
             console.log(deltaE(rgb2lab(all_clrs[j]), all_clrs[i]))
         }
+        console.log('inner')
         console.log(cdist)
     }
+    console.log('outer')
     console.log(cdist)
     //then knock out one of a pair of colors that is difficult to distinguish in any space
     //console.log([...ref_clrs, ...newlist])
