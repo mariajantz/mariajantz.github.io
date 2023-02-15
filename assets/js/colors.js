@@ -303,9 +303,12 @@ function sortColors(clr_list, ref_clrs) {
         //but that should only apply to one of a pair
         //cmedians.push(median(cdist[i]));
         let tmpArr = cdist[i].slice(0, i).concat(cdist[i].slice(-(cdist[i].length - i - 1))); //ignore 0s on diagonal
-        const closeClr = cdist[i].indexOf(Math.min(...tmpArr)); 
-        console.log(closeClr);
-
+        if (Math.min(...tmpArr)<20){
+            const closeClr = cdist[i].indexOf(Math.min(...tmpArr)); 
+            console.log('close')
+            console.log(closeClr);
+        }
+        
     }
     var cmedians = cdist.map(x => median(x));
     console.log('median')
