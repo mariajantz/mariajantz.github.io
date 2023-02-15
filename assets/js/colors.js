@@ -298,7 +298,7 @@ function sortColors(clr_list, ref_clrs) {
     //then return the list sorted by median distance
     //change to i=ref_clrs.length; i<all_clrs.length
     var closelbl = Array(cdist.length);
-    closelbl.fill(0); 
+    closelbl.fill(-1); 
     for (var i=0; i<5; i++){
         //calculate the median distances in each row, and if there are any values in the row less than 10
         //they are not likely to be distinguishable so subtract from median to move it down the list?
@@ -317,13 +317,23 @@ function sortColors(clr_list, ref_clrs) {
             console.log(closeClr);
             closelbl[i] = closeClr;
         }
-        
     }
     var cmedians = cdist.map(x => median(x));
     console.log('median')
     console.log(cmedians)
-    console.log(sortIndex(cmedians)) //TODO FIX THIS
+    console.log(sortIndex(cmedians)) 
     console.log(closelbl)
+
+    //now remove the colors that are close to each other - 
+    //first, remove a color if it appears more than once in the list
+    //recalculate medians
+    //then choose pair value with lower median
+    const clrcount = closelbl.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+    console.log(clrcount.keys())
+    console.log(clrcount.values())
+    for (var i=0; i<closelbl.length; i++){
+        
+    }
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
 }
