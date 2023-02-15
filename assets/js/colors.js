@@ -367,14 +367,14 @@ function sortColors(clr_list, ref_clrs) {
     console.log(clr_list)
     //finally, ignore the rows with zeroed medians, recalc all medians, sort, and preserve the reference/locked colors
     //if 0 value occurs before length of ref_clrs, replace it with its median
-    for (var i= 0; i<ref_clrs.length, i++){
+    for (var i= 0; i<ref_clrs.length; i++){
         if (cmedians[i]==0){
             cmedians[i] = median(cdist[i]);
         }
     }
     console.log(cmedians)
     //then remove any columns in the arrays that correspond to zeroed medians
-    
+
     //recalculate all medians
     //put the zeroed values at the end
     //console.log([...ref_clrs, ...clr_list])
