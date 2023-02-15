@@ -331,7 +331,8 @@ function sortColors(clr_list, ref_clrs) {
     console.log(clrcount.keys())
     console.log(clrcount.values())
     //find the instances where values list here are >1, if any
-    for (var i=0; i<clrcount.keys(); i++){
+    for (var i=0; i<clrcount.keys().length; i++){
+        console.log(clrcount.keys()[i]);
         if (clrcount.keys()[i]==-1){
             //pass
         }else if (clrcount.values()[i]>1){
@@ -342,9 +343,14 @@ function sortColors(clr_list, ref_clrs) {
     }
     console.log(cmedians)
     //then remove a couple of the instances in the list with the lowest medians (but not if they're locked)
-    for (var i = 0; i < clrcount.keys(); i++) {
-
+    for (var i = 0; i < clrcount.keys().length; i++) {
+        
     }
+
+    console.log(ref_clrs)
+    console.log(clr_list)
+    console.log(cmedians)
+    //finally, ignore the rows with zeroed medians, recalc all medians, and preserve the reference/locked colors
     //console.log([...ref_clrs, ...clr_list])
     return all_clrs //combine the locked colors with the sorted ones
 }
