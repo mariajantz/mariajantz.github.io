@@ -281,10 +281,10 @@ function sortColors(clr_list, ref_clrs) {
     //find distances between everything
     var cdist = [] //change below to i<all_clrs.length
     
-    for (var i=0; i<5; i++){
+    for (var i = 0; i < all_clrs.length; i++){
         cdist.push([])
         //todo this is non symmetrical why
-        for (var j=0; j<5; j++){
+        for (var j = 0; j < all_clrs.length; j++){
             console.log(all_clrs[i], all_clrs[j])
             var rgbtmp = Math.min(deltaE(rgb2lab(all_clrs[i]), rgb2lab(all_clrs[j])), deltaE(rgb2lab(all_clrs[j]), rgb2lab(all_clrs[i]))); 
             var dtmp = Math.min(deltaE(rgb2lab(toCB(all_clrs[i], 1)), rgb2lab(toCB(all_clrs[j], 1))), deltaE(rgb2lab(toCB(all_clrs[j], 1)), rgb2lab(toCB(all_clrs[i], 1)))); 
@@ -299,7 +299,7 @@ function sortColors(clr_list, ref_clrs) {
     //change to i=ref_clrs.length; i<all_clrs.length
     var closelbl = Array(cdist.length);
     closelbl.fill(-1); 
-    for (var i=0; i<5; i++){
+    for (var i = ref_clrs.length; i < all_clrs.length; i++){
         //calculate the median distances in each row, and if there are any values in the row less than 10
         //they are not likely to be distinguishable so subtract from median to move it down the list?
         //but that should only apply to one of a pair
@@ -319,10 +319,10 @@ function sortColors(clr_list, ref_clrs) {
         }
     }
     var cmedians = cdist.map(x => median(x));
-    console.log('median')
-    console.log(cmedians)
-    console.log(sortIndex(cmedians)) 
-    console.log(closelbl)
+    // console.log('median')
+    // console.log(cmedians)
+    // console.log(sortIndex(cmedians)) 
+    // console.log(closelbl)
 
     //now remove the colors that are close to each other - 
     //first, remove a color if it appears more than once in the list
@@ -337,8 +337,8 @@ function sortColors(clr_list, ref_clrs) {
     // Object.keys(clrcount).length
     //find the instances where values list here are >1, if any
     for (var i=0; i<Object.keys(clrcount).length; i++){
-        console.log('loop')
-        console.log(Object.keys(clrcount)[i]);
+        // console.log('loop')
+        // console.log(Object.keys(clrcount)[i]);
         if (Object.keys(clrcount)[i]==-1){
             //pass
         }else if (Object.values(clrcount)[i]>1){
@@ -347,16 +347,16 @@ function sortColors(clr_list, ref_clrs) {
             cmedians[Object.keys(clrcount)[i]] = 0; 
         }
     }
-    console.log(cmedians)
+    //console.log(cmedians)
     console.log('now do close part')
     //remove 1/3 of the list of close values based on medians
     var closemedians = Object.keys(clrcount).map(x => cmedians[x]);
-    console.log(closemedians)
+    //console.log(closemedians)
     closemedians = closemedians.filter(Boolean);
     closemedians.sort((a, b) => a - b)
-    console.log(closemedians)
-    closemedians.splice(0, Math.floor(closemedians.length / 3))
-    console.log(closemedians)
+    //console.log(closemedians)
+    closemedians = closemedians.slice(0, Math.floor(closemedians.length / 3))
+    //console.log(closemedians)
     for (var i=0; i<closemedians.length; i++){
         let idx = cmedians.indexOf(closemedians[i]); 
         cmedians[idx] = 0; 
@@ -367,7 +367,14 @@ function sortColors(clr_list, ref_clrs) {
     console.log(clr_list)
     //finally, ignore the rows with zeroed medians, recalc all medians, sort, and preserve the reference/locked colors
     //if 0 value occurs before length of ref_clrs, replace it with its median
+    for (var i= 0; i<ref_clrs.length, i++){
+        if (cmedians[i]==0){
+            cmedians[i] = median(cdist[i]);
+        }
+    }
+    console.log(cmedians)
     //then remove any columns in the arrays that correspond to zeroed medians
+    
     //recalculate all medians
     //put the zeroed values at the end
     //console.log([...ref_clrs, ...clr_list])
