@@ -271,6 +271,7 @@ function runMitchell(){
 
 function sortColors(clr_list, ref_clrs) {
     //inputs: an rgb list of colors, an rgb list of locked colors
+    //by default this sorts in terms of rgb and deuteranopia, which are the most common, regardless of what is checked
     //I think, based on python tests, that the best way to do this is: 
     //first, remove grays
     let all_clrs = [...ref_clrs, ...clr_list]; 
@@ -283,9 +284,13 @@ function sortColors(clr_list, ref_clrs) {
         cdist.push([])
         //todo this is non symmetrical why
         for (var j=0; j<all_clrs.length; j++){
-            cdist[i].push(Math.min(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]), deltaE(rgb2lab(all_clrs[j]), all_clrs[i])))
-            console.log(deltaE(rgb2lab(all_clrs[i]), all_clrs[j]))
-            console.log(deltaE(rgb2lab(all_clrs[j]), all_clrs[i]))
+            console.log(all_clrs[i], all_clrs[j])
+            var rgbtmp = Math.min(deltaE(rgb2lab(all_clrs[i]), rgb2lab(all_clrs[j])), deltaE(rgb2lab(all_clrs[j]), rgb2lab(all_clrs[i]))); 
+            var dtmp = Math.min(deltaE(rgb2lab(toCB(all_clrs[i], 1)), rgb2lab(toCB(all_clrs[j], 1))), deltaE(rgb2lab(toCB(all_clrs[j], 1)), rgb2lab(toCB(all_clrs[i], 1)))); 
+
+            cdist[i].push(Math.min(dtmp, rgbtmp))
+            console.log(deltaE(rgb2lab(all_clrs[i]), rgb2lab(all_clrs[j])))
+            console.log(deltaE(rgb2lab(all_clrs[j]), rgb2lab(all_clrs[i])))
         }
         console.log('inner')
         console.log(cdist)
