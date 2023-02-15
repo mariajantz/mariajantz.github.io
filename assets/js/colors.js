@@ -401,7 +401,8 @@ function sortColors(clr_list, ref_clrs) {
     console.log(sorted_idx); 
 
     //console.log([...ref_clrs, ...clr_list])
-    return all_clrs //combine the locked colors with the sorted ones
+    const output = sorted_idx.map(i => all_clrs[i]);
+    return output//all_clrs //combine the locked colors with the sorted ones
 }
 
 function median(numbers) {
