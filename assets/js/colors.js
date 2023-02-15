@@ -340,12 +340,13 @@ function median(numbers) {
 }
 
 function sortIndex(numbers) {
-    const sorted = Array.from(numbers).sort((a, b) => a - b);
+    var sorted = Array.from(numbers).sort((a, b) => a - b);
     //const map2 = sorted.map(x => numbers.indexOf(x));
     var outval = []; 
     for (var i =0; i<numbers.length; i++){
         //get index of numbers value in sorted array
         outval.push(sorted.indexOf(numbers[i])); 
+        sorted[outval[-1]] = -1; 
     }
     //return the sorted indices without changing original array
     return outval
