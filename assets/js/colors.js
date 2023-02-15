@@ -249,12 +249,12 @@ function runMitchell(){
         //get minimum distance between every color across all checked color spaces
         //sort by maximum
         //OR get minimum across all checked color spaces, eliminate the worst ones for each space, then combine
-        var new_clrs = sortColorsKM(st_clrs, [], num_clrs); 
+        var new_clrs = sortColors(st_clrs, []); 
     } else {
         //sort with locked
         console.log('partial sort')
         //loop - get minimum distance to locked colors, get next minimum distance including that color
-        var new_clrs = sortColorsKM(st_clrs.slice(keepclrs.length), keepclrs, num_clrs)
+        var new_clrs = sortColors(st_clrs.slice(keepclrs.length), keepclrs)
     }
     console.log(new_clrs)
     //temporarily: just show these (update colors of cols)
@@ -352,35 +352,42 @@ function sortColors(clr_list, ref_clrs) {
         }
     }
     console.log(cmedians)
+    //if 0 value occurs after ref_clrs just remove that row from the list
+    var output = []; 
+    for (var i = 0; i<all_clrs.length; i++){
+        if (cmedians[i] != 0) {
+            output.push(all_clrs[i]);
+        }
+    }
     //then remove any columns in the arrays that correspond to zeroed medians
     //for all zeroed medians
-    var idx_update = 0;
-    for (var i = 0; i < cmedians.length; i++) {
-        if (cmedians[i] == 0) {
-            //remove them from each array
-            console.log(i)
-            cdist.map(x => x.splice(i - idx_update, 1))
-            idx_update++;
-        }
-    }
-    var cmedian2 = cdist.map(x => median(x));
-    console.log(cmedian2)
-    //put the zeroed values at the end
-    for (var i = 0; i < cmedians.length; i++) {
-        if (cmedians[i] == 0) {
-            cmedian2[i] = 0; 
-        }
-    }
+    // var idx_update = 0;
+    // for (var i = 0; i < cmedians.length; i++) {
+    //     if (cmedians[i] == 0) {
+    //         //remove them from each array
+    //         console.log(i)
+    //         cdist.map(x => x.splice(i - idx_update, 1))
+    //         idx_update++;
+    //     }
+    // }
+    // var cmedian2 = cdist.map(x => median(x));
+    // console.log(cmedian2)
+    // //put the zeroed values at the end
+    // for (var i = 0; i < cmedians.length; i++) {
+    //     if (cmedians[i] == 0) {
+    //         cmedian2[i] = 0; 
+    //     }
+    // }
     //also set the reference/locked colors to high value so they stay in order
-    for (var i = 0; i<ref_clrs.length; i++){
-        cmedian2[i] = 200-i; //subtract i so they rank in order
-    }
-    var sorted_idx = sortIndex(cmedian2); 
-    sorted_idx.reverse();
-    console.log(sorted_idx); 
+    // for (var i = 0; i<ref_clrs.length; i++){
+    //     cmedian2[i] = 200-i; //subtract i so they rank in order
+    // }
+    // var sorted_idx = sortIndex(cmedian2); 
+    // sorted_idx.reverse();
+    // console.log(sorted_idx); 
 
     //console.log([...ref_clrs, ...clr_list])
-    const output = sorted_idx.map(i => all_clrs[i]); //...okay honestly what works best is kmeans I think
+    //const output = sorted_idx.map(i => all_clrs[i]); //...okay honestly what works best is kmeans I think
     return output//all_clrs //combine the locked colors with the sorted ones
 }
 
@@ -415,9 +422,11 @@ function sortColorsKM(clr_list, ref_clrs, n) {
     //Sort colors using k-means clustering; freeze the reference colors
     let all_clrs = [...ref_clrs, ...clr_list];
     //TODO convert to LAB
+    let lab_clrs = all_clrs.map(x => rgb2lab(toCB(x, 1)))
     console.log('try kmeans')
     //find distances between everything
-    let result = kmeans(all_clrs, n)
+    let result = kmeans(lab_clrs, n)
+    //convert back to RGB and to normal vision
     console.log(result)
     //TODO add some method to deal with distances in deut space too...what if I do this but kmeans the deut space??
     //thus: kmeans to get groups in deut lab space, then get groups of the checked colors, then pick the maximum distance in regular space for other groups
