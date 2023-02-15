@@ -347,11 +347,13 @@ function sortColors(clr_list, ref_clrs) {
             console.log(cmedians[Object.keys(clrcount)[i]]);
             //push relevant key to end of list (this just doesn't do anything if it's locked)
             cmedians[Object.keys(clrcount)[i]] = 0; 
-        }else{
-            console.log('rm lowest vals')
-            //remove a couple of the instances in the list with the lowest medians
         }
     }
+    //remove 1/3 of the list of close values based on medians
+    closemedians.sort((a, b) => a - b)
+    console.log(closemedians)
+    console.log(closemedians.slice(0, Math.floor(closemedians.length/3)))
+
     console.log(cmedians)
     console.log(ref_clrs)
     console.log(clr_list)
