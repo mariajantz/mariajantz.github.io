@@ -328,7 +328,7 @@ function median(numbers) {
 
 function sortIndex(numbers) {
     const sorted = Array.from(numbers).sort((a, b) => a - b);
-    const map2 = numbers.map(x => sorted.indexOf(x));
+    const map2 = sorted.map(x => numbers.indexOf(x));
     //return the sorted indices without changing original array
     return map2
 }
