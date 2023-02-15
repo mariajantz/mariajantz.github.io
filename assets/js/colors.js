@@ -303,11 +303,16 @@ function sortColors(clr_list, ref_clrs) {
         //calculate the median distances in each row, and if there are any values in the row less than 10
         //they are not likely to be distinguishable so subtract from median to move it down the list?
         //but that should only apply to one of a pair
-        let tmpArr = cdist[i].slice(0, i).concat(cdist[i].slice(-(cdist[i].length - i - 1))); //ignore 0s on diagonal
+        if (i<cdist.length) {
+            var tmpArr = cdist[i].slice(0, i).concat(cdist[i].slice(-(cdist[i].length - i - 1))); //ignore 0s on diagonal
+        } else {
+            var tmpArr = cdist[i].slice(0, i); //ignore 0s on diagonal
+        }
+        
         let tmpVal = Math.min(...tmpArr); 
         if (tmpVal<15){ //perceptible distance for large boxes of color is about 6; this gives some wiggle room
             //mark these ones and later remove/put at end the one with the lower median
-            const closeClr = cdist[i].indexOf(tmpVal); 
+            const closeClr = cdist[i].indexOf(tmpVal); //TODO FIX THIS
             console.log('close', i, tmpVal)
             console.log(closeClr);
             closelbl[i] = closeClr;
