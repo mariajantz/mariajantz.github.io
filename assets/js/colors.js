@@ -297,17 +297,20 @@ function sortColors(clr_list, ref_clrs) {
     //then knock out one of a pair of colors that is difficult to distinguish in any space, but only allow knocking out clr_list colors not ref (locked)
     //then return the list sorted by median distance
     //change to i=ref_clrs.length; i<all_clrs.length
+    var closelbl = Array(cdist.length);
+    closelbl.fill(0); 
     for (var i=0; i<5; i++){
         //calculate the median distances in each row, and if there are any values in the row less than 10
         //they are not likely to be distinguishable so subtract from median to move it down the list?
         //but that should only apply to one of a pair
-        //cmedians.push(median(cdist[i]));
         let tmpArr = cdist[i].slice(0, i).concat(cdist[i].slice(-(cdist[i].length - i - 1))); //ignore 0s on diagonal
         let tmpVal = Math.min(...tmpArr); 
-        if (tmpVal<20){
+        if (tmpVal<15){ //perceptible distance for large boxes of color is about 6; this gives some wiggle room
+            //mark these ones and later remove/put at end the one with the lower median
             const closeClr = cdist[i].indexOf(tmpVal); 
             console.log('close', i, tmpVal)
             console.log(closeClr);
+            closelbl[i] = closeClr;
         }
         
     }
@@ -315,6 +318,7 @@ function sortColors(clr_list, ref_clrs) {
     console.log('median')
     console.log(cmedians)
     console.log(sortIndex(cmedians))
+    console.log(closelbl)
     //console.log([...ref_clrs, ...newlist])
     return all_clrs //combine the locked colors with the sorted ones
 }
