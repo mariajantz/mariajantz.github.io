@@ -327,9 +327,14 @@ function sortColors(clr_list, ref_clrs) {
     //now remove the colors that are close to each other - 
     //first, remove a color if it appears more than once in the list
     //then choose pair value with lower median
-    const clrcount = closelbl.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+
+    const clrcount = {};
+    for (const num of closelbl) {
+        clrcount[num] = clrcount[num] ? clrcount[num] + 1 : 1;
+    }
     console.log(clrcount.keys())
-    console.log([clrcount.values()])
+    console.log(clrcount.values())
+    clrcount.keys().length
     var closemedians = clrcount.keys().map(x => cmedians[x]);
     console.log(closemedians)
     //find the instances where values list here are >1, if any
