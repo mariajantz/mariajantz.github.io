@@ -435,7 +435,6 @@ function updateColors() {
         interpVals(); 
     }
     
-
     //update export
     exportVals(); 
 }
@@ -461,7 +460,7 @@ function interpVals() {
 
     let num_clrs = +document.getElementById('num_clrs').value;
 
-    st_clrs.push(genCandidates(10, st_clrs));
+    st_clrs.push(genCandidates(20, st_clrs));
     //now there should be two colors to have as ends of spectrum; convert to lab and generate mid points
     let lab_clrs = st_clrs.map(x => rgb2lab[st_clrs]); 
 
@@ -476,7 +475,7 @@ function interpVals() {
     console.log(st_clrs);
 
     var new_clrs = newL.map(function (e, i) {
-        return [e, newa[i], newb[i]];
+        return lab2rgb([e, newa[i], newb[i]]);
     });
     console.log(new_clrs)
 
