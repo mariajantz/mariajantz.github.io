@@ -205,9 +205,9 @@ function exportVals(){
     var clst = []; 
     for (var c = 1; c<row0.length; c++){
         if (rchoose==0){
-            clst.push(row0[c].style.backgroundColor); 
+            clst.push(' [' + row0[c].style.backgroundColor.slice(4, -1) + ']');
         } else if (rchoose==1){
-            clst.push(rgbToHex(row0[c].style.backgroundColor)); 
+            clst.push(' ' + rgbToHex(row0[c].style.backgroundColor)); 
         } 
     }
 
