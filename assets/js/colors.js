@@ -416,7 +416,7 @@ function updateColors() {
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
     //TODO: can I do this after add columns but before remove columns? then add a check for the mode-random situation
     //if it's interpolated put second one all the way to the right
-    setLocked(); 
+    setLocked(+num_cols, +num_clrs); 
 
     if ((num_cols - 1) < num_clrs) {
         //console.log('Add columns')
@@ -508,7 +508,7 @@ function interpolateArray(data, fitCount) {
     return newData;
 };
 
-function setLocked() {
+function setLocked(num_cols, num_clrs) {
     //for each column (top row) except the label, check if the checkbox is locked
     var toprow = document.getElementsByClassName('row-0'); 
     var clrs = []; 
@@ -540,12 +540,23 @@ function setLocked() {
                 updateColumnColors('col-' + (i + 1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
                 toprow[i + 1].childNodes[1].checked = true; 
             } else if (i == 1){
-                toprow[toprow.length-1].childNodes[0].value = clrs[i];
+                if ((num_cols - 1) = num_clrs) {
+                    var rowidx = toprow.length-1; 
+                    toprow[rowidx].childNodes[1].checked = true; 
+                } else if ((num_cols - 1) < num_clrs) {
+                    //add: don't check
+                    var rowidx = toprow.length - 1; 
+                } else {
+                    //subtract: check correct idx
+                    var rowidx = num_clrs + 1;
+                    toprow[rowidx].childNodes[1].checked = true; 
+                }
+                toprow[rowidx].childNodes[0].value = clrs[i];
                 let clr_rgb = hexToRgb(clrs[i]);
 
                 //get the parent div
-                updateColumnColors('col-' + (toprow.length).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
-                toprow[toprow.length-1].childNodes[1].checked = true; 
+                updateColumnColors('col-' + (rowidx).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+                
             }
 
         }
