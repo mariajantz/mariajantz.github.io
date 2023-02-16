@@ -1,5 +1,5 @@
-//if you're reading this, I just want you to know I used this project to
-//to teach myself javascript (and procrastinate on my dissertation) so it's a bit messy
+//if you're reading this, please know I used this project to
+//to teach myself javascript (and procrastinate on my dissertation) so the code is a bit messy
 
 genDivsGrid(5);
 exportVals(); 
@@ -8,7 +8,6 @@ exportVals();
 1. sort and choose a subset from cands
 actually show these candidates instead of the random stuff
 2. drag and drop colors to change order (like this) https://stackoverflow.com/questions/73251435/drag-and-drop-cells-on-css-grid-only-works-properly-when-moving-a-cell-to-the-ri
-3. add a "color scale" or interp or something that uniformly spaces between two colors
 4. add a bar for grayscale
 5. add a "show hues" that gets the same color in lab space, diff brightness
 6. generate plots
@@ -208,7 +207,9 @@ function exportVals(){
             clst.push(' [' + row0[c].style.backgroundColor.slice(4, -1) + ']');
         } else if (rchoose==1){
             clst.push(' ' + rgbToHex(row0[c].style.backgroundColor)); 
-        } 
+        } else if (rchoose==2) {
+            clst.push(rgbToHsl(row0[c].style.backgroundColor))
+        }
     }
 
     //TODO format: then print them to the screen in the designated column
@@ -887,3 +888,34 @@ function deltaE(labA, labB) {
     var i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
     return i < 0 ? 0 : Math.sqrt(i);
 }
+
+function rgbToHsl(rgb) {
+    // Choose correct separator
+    let sep = rgb.indexOf(",") > -1 ? "," : " ";
+    // Turn "rgb(r,g,b)" into [r,g,b]
+    rgb = rgb.substring(4).split(")")[0].split(sep);
+
+    let r = (+rgb[0]).toString(16),
+        g = (+rgb[1]).toString(16),
+        b = (+rgb[2]).toString(16);
+
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    const l = Math.max(r, g, b);
+    const s = l - Math.min(r, g, b);
+    const h = s
+        ? l === r
+            ? (g - b) / s
+            : l === g
+                ? 2 + (b - r) / s
+                : 4 + (r - g) / s
+        : 0;
+    let outarr = [
+        60 * h < 0 ? 60 * h + 360 : 60 * h,
+        100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
+        (100 * (2 * l - s)) / 2,
+    ];
+
+    return " [" + h + ", " + s + " %, " + l + " %]"
+};
