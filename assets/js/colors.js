@@ -438,10 +438,13 @@ function updateColors() {
     if (document.getElementById('mode-random').checked){
         runMitchell();
     } else {
+        interpVals(); 
         if (addcol) {
             //deal with locking if there are two locked colors + added vals
+            normblocks[num_cols].childNodes[1].checked = true; 
+            normblocks[num_cols-1].childNodes[1].checked = false; 
         }
-        interpVals(); 
+        
     }
     
     //update export
