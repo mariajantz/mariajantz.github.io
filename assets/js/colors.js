@@ -454,13 +454,14 @@ function interpVals() {
     }
     if (st_clrs.length == 0) {
         st_clrs.push(randColor());
+    } else if (st_clrs.length ==1) {
+        st_clrs.push(genCandidates(20, st_clrs));
     } else {
-        st_clrs = st_clrs[0];
+        st_clrs = st_clrs.slice(0, 2);
     }
 
     let num_clrs = +document.getElementById('num_clrs').value;
-
-    st_clrs.push(genCandidates(20, st_clrs));
+    
     //now there should be two colors to have as ends of spectrum; convert to lab and generate mid points
     let lab_clrs = st_clrs.map(x => rgb2lab(x)); 
 
