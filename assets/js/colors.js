@@ -437,6 +437,7 @@ function updateColors() {
     if (document.getElementById('mode-random').checked){
         runMitchell();
     } else {
+        //deal with locking if there are two locked colors
         interpVals(); 
     }
     
@@ -539,12 +540,12 @@ function setLocked() {
                 updateColumnColors('col-' + (i + 1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
                 toprow[i + 1].childNodes[1].checked = true; 
             } else if (i == 1){
-                toprow.at(-1).childNodes[0].value = clrs[i];
+                toprow[toprow.length-1].childNodes[0].value = clrs[i];
                 let clr_rgb = hexToRgb(clrs[i]);
 
                 //get the parent div
                 updateColumnColors('col-' + (toprow.length).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
-                toprow.at(-1).childNodes[1].checked = true; 
+                toprow[toprow.length-1].childNodes[1].checked = true; 
             }
 
         }
