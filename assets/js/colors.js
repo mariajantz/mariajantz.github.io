@@ -443,7 +443,6 @@ function interpVals() {
     //TODO deal with locking??
     //get random colors for 2 ends of spectrum 
     //interpolate between them
-    console.log('interp')
     //locked colors: only keep the first one
     var row0 = document.getElementsByClassName('row-0');
     var st_clrs = [];
@@ -455,7 +454,7 @@ function interpVals() {
     if (st_clrs.length == 0) {
         st_clrs.push(randColor());
     } else if (st_clrs.length ==1) {
-        st_clrs.push(genCandidates(20, st_clrs));
+        st_clrs.push(genCandidates(4, st_clrs));
     } else {
         st_clrs = st_clrs.slice(0, 2);
     }
