@@ -458,6 +458,7 @@ function interpVals() {
     }
     if (st_clrs.length == 0) {
         st_clrs.push(randColor());
+        st_clrs.push(genCandidates(4, st_clrs));
     } else if (st_clrs.length ==1) {
         st_clrs.push(genCandidates(4, st_clrs));
     } else {
@@ -472,13 +473,7 @@ function interpVals() {
     var newL = interpolateArray([lab_clrs[0][0], lab_clrs[1][0]], num_clrs);
     var newa = interpolateArray([lab_clrs[0][1], lab_clrs[1][1]], num_clrs);
     var newb = interpolateArray([lab_clrs[0][2], lab_clrs[1][2]], num_clrs);
-
-    console.log(newL)
-    console.log(newa)
-    console.log(newb)
     
-    console.log(st_clrs);
-
     var new_clrs = newL.map(function (e, i) {
         return lab2rgb([e, newa[i], newb[i]]);
     });
