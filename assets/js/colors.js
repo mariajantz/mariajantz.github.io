@@ -413,13 +413,18 @@ function updateColors() {
     //var normblocks = gridParent.childNodes;
     var num_clrs = parseInt(document.getElementById('num_clrs').value);
     var num_cols = gridParent.childElementCount / 4 ;
-    //check for locked columns: set the first x columns of the array to be locked and assign the colors there
-    setLocked(); 
+
 
     if ((num_cols - 1) < num_clrs) {
         //console.log('Add columns')
         addColumns(num_clrs, num_cols, gridParent);
-    } else if ((num_cols - 1) > num_clrs) {
+    } 
+    //check for locked columns: set the first x columns of the array to be locked and assign the colors there
+    //TODO: can I do this after add columns but before remove columns? then add a check for the mode-random situation
+    //if it's interpolated put second one all the way to the right
+    setLocked(); 
+
+    if ((num_cols - 1) > num_clrs) {
         //console.log('Subtract columns')
         rmColumns(num_clrs, num_cols, gridParent);
     }
@@ -519,15 +524,36 @@ function setLocked() {
         }
     }
     
-    //after going through all the columns, set each column to a color, check those
-    for (var i = 0; i < clrs.length; i++){
-        toprow[(i+1)].childNodes[0].value = clrs[i]; 
-        let clr_rgb = hexToRgb(clrs[i]);
-        console.log(clr_rgb); 
-        //get the parent div
-        updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
-        toprow[i+1].childNodes[1].checked = true; 
-    }
+    if (document.getElementById('mode-random').checked) {
+        //after going through all the columns, set each column to a color, check those
+        for (var i = 0; i < clrs.length; i++){
+            toprow[(i+1)].childNodes[0].value = clrs[i]; 
+            let clr_rgb = hexToRgb(clrs[i]);
+    
+            //get the parent div
+            updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+            toprow[i+1].childNodes[1].checked = true; 
+        }
+    } else {
+        for (var i = 0; i < clrs.length; i++) {
+            if (i == 0) {
+                toprow[(i + 1)].childNodes[0].value = clrs[i];
+                let clr_rgb = hexToRgb(clrs[i]);
+
+                //get the parent div
+                updateColumnColors('col-' + (i + 1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+                toprow[i + 1].childNodes[1].checked = true; 
+            } else if (i == 1){
+                toprow.at(-1).childNodes[0].value = clrs[i];
+                let clr_rgb = hexToRgb(clrs[i]);
+
+                //get the parent div
+                updateColumnColors('col-' + (toprow.length).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
+                toprow.at(-1).childNodes[1].checked = true; 
+            }
+
+        }
+    }   
 }
 
 function addColumns(new_colCount, cur_colCount, parentDiv) {
