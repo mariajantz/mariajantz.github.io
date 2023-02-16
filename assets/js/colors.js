@@ -936,5 +936,5 @@ function rgbToHsl(rgb) {
     s = +(s * 100).toFixed(1);
     l = +(l * 100).toFixed(1);
 
-    return " [" + Math.round(h) + ", " + s + "%, " + l + "%]"
+    return " hsl(" + h + ", " + s + "%, " + l + "%)";
 };
