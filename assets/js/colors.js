@@ -432,7 +432,7 @@ function updateColors() {
 
     //reload these values
     var normblocks = gridParent.childNodes;
-    var num_cols = normblocks.length / 4 ;
+    //var num_cols = normblocks.length / 4 ;
 
     //add array to update depending on radio button
     if (document.getElementById('mode-random').checked){
@@ -441,7 +441,7 @@ function updateColors() {
         interpVals(); 
         if (addcol) {
             //deal with locking if there are two locked colors + added vals
-            normblocks[num_cols].childNodes[1].checked = true; 
+            normblocks[num_clrs].childNodes[1].checked = true; 
             normblocks[num_cols-1].childNodes[1].checked = false; 
         }
         
