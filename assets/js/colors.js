@@ -421,6 +421,7 @@ function updateColors() {
     if ((num_cols - 1) < num_clrs) {
         //console.log('Add columns')
         addColumns(num_clrs, num_cols, gridParent);
+        var addcol = True; 
     } 
 
 
@@ -437,7 +438,9 @@ function updateColors() {
     if (document.getElementById('mode-random').checked){
         runMitchell();
     } else {
-        //deal with locking if there are two locked colors
+        if (addcol) {
+            //deal with locking if there are two locked colors + added vals
+        }
         interpVals(); 
     }
     
@@ -741,10 +744,21 @@ function restoreDefaultValues() {
     document.getElementById('deut_check').checked = true;
     document.getElementById('prot_check').checked = true;
     document.getElementById('trit_check').checked = true;
+    document.getElementById('mode-random').checked = true; 
     //document.getElementById('gb_check').checked = false;
 
     document.getElementById('target').replaceChildren(); 
     genDivsGrid(4);
+}
+
+function defaultGradRange() {
+    document.getElementById('min_bright').value = 0;
+    document.getElementById("max_bright").value = 100;
+}
+
+function defaultRandRange() {
+    document.getElementById('min_bright').value = 40;
+    document.getElementById("max_bright").value = 80;
 }
 
 
