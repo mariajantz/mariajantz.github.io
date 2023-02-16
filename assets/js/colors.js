@@ -239,10 +239,10 @@ function runMitchell(){
     for (var i = 0; i<total_cands; i++){
         st_clrs.push(genCandidates(num_gen, st_clrs)); 
     }
-    console.log(st_clrs); 
+    //console.log(st_clrs); 
 
     //now sort them; if certain colors are locked then make those required and get dists from everything else
-    console.log(keepclrs.length)
+    //console.log(keepclrs.length)
     if (keepclrs.length == 0) {
         //sort with no locked
         console.log('sort no lock')
@@ -427,11 +427,43 @@ function updateColors() {
     var normblocks = gridParent.childNodes;
     var num_cols = normblocks.length / 4 ;
 
-    //add array to update 
-    runMitchell();
+    //add array to update depending on radio button
+    if (document.getElementById('mode-random').checked){
+        runMitchell();
+    } else {
+        interpVals(); 
+    }
+    
 
     //update export
     exportVals(); 
+}
+
+function interpVals() {
+    //TODO deal with locking??
+    //get random colors for 2 ends of spectrum 
+    //interpolate between them
+    console.log('interp')
+    //locked colors: only keep the first one
+    var row0 = document.getElementsByClassName('row-0');
+    var st_clrs = [];
+    for (var c = 1; c < row0.length; c++) {
+        if (row0[c].childNodes[1].checked) {
+            st_clrs.push(hexToRgbArr(row0[c].childNodes[0].value));
+        }
+    }
+    if (st_clrs.length == 0) {
+        st_clrs.push(randColor());
+    } else {
+        st_clrs = st_clrs[0];
+    }
+
+    let num_clrs = +document.getElementById('num_clrs').value;
+
+    st_clrs.push(genCandidates(10, st_clrs));
+    //now there should be two colors to have as ends of spectrum
+    
+    console.log(st_clrs);
 }
 
 function setLocked() {
