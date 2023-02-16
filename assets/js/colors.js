@@ -363,6 +363,7 @@ function sortColors(clr_list, ref_clrs) {
     //now cycle through everything left and sort - minimum minimum distance at the end, remove it from other mins
     var cdist = []; 
     for (var i = 0; i<all_clrs.length; i++){
+        cdist.push([]);
         for (var j = 0; j < all_clrs.length; j++) {
             //convert the color to deut, then lab
             //calculate distance
@@ -461,10 +462,50 @@ function interpVals() {
     let num_clrs = +document.getElementById('num_clrs').value;
 
     st_clrs.push(genCandidates(10, st_clrs));
-    //now there should be two colors to have as ends of spectrum
+    //now there should be two colors to have as ends of spectrum; convert to lab and generate mid points
+    let lab_clrs = st_clrs.map(x => rgb2lab[st_clrs]); 
+
+    var newL = interpolateArray([lab_clrs[0][0], lab_clrs[1][0]], num_clrs);
+    var newa = interpolateArray([lab_clrs[0][1], lab_clrs[1][1]], num_clrs);
+    var newb = interpolateArray([lab_clrs[0][2], lab_clrs[1][2]], num_clrs);
+
+    console.log(newL)
+    console.log(newa)
+    console.log(newb)
     
     console.log(st_clrs);
+
+    var new_clrs = newL.map(function (e, i) {
+        return [e, newa[i], newb[i]];
+    });
+    console.log(new_clrs)
+
+    for (var i = 0; i < num_clrs; i++) {
+        updateColumnColors('col-' + (i + 1).toString(), new_clrs[i])
+        let e = document.getElementsByClassName('row-0 col-' + (i + 1).toString());
+        e[0].childNodes[0].value = rgbArrToHex(new_clrs[i]);
+    }
 }
+
+function interpolateArray(data, fitCount) {
+
+    var linearInterpolate = function (before, after, atPoint) {
+        return before + (after - before) * atPoint;
+    };
+
+    var newData = new Array();
+    var springFactor = new Number((data.length - 1) / (fitCount - 1));
+    newData[0] = data[0]; // for new allocation
+    for (var i = 1; i < fitCount - 1; i++) {
+        var tmp = i * springFactor;
+        var before = new Number(Math.floor(tmp)).toFixed();
+        var after = new Number(Math.ceil(tmp)).toFixed();
+        var atPoint = tmp - before;
+        newData[i] = linearInterpolate(data[before], data[after], atPoint);
+    }
+    newData[fitCount - 1] = data[data.length - 1]; // for new allocation
+    return newData;
+};
 
 function setLocked() {
     //for each column (top row) except the label, check if the checkbox is locked
