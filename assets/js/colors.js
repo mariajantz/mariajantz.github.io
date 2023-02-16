@@ -421,7 +421,7 @@ function updateColors() {
     if ((num_cols - 1) < num_clrs) {
         //console.log('Add columns')
         addColumns(num_clrs, num_cols, gridParent);
-        var addcol = True; 
+        var addcol = true; 
     } 
 
 
