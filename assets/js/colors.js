@@ -362,12 +362,12 @@ function sortColors(clr_list, ref_clrs) {
 
     //now cycle through everything left and sort - minimum minimum distance at the end, remove it from other mins
     var cdist = []; 
-    for (var i = 0; i<all_clrs.length; i++){
+    for (var i = 0; i<output.length; i++){
         cdist.push([]);
-        for (var j = 0; j < all_clrs.length; j++) {
+        for (var j = 0; j < output.length; j++) {
             //convert the color to deut, then lab
             //calculate distance
-            let dtmp = Math.min(deltaE(rgb2lab(toCB(all_clrs[i], 1)), rgb2lab(toCB(all_clrs[j], 1))), deltaE(rgb2lab(toCB(all_clrs[j], 1)), rgb2lab(toCB(all_clrs[i], 1)))); 
+            let dtmp = Math.min(deltaE(rgb2lab(toCB(output[i], 1)), rgb2lab(toCB(output[j], 1))), deltaE(rgb2lab(toCB(output[j], 1)), rgb2lab(toCB(output[i], 1)))); 
             cdist[i].push(dtmp);
         }
     }
@@ -462,7 +462,7 @@ function interpVals() {
 
     st_clrs.push(genCandidates(20, st_clrs));
     //now there should be two colors to have as ends of spectrum; convert to lab and generate mid points
-    let lab_clrs = st_clrs.map(x => rgb2lab[st_clrs]); 
+    let lab_clrs = st_clrs.map(x => rgb2lab(x)); 
 
     var newL = interpolateArray([lab_clrs[0][0], lab_clrs[1][0]], num_clrs);
     var newa = interpolateArray([lab_clrs[0][1], lab_clrs[1][1]], num_clrs);
@@ -480,9 +480,10 @@ function interpVals() {
     console.log(new_clrs)
 
     for (var i = 0; i < num_clrs; i++) {
-        updateColumnColors('col-' + (i + 1).toString(), new_clrs[i])
+        let tmpclr = new_clrs[i].map(x => Math.floor(x))
+        updateColumnColors('col-' + (i + 1).toString(), tmpclr)
         let e = document.getElementsByClassName('row-0 col-' + (i + 1).toString());
-        e[0].childNodes[0].value = rgbArrToHex(new_clrs[i]);
+        e[0].childNodes[0].value = rgbArrToHex(tmpclr);
     }
 }
 
