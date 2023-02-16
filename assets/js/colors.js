@@ -543,7 +543,7 @@ function setLocked(num_cols, num_clrs) {
                 updateColumnColors('col-' + (i + 1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
                 toprow[i + 1].childNodes[1].checked = true; 
             } else if (i == 1){
-                if ((num_cols - 1) = num_clrs) {
+                if ((num_cols - 1) == num_clrs) {
                     var rowidx = toprow.length-1; 
                     toprow[rowidx].childNodes[1].checked = true; 
                 } else if ((num_cols - 1) < num_clrs) {
