@@ -895,27 +895,46 @@ function rgbToHsl(rgb) {
     // Turn "rgb(r,g,b)" into [r,g,b]
     rgb = rgb.substring(4).split(")")[0].split(sep);
 
-    let r = (+rgb[0]).toString(16),
-        g = (+rgb[1]).toString(16),
-        b = (+rgb[2]).toString(16);
+    // Make r, g, and b fractions of 1
+    let r = rgb[0] / 255,
+        g = rgb[1] / 255,
+        b = rgb[2] / 255;
 
-    r /= 255;
-    g /= 255;
-    b /= 255;
-    const l = Math.max(r, g, b);
-    const s = l - Math.min(r, g, b);
-    const h = s
-        ? l === r
-            ? (g - b) / s
-            : l === g
-                ? 2 + (b - r) / s
-                : 4 + (r - g) / s
-        : 0;
-    let outarr = [
-        60 * h < 0 ? 60 * h + 360 : 60 * h,
-        100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
-        (100 * (2 * l - s)) / 2,
-    ];
+    // Find greatest and smallest channel values
+    let cmin = Math.min(r, g, b),
+        cmax = Math.max(r, g, b),
+        delta = cmax - cmin,
+        h = 0,
+        s = 0,
+        l = 0;
+    // Calculate hue
+    // No difference
+    if (delta == 0)
+        h = 0;
+    // Red is max
+    else if (cmax == r)
+        h = ((g - b) / delta) % 6;
+    // Green is max
+    else if (cmax == g)
+        h = (b - r) / delta + 2;
+    // Blue is max
+    else
+        h = (r - g) / delta + 4;
 
-    return " [" + h + ", " + s + " %, " + l + " %]"
+    h = Math.round(h * 60);
+
+    // Make negative hues positive behind 360°
+    if (h < 0)
+        h += 360;
+    // Calculate lightness
+    l = (cmax + cmin) / 2;
+
+    // Calculate saturation
+    s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+    // Multiply l and s by 100
+    s = +(s * 100).toFixed(1);
+    l = +(l * 100).toFixed(1);
+
+    return " [" + Math.round(h) + ", " + s + "%, " + l + "%]"
 };
