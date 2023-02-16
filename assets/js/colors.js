@@ -413,16 +413,16 @@ function updateColors() {
     //var normblocks = gridParent.childNodes;
     var num_clrs = parseInt(document.getElementById('num_clrs').value);
     var num_cols = gridParent.childElementCount / 4 ;
-
+    //check for locked columns: set the first x columns of the array to be locked and assign the colors there
+    //TODO: can I do this after add columns but before remove columns? then add a check for the mode-random situation
+    //if it's interpolated put second one all the way to the right
+    setLocked(); 
 
     if ((num_cols - 1) < num_clrs) {
         //console.log('Add columns')
         addColumns(num_clrs, num_cols, gridParent);
     } 
-    //check for locked columns: set the first x columns of the array to be locked and assign the colors there
-    //TODO: can I do this after add columns but before remove columns? then add a check for the mode-random situation
-    //if it's interpolated put second one all the way to the right
-    setLocked(); 
+
 
     if ((num_cols - 1) > num_clrs) {
         //console.log('Subtract columns')
