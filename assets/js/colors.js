@@ -1,8 +1,94 @@
 //if you're reading this, please know I used this project to
 //to teach myself javascript (and procrastinate on my dissertation) so the code is a bit messy
+//import Plotly from 'plotly.js-dist'
 
 genDivsGrid(5);
 exportVals(); 
+
+//collapsible instructions
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+
+//deal with example plot
+function makeData(){
+    //generate random points for the correct number of traces, based on number of input colors 
+    var toprow = document.getElementsByClassName('row-0');
+    var clrs = [];
+    for (var c = 1; c < toprow.length; c++) {
+        //if so, mark down the current color 
+        clrs.push(toprow[c].childNodes[0].value);
+    }
+    console.log(clrs)
+
+    const xvals = [1, 2, 3, 4, 5, 6, 7, 8]; 
+    var all_traces = []; 
+    for (var n=0; n<clrs.length; n++){
+        let tmptrace = {
+            name: 'trace ' + (n+1), 
+            x: xvals, 
+            y: Array.from({ length: xvals.length }, () => Math.floor(Math.random() * 10 + n*2)),
+            line: {
+                color: clrs[n], 
+                width: 3
+            }
+        }
+        all_traces.push(tmptrace);
+    }
+    return all_traces
+}
+
+var layout = {
+    showlegend: false,
+    height: 200, 
+    margin: {
+        l: 20,
+        r: 20,
+        b: 20,
+        t: 20,
+        pad: 4
+    },
+}
+
+Plotly.newPlot('plots', makeData(), layout, {
+    responsive: true,
+    displaylogo: false, 
+    staticPlot: true 
+});
+
+function restylePlot() {
+    var ele = document.getElementsByClassName('plotcolors');
+    var row0 = document.getElementsByClassName('row-0');
+    var graphDiv = document.getElementById('plots')
+    for (var i = 0; i < ele.length; i++) {
+        if (ele[i].checked) {
+            //get the new color for each trace and set it
+            for (var j=0; j<graphDiv.data.length; j++){
+                // Choose correct separator
+                let rgb = row0[j + 1].style.backgroundColor; 
+                let sep = rgb.indexOf(",") > -1 ? "," : " ";
+                // Turn "rgb(r,g,b)" into [r,g,b]
+                rgb = rgb.substring(4).split(")")[0].split(sep);
+                let update = {
+                    'line.color': rgbArrToHex(toCB(rgb, i))
+                };
+                Plotly.restyle(graphDiv, update, j);
+            }
+            
+        }
+    }
+}
 
 /*current TODOs: 
 1. sort and choose a subset from cands
@@ -19,7 +105,7 @@ function genDivsGrid(cols) {
     var e = document.getElementById("target");
     var rows = 4;
     const col_lbl = cols +1; 
-    const row_lbls = ['Normal vision', 'Deuteranopia', 'Protanopia', 'Tritanopia'];
+    const row_lbls = ['Full color', 'Deuteranopia', 'Protanopia', 'Tritanopia'];
     for (var r = 0; r < rows; r++) {
         for (var c = 0; c < col_lbl; c++) {
             var cell = document.createElement('div'); 
@@ -450,6 +536,11 @@ function updateColors() {
     
     //update export
     exportVals(); 
+    Plotly.newPlot('plots', makeData(), layout, {
+        responsive: true,
+        displaylogo: false
+    });
+    restylePlot(); 
 }
 
 function interpVals() {
@@ -724,6 +815,16 @@ function toCB(rgbArr, cbType) {
         return [Math.round(Math.max(0, Math.min(255, outval[0]))),
         Math.round(Math.max(0, Math.min(255, outval[1]))),
         Math.round(Math.max(0, Math.min(255, outval[2])))];
+    }
+    else if (cbType ==4) {
+        //convert to grayscale
+        const r = rgbArr[0] * .3; // ------> Red is low
+        const g = rgbArr[1] * .59; // ---> Green is high
+        const b = rgbArr[2] * .11; // ----> Blue is very low
+
+        const gray = Math.round(r + g + b);
+        console.log(gray)
+        return [gray, gray, gray]
     }
 }
 

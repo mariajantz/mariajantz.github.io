@@ -5,51 +5,55 @@
     <title>Chameleon</title>
     <link rel="stylesheet" href="assets/css/colors.css">
     <link rel="icon" href="media/chameleon.png">
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
-    <img src="media/chameleon.png" style="width:3em; float:left">
-    <h1 id="test">Chameleon: Colorblind-friendly color palette generator</h1>
-
-    <p id="instruct"><b>Instructions:</b> 
-        This tool generates a random set of colors and displays a selection of them that are
-        most distinguishable across multiple different types of color vision. Because it is randomly generating each set, 
-        some color sets will include colors that are not as distinguishable, so please choose colors at your own discretion. 
+    <div id="header">
+    <img src="media/chameleon.png">
+    <h1>Chameleon</h1>
+    <h2>Colorblind-friendly color palette generator</h2>
+    </div>
+    <button class="collapsible"><b>Instructions</b></button>
+    <div class="instruct">
+        <p>This tool generates a random set of colors and displays a selection of them that are
+        most distinguishable across multiple different types of color vision. Because it is randomly generating each set,
+        some color sets will include colors that are not as distinguishable, so please choose colors at your own discretion.
         <br /> <br />
-        Colors are randomly generated each time the "Generate colors" button is pressed based on a calculation of how distinguishable they are 
-        from each other in normal vision and with color vision deficiencies. Inputs can change the number of colors generated, 
+        Colors are randomly generated each time the "Generate colors" button is pressed based on a calculation of how
+        distinguishable they are
+        from each other in normal vision and with color vision deficiencies. Inputs can change the number of colors generated,
         the default color value range (ie lighter or darker colors overall), and
         to ignore a certain type of color vision in the calculation of color distinguishability uncheck that box.
-        <br/> <br />
+        <br /> <br />
         Each column displays a color with the simulated view of several
-        types of color vision. To select your own colors, use the color selector in the top right of a column, and to 
-        lock a color into the set, check the box at the top left of the column. 
-    </p>
+        types of color vision. To select your own colors, use the color selector in the top right of a column, and to
+        lock a color into the set, check the box at the top left of the column.</p>
+    </div>
+    
+    <div id="content">
 
-    <form id="mode">
+    <form>
         <label>
-            <h3>Mode: </h3>
+            <span>Mode: </span>
             <input type="radio" id="mode-random" class="mode" name="mode" value="random" onclick="defaultRandRange()" checked>
             <span>Random colors</span>
             <input type="radio" id="mode-uniform" class="mode" name="mode" value="scale" onclick="defaultGradRange()">
             <span>Gradient</span>
-
+        
         </label>
-    </form>
-
-
-    <form>
         <div class="form-column">
         <label class="c1">
             <span>Number of colors</span>
             <input id='num_clrs' type="number" value=5 min=2 max="12">
         </label>
         <label class="c1">
-            <span>Minimum brightness (0-100, 0=black)</span>
+            <span>Minimum lightness (0-100, 0=black)</span>
             <input id='min_bright' type="number" value="40" min="0" max="90" onchange="validBright(this)">
         </label>
         <label class="c1">
-            <span>Maximum brightness (0-100, 100=white)</span>
+            <span>Maximum lightness (0-100, 100=white)</span>
             <input id='max_bright' type="number" value="80" min="10" max="100" onchange="validBright(this)">
         </label>
         </div>
@@ -77,9 +81,8 @@
     <div id="target"></div>
     <div class="break"></div>
     <div class="export">
-        <h2>Export color values</h2>
-    </div>
-
+        <h3>Export color values</h3>
+    
         <form id="export_form">
                 <input type="radio" id="rgb" class="export_values" name="export_values" value="rgb" checked>
                 <label>RGB</label>
@@ -90,8 +93,26 @@
                 <button id="update_export" type="button" onclick="exportVals()">Update</button>
         </form>
         <p id="export_text"></p>
-
+    </div>
     <div class="break"></div>
+
+    <div id="plot_container">
+        <h3>Example plot</h3>
+                <form id="plot_form">
+                    <input type="radio" id="fullcolor" class="plotcolors" name="plotcolors" value="fullcolor" onchange="restylePlot()" checked>
+                    <label>Full color</label>
+                    <input type="radio" id="deutplot" class="plotcolors" name="plotcolors" value="deutplot" onchange="restylePlot()" >
+                    <label>Deut.</label>
+                    <input type="radio" id="protplot" class="plotcolors" name="plotcolors" value="protplot" onchange="restylePlot()" >
+                    <label>Prot.</label>
+                    <input type="radio" id="tritplot" class="plotcolors" name="plotcolors" value="tritplot" onchange="restylePlot()" >
+                    <label>Trit.</label>
+                    <input type="radio" id="grayplot" class="plotcolors" name="plotcolors" value="grayplot" onchange="restylePlot()">
+                    <label>Grayscale</label>
+                </form>
+        <div id="plots"></div>
+    </div>
+    
 
     <p id="info"><b>More information about colorblindness: </b> <br/>
         <a href="http://mkweb.bcgsc.ca/colorblind/index.mhtml">Understanding color vision and example color palettes</a> <br />
@@ -101,6 +122,9 @@
     </p>
 
     <script src="assets/js/colors.js"></script>
+
+
+    </div>
 </body>
 
 </html>

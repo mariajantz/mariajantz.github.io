@@ -1,4 +1,33 @@
-/* Enter color paramters */
+#header {
+    background-color: rgb(83, 83, 83);
+    padding-top: 1em;
+    min-height: 6em; 
+    overflow: hidden; 
+}
+
+#header img {
+    width: 3em;
+    float: left;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.5em;
+}
+#header h1 {
+    margin: 0px;
+    float: left;
+    clear: right;
+    width: 90%;
+    text-align: left;
+    color: white; 
+}
+#header h2 {
+    margin: 0px;
+    padding-bottom: 1em;
+    float: left;
+    color: white; 
+}
+
+/* Enter color parameters */
 label {
     display: block;
     margin: 10px 0;
@@ -27,18 +56,100 @@ body {
     text-align: center;
     color: #222;
     font-family: Arial, Helvetica, sans-serif;
-    width: 95%; 
-    margin: auto; 
+    width: 100%; 
+    margin: 0px; 
+}
+
+#content {
+    width:95%;
+    max-width: 85em; 
+    margin: auto;
+}
+
+/* .instruct {
+    width: 70%; 
+    clear: both;
+} */
+
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 12px;
+    padding-left: 5.1em;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1em;
+}
+
+.active,
+.collapsible:hover {
+    background-color: #8e8e8e;
+}
+
+.collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2212";
 }
 
 .instruct {
-    width: 70%; 
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+
+.instruct p {
+    max-width: 80em;
+    margin: auto; 
+}
+
+#plot_container {
+    float: left;
+    height: 20em; 
+    width: 40%;
+}
+
+#plot_container h3 {
+    margin: 0.5em;
+}
+
+#plot_form {
+    margin: auto;
+    width: fit-content;
+}
+
+#plot_form input {
+    float: left; 
+}
+
+#plot_form label {
+    float: left;
+    margin: .2em;
+}
+
+#plots {
+    clear: both; 
+}
+
+.export {
+    float: left;
+    width: 60%;
 }
 
 #export_form {
     text-align: left;
     float: left;
-    width: 50%; 
+    width: 30%; 
     padding: 5px;
 }
 
@@ -61,7 +172,7 @@ body {
 p {
     text-align: justify;
     font-size: .9em;
-    background-color: #eee;
+    background-color: #f1f1f1;
     padding: 1em; 
 }
 
@@ -70,7 +181,7 @@ p {
 }
 
 #export_text {
-    width: 40%; 
+    width: 50%; 
     float: left;
     margin: 0 1em;
     border: solid;
