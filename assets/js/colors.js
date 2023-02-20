@@ -51,7 +51,7 @@ function makeData(){
 
 var layout = {
     showlegend: true,
-    height: 200, 
+    height: 275, 
     margin: {
         l: 20,
         r: 20,
