@@ -7,6 +7,8 @@
     <link rel="icon" href="media/chameleon.png">
     <!-- Include Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+
 </head>
 
 <body>
@@ -56,6 +58,10 @@
             <span>Maximum lightness (0-100, 100=white)</span>
             <input id='max_bright' type="number" value="80" min="10" max="100" onchange="validBright(this)">
         </label>
+        <label class="c1">
+            <span>Gradient smoothing (0-100, 100=most smoothing)</span>
+            <input id='smoothing' type="number" value="60">
+        </label>
         </div>
         <div class="form-column">
         <label class="c2">
@@ -69,6 +75,10 @@
         <label class="c2">
             <input id='trit_check' type="checkbox" checked>
             <span>Tritanopia</span>
+        </label>
+        <label class="c2">
+            <input id='lightcorrect' type="checkbox">
+            <span>Correct lightness (gradient only)</span>
         </label>
 
         </div>
@@ -118,7 +128,7 @@
         <a href="http://mkweb.bcgsc.ca/colorblind/index.mhtml">Understanding color vision and example color palettes</a> <br />
         <a href="https://www.datylon.com/blog/data-visualization-for-colorblind-readers">More on design for colorblindness</a> <br />
         Inspiration and resources include: <a href="https://projects.susielu.com/viz-palette">Viz Palette</a>, <a href="https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html">paper from Machado et al</a> on calculating colorblindness visualizations, 
-        <a href="https://github.com/antimatter15/rgb-lab">RGB-CIELAB color conversions</a>
+        <a href="https://github.com/antimatter15/rgb-lab">RGB-CIELAB color conversions</a>, <a href="https://gka.github.io/palettes/">Multi-hue color scales</a>
     </p>
 
     <script src="assets/js/colors.js"></script>

@@ -1,6 +1,14 @@
 //if you're reading this, please know I used this project to
 //to teach myself javascript (and procrastinate on my dissertation) so the code is a bit messy
-//import Plotly from 'plotly.js-dist'
+
+/*current things to consider adding: 
+- make site input pretty
+- add tooltips
+- option to switch plot type to scatter? 
+- drag and drop colors to change order (like this) https://stackoverflow.com/questions/73251435/drag-and-drop-cells-on-css-grid-only-works-properly-when-moving-a-cell-to-the-ri
+- add a "show hues" option that gets the same color in lab space, diff brightness (not sure about best way to display this)
+
+*/
 
 genDivsGrid(5);
 exportVals(); 
@@ -90,16 +98,6 @@ function restylePlot() {
     }
 }
 
-/*current TODOs: 
-1. sort and choose a subset from cands
-actually show these candidates instead of the random stuff
-2. drag and drop colors to change order (like this) https://stackoverflow.com/questions/73251435/drag-and-drop-cells-on-css-grid-only-works-properly-when-moving-a-cell-to-the-ri
-4. add a bar for grayscale
-5. add a "show hues" that gets the same color in lab space, diff brightness
-6. generate plots
-design site input pretty
-scale dists?
-*/
 
 function genDivsGrid(cols) {
     var e = document.getElementById("target");
@@ -503,7 +501,7 @@ function updateColors() {
     //check for locked columns: set the first x columns of the array to be locked and assign the colors there
     //TODO: can I do this after add columns but before remove columns? then add a check for the mode-random situation
     //if it's interpolated put second one all the way to the right
-    setLocked(+num_cols, +num_clrs); 
+    const numlocked = setLocked(+num_cols, +num_clrs); 
 
     if ((num_cols - 1) < num_clrs) {
         //console.log('Add columns')
@@ -524,14 +522,17 @@ function updateColors() {
     //add array to update depending on radio button
     if (document.getElementById('mode-random').checked){
         runMitchell();
-    } else {
+    } else if (document.getElementById('mode-uniform').checked && numlocked<=2){
         interpVals(); 
         if (addcol) {
             //deal with locking if there are two locked colors + added vals
             normblocks[num_clrs].childNodes[1].checked = true; 
             normblocks[num_cols-1].childNodes[1].checked = false; 
         }
-        
+    } else {
+        //MULTI-HUE WITH STEP CORRECTION
+        //this is in line with: https://www.vis4.net/blog/2013/09/mastering-multi-hued-color-scales/
+        interpMulti(); 
     }
     
     //update export
@@ -606,6 +607,94 @@ function interpolateArray(data, fitCount) {
     return newData;
 };
 
+
+function interpMulti() {
+    //TODO deal with locking??
+    console.log('interp multi')
+    //this one assumes at least 3 values are checked. Therefore, it will do the following: 
+    //Remember the checked colors
+    //Do a Bezier interpolation between them in each dimension to smooth the curves
+    //Do a lightness correction
+    //average the Bezier and lightness correction
+    //then figure out which colors are closest to original locked colors and check those boxes
+    let num_clrs = +document.getElementById('num_clrs').value;
+    var row0 = document.getElementsByClassName('row-0');
+    var st_clrs = [];
+    for (var c = 1; c < row0.length; c++) {
+        if (row0[c].childNodes[1].checked) {
+            st_clrs.push(row0[c].childNodes[0].value);
+        }
+    }
+    //bezier interpolated colors
+    var interp_clrs = chroma.bezier(st_clrs).scale().colors(num_clrs);
+    //linearly interpolated colors
+    var light_clrs = chroma.scale(st_clrs).colors(num_clrs)// 
+
+    //average these two together to end up less grayish - do not bother with lightness correction unless checked
+    var new_clrs = [];
+    let smoothval = +document.getElementById('smoothing').value; 
+    for (var i = 0; i < num_clrs; i++) {
+        new_clrs.push(chroma.average([light_clrs[i], interp_clrs[i]], 'rgb', [(100-smoothval)/100, smoothval/100]));
+    }
+    if (document.getElementById('lightcorrect').checked) {
+        //update lightness -- I don't like chroma does it so I convert to lab, get minimum and maximum end, and scale in between
+        new_clrs = correctLight(new_clrs);
+    }
+
+    //get nearest value to each original color
+    var near_idx = []; 
+    for (var i=0; i<st_clrs.length; i++){
+        //get distance to each of the colors
+        let distTmp = [];
+        for (var j=0; j<new_clrs.length; j++){
+            distTmp.push(chroma.deltaE(st_clrs[i], new_clrs[j]))
+        }
+        //make minimum distance part of near idx to be checked
+        near_idx.push(distTmp.indexOf(Math.min(...distTmp)))
+    }
+
+    for (var i = 0; i < num_clrs; i++) {
+        let tmpclr = new_clrs[i];
+        updateColumnColors('col-' + (i + 1).toString(), hexToRgbArr(tmpclr))
+        let e = document.getElementsByClassName('row-0 col-' + (i + 1).toString());
+        e[0].childNodes[0].value = tmpclr;
+        if (near_idx.includes(i)){
+            e[0].childNodes[1].checked = true; 
+        } else {
+            e[0].childNodes[1].checked = false; 
+        }
+        
+    }
+
+    //calculate the nearest values to the starting colors and check those boxes
+
+}
+
+function correctLight(hexClrArr){
+    //convert hex to lab
+    let labClr = []
+    console.log('hello')
+    for (var i=0; i<hexClrArr.length; i++){
+        labClr.push(rgb2lab(hexToRgbArr(hexClrArr[i])));
+    }
+    console.log(labClr)
+    //interpolate L values between beginning and end of array
+    let newL = interpolateArray([labClr[0][0], labClr[labClr.length - 1][0]], hexClrArr.length);
+    
+    var newArr = []; 
+    for (var i = 0; i < hexClrArr.length; i++) {
+        let tmpClr = lab2rgb([newL[i], labClr[i][1], labClr[i][2]]);
+
+        console.log([Math.round(tmpClr[0]), Math.round(tmpClr[1]), Math.round(tmpClr[2])]); 
+        console.log(rgbArrToHex([Math.round(tmpClr[0]), Math.round(tmpClr[1]), Math.round(tmpClr[2])]))
+        newArr.push(rgbArrToHex([Math.round(tmpClr[0]), Math.round(tmpClr[1]), Math.round(tmpClr[2])]))
+    }
+    console.log(newArr)
+
+    return newArr
+}
+
+
 function setLocked(num_cols, num_clrs) {
     //for each column (top row) except the label, check if the checkbox is locked
     var toprow = document.getElementsByClassName('row-0'); 
@@ -614,7 +703,16 @@ function setLocked(num_cols, num_clrs) {
         if (toprow[c].childNodes[1].checked){
             //if so, mark down the current color and uncheck the checkbox
             clrs.push(toprow[c].childNodes[0].value); 
-            toprow[c].childNodes[1].checked = false; 
+        }
+    }
+
+    if (document.getElementById('mode-random').checked || clrs.length<=2) {
+        //do NOT do this step for multi hue interpolation
+        for (var c = 1; c < toprow.length; c++) {
+            if (toprow[c].childNodes[1].checked) {
+                //if so, mark down the current color and uncheck the checkbox
+                toprow[c].childNodes[1].checked = false;
+            }
         }
     }
     
@@ -628,7 +726,7 @@ function setLocked(num_cols, num_clrs) {
             updateColumnColors('col-' + (i+1).toString(), [clr_rgb['r'], clr_rgb['g'], clr_rgb['b']])
             toprow[i+1].childNodes[1].checked = true; 
         }
-    } else {
+    } else if (clrs.length <= 2) {
         for (var i = 0; i < clrs.length; i++) {
             if (i == 0) {
                 toprow[(i + 1)].childNodes[0].value = clrs[i];
@@ -655,7 +753,9 @@ function setLocked(num_cols, num_clrs) {
             }
 
         }
-    }   
+    }  
+    //outputs number of locked columns
+    return clrs.length
 }
 
 function addColumns(new_colCount, cur_colCount, parentDiv) {
@@ -856,11 +956,13 @@ function restoreDefaultValues() {
 function defaultGradRange() {
     document.getElementById('min_bright').value = 0;
     document.getElementById("max_bright").value = 100;
+    document.getElementById("num_clrs").setAttribute('max', 20)
 }
 
 function defaultRandRange() {
     document.getElementById('min_bright').value = 40;
     document.getElementById("max_bright").value = 80;
+    document.getElementById("num_clrs").setAttribute('max', 12)
 }
 
 
