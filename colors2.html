@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chameleon Color Scheme Generator</title>
+
+    <link rel="stylesheet" href="assets/css/colors2.css">
+    <!-- Style -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alwan/dist/css/alwan.min.css" />
+
+    <!-- Script (UMD) -->
+    <script src="https://cdn.jsdelivr.net/npm/alwan/dist/js/alwan.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.6/tailwind.min.css"> -->
+    <!-- <link rel="icon" href="media/chameleon.png"> -->
+    <!-- Include Plotly.js -->
+    <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+</head>
+
+<body>
+    <div id="header">
+        <h1>Chameleon</h1>
+        <h2>Colorblind-friendly color palette generator</h2>
+    </div>
+
+    <div id="content">
+        <div class="subcontent">
+
+            <h3>Settings</h3>
+            <div class="flex-container">
+
+                <div class="left" id="settings-left">
+                    <label class="container">
+                        <input class="scheme-type" id='cat-scheme' type="radio" checked="checked"
+                            name="radio-scaletype">
+                        Categorical
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input class="scheme-type" id='grad-scheme' type="radio" name="radio-scaletype">
+                        Gradient
+                    </label>
+                    <br><br>
+                    <button id="reset" type="button" onclick="">Reset Default</button>
+                    <br><br>
+                    <button class="click" id='generate' type="button" onclick="">Generate colors</button>
+                </div>
+
+                <div id="settings-right" class="right">
+
+                    <label id="clrcount">
+                        <input id='num_clrs' type="number" value=5 min=2 max=20>
+                        <span>Number of colors</span>
+                    </label>
+                    <br>
+                    <label id="minlight">
+                        <input id='min_bright' type="number" value=30 min=0 max=100>
+                        <span>Minimum lightness (0-100)</span>
+
+                    </label>
+                    <br>
+                    <label id="maxlight">
+                        <input id='max_bright' type="number" value=80 min=0 max=100>
+                        <span>Maximum lightness (0-100)</span>
+
+                    </label>
+                    <!-- <br>
+                    <label class="c2">
+                        <input id='sat_check' type="checkbox">
+                        <span>Constrain saturation?</span>
+                    </label>
+                    <br>
+                    <label id="satval">
+                        <input id='sat_val' type="number" value=8 min=0 max=10>
+                        <span>Saturation (0-10)</span>
+                    
+                    </label> -->
+                    <br>
+                    <label id="light-correct-check">
+                        <input id='lightcorrect' type="checkbox">
+                        <span>Enforce consistent lightness</span>
+                    </label>
+                    <!-- <br>
+                    <label id="perceptdist">
+                        <input id='min_dist' type="number" value=15 min=1 max=100>
+                        <span>Minimum perceptual distance (1 is just noticeable)</span>
+
+                    </label> -->
+                    <br>
+                    <label id="smooth_grad">
+                        <input id='smoothing' type="number" value="40" min=0 max=100>
+                        <span>Gradient smoothing (0-100)</span>
+
+                    </label>
+                    <br>
+                    <!-- <span>Account for:</span>
+                    <label class="c2">
+                        <input id='deut_check' type="checkbox" checked>
+                        <span>Deuteranopia (most common)</span>
+                    </label>
+                    <label class="c2">
+                        <input id='prot_check' type="checkbox" checked>
+                        <span>Protanopia</span>
+                    </label>
+                    <label class="c2">
+                        <input id='trit_check' type="checkbox">
+                        <span>Tritanopia</span>
+                    </label> -->
+
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="subcontent">
+            <h3>Colors</h3>
+
+            <div class="flex-container">
+
+                <div class="left" id="colors-left">
+                    <button class="click" id='regenerate' type="button" onclick="">Regenerate Colors</button>
+                    <br><br>
+
+                    <button id="add-color" type="button" onclick="">Add Color</button>
+                                <br><br>
+                    <label for="sort">Sort by:</label>
+                    <select name="sort" id="sort">
+                        <option value="none">Color Distance</option>
+                        <option value="value">Lightness</option>
+                        <option value="hue">Hue</option>
+                        <option value="random">Randomize</option>
+                        <option value="reverse">Reverse</option>
+                    </select>
+                    <!-- <button id='sort-go' class="click" type="button" onclick="">Sort</button> -->
+                    <br><br>
+
+                    <button id="undo" type="button" disabled=true>Undo</button>
+                    <button id="redo" type="button" disabled=true onclick="redo()">Redo</button>
+                    <!-- <p id="undosteps">0</p> -->
+
+                    <br><br>
+                    <button id="unlock" type="button">Unlock All</button>
+
+                    <br><br>
+                    <label id="spexport">
+                        <input id='export-spec' type="checkbox">
+                        <span>Export full spectrum?</span>
+                    </label>
+                </div>
+                <div id="colors-middle">
+                    <div>
+                        <div class="short" style="padding-bottom: .5em;"></div>
+                        <div class="tall">Full color</div>
+                        <div class="short">Deuteranopia</div>
+                        <div class="short">Protanopia</div>
+                        <div class="short">Tritanopia</div>
+                        <div class="short">Grayscale</div>
+                        <div class="short" style="padding-bottom: 1em;"></div>
+                        <div id="spec-lbl" class="short" style="padding-bottom: .5em;">Spectrum</div>
+                        <div id="percept-lbl" class="tall" style="padding-top: 5em;">Uniformity</div>
+                        
+                    </div>
+                </div>
+                <div id="colors-right" class="right">
+                    <div id="color-wrapper">
+                        <div id="color-grid">
+                            <!-- <button id="add-color" type="button" onclick="">+</button> -->
+
+                        </div>
+                        <div id="spectrum-target"></div>
+                        <div id="percept-plot"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="subcontent">
+
+            <h3>Plots</h3>
+            <div class="flex-container">
+
+                <div class="left" id="plots-left">
+                    <label class="container">
+                        <input class="plotcolors" id='full' type="radio" checked="checked" name="radio-cbtype">
+                        Full color
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input class="plotcolors" id='deut' type="radio" name="radio-cbtype">
+                        Deuteranopia
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input class="plotcolors" id='prot' type="radio" name="radio-cbtype">
+                        Protanopia
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input class="plotcolors" id='trit' type="radio" name="radio-cbtype">
+                        Tritanopia
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input class="plotcolors" id='gray' type="radio" name="radio-cbtype">
+                        Grayscale
+                    </label>
+                    <br><br>
+                    <!-- <button id="reset" type="button" onclick="">Generate</button> -->
+                </div>
+
+                <div id="plots-right" class="right">
+                    <!-- <p>scatter, lines, blobs with alpha, perceptual uniformity of sorted array</p> -->
+                    <div id="line-plot"></div>
+                    <div id="scatter-plot"></div>
+
+                    <div id="img-flex">
+                        <canvas id="lowfreq" height="225px" width="300px"></canvas>
+                        <canvas id="highfreq" height="225px" width="300px"></canvas>
+                        <canvas id="ramonycajal" height="225px" width="300px"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="subcontent">
+            <h3>Export</h3>
+            <div class="flex-container">
+
+                <div class="left" id="export-left">
+                    <label class="container">
+                        <input id='rgb255' type="radio" class='export-select' checked="checked" name="radio-output">
+                        RGB (0-255)
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input id='rgb1' type="radio" class='export-select' name="radio-output">
+                        RGB (0-1)
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input id='cmyk' type="radio" class='export-select' name="radio-output">
+                        CMYK
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input id='hex' type="radio" class='export-select' name="radio-output">
+                        Hex
+                    </label>
+                    <br>
+                    <label class="container">
+                        <input id='hue' type="radio" class='export-select' name="radio-output">
+                        HSL
+                    </label>
+                    <br>
+                    <br>
+                    <label>Format:</label>
+                    <input type="text" id="format-text" name="format-text"
+                        placeholder="as in [x, x, x] or &quot;hex(x)&quot;"><br>
+                    <br>
+                    <button id="export-reset" type="button" onclick=exportVals()>Reset</button>
+                </div>
+
+                <div id="export-right" class="right">
+                    <div id="export-target"
+                        style="background-color: #ededf0;height: 100%;padding-top: 10px;padding-left: 10px;width: 90%;">
+                        [generate color vals]</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="subcontent">
+            <h3>More Resources</h3>
+            <div style="padding-bottom:1em; padding-left: 1em;">
+                <a href="http://mkweb.bcgsc.ca/colorblind/index.mhtml">Understanding color vision and example color
+                    palettes</a> <br />
+                <a href="https://www.datylon.com/blog/data-visualization-for-colorblind-readers">More on design for
+                    colorblindness</a>
+                <br />
+                Inspiration and resources include: <a href="https://projects.susielu.com/viz-palette">Viz Palette</a>,
+                <a href="https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html">paper from
+                    Machado et al</a>
+                on calculating colorblindness visualizations,
+                <a href="https://github.com/antimatter15/rgb-lab">RGB-CIELAB color conversions</a>, <a
+                    style='padding-bottom: 3em;' href="https://gka.github.io/palettes/">Multi-hue color scales</a>
+
+            </div>
+        </div>
+    </div>
+
+    <script type='module' src="assets/js/colors2.js"></script>
+    </div>
+
+</body>
