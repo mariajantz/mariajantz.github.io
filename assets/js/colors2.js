@@ -46,6 +46,11 @@ let catVisited = false;
 
 initializePage()
 
+const gridlist = document.getElementById("color-grid");
+new Sortable(gridlist, { //this only works if that library is imported properly
+    animation: 100
+});
+
 function initializePage() {
     //pull the values from the settings 
     //generate a set of rgb colors matching the settings
