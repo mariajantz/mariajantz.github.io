@@ -1,12 +1,14 @@
 //note: run from terminal with: npx serve . since Firefox doesn't allow importing from local for security
 
 //TODO NEXT
-//fix tooltips!! possibly this is just a cached css issue.
-//make the copy button work properly 
 //allow drag and drop of every color
 //for the gradient version: add a row at the top (or split the first row or something??)
-//  so that it's the colors you use to set the gradient points at the top and they can be copied up. 
+//  so that it's the colors you use to set the gradient points at the top and they can be copied up. because of locking issue.
+//add a plot of fake data for the spectrum option? slash swap out
 //add a save bin?? to compare between a couple??
+//generate python code to make a matplotlib dealy
+//generate matlab code for colormap
+
 
 //Error: add colors disabling - this currently breaks when you manually type in too many colors
 //technically it works, it just lets num clrs get set wrong and doesn't do next steps
@@ -18,7 +20,6 @@
 
 
 //LATER MAYBE
-//add a plot of fake data for the spectrum option?
 //add constrain saturation?
 //Add input by a list???
 //make export - radio on change not "reset" button? or not, given formatting.
