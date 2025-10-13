@@ -5,6 +5,7 @@
 //for the gradient version: add a row at the top (or split the first row or something??)
 //  so that it's the colors you use to set the gradient points at the top and they can be copied up. because of locking issue.
 //add a plot of fake data for the spectrum option? slash swap out
+//ADD DIVERGING OPTION
 //add a save bin?? to compare between a couple??
 //generate python code to make a matplotlib dealy
 //generate matlab code for colormap
@@ -562,7 +563,7 @@ function catDefaults() {
 }
 
 function gradDefaults() {
-    document.getElementById('num_clrs').value = 10;
+    document.getElementById('num_clrs').value = 9;
     document.getElementById('min_bright').value = 10;
     document.getElementById('max_bright').value = 90;
 
