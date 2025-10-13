@@ -81,7 +81,7 @@ function initializePage() {
 }
 
 function copyVals() {
-    var valsOut = document.getElementById('export-target').value;
+    var valsOut = document.getElementById('export-target').textContent;
     console.log(valsOut)
     navigator.clipboard.writeText(valsOut);
 }
