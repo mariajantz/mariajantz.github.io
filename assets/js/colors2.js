@@ -57,6 +57,7 @@ function initializePage() {
     document.getElementById('cat-scheme').onclick = catDefaults;
     document.getElementById('add-color').onclick = addColor;
     document.getElementById('export-reset').onclick = exportVals;
+    document.getElementById('export-copy').onclick = copyVals;
     document.getElementById('min_bright').addEventListener('change', function () { validBright(this); });
     document.getElementById('max_bright').addEventListener('change', function () { validBright(this); });
     document.getElementById('sort').onmouseup = sort;
@@ -71,6 +72,11 @@ function initializePage() {
     //     showlegend: false
     // });
 
+}
+
+function copyVals() {
+    var strFormat = document.getElementById('format-text').value;
+    navigator.clipboard.writeText(strFormat);
 }
 
 

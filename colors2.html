@@ -36,11 +36,17 @@
                             name="radio-scaletype">
                         Categorical
                     </label>
+                    
+                    <span class="tooltip"></span><span class="tooltiptext">Generate a random set of colors that are maximally different from each other.</span>
+                    
                     <br>
                     <label class="container">
                         <input class="scheme-type" id='grad-scheme' type="radio" name="radio-scaletype">
                         Gradient
                     </label>
+                    
+                    <span class="tooltip"></span><span class="tooltiptext">Generate a perceptually smooth gradient.</span>
+                    
                     <br><br>
                     <button id="reset" type="button" onclick="">Reset Default</button>
                     <br><br>
@@ -57,12 +63,15 @@
                     <label id="minlight">
                         <input id='min_bright' type="number" value=30 min=0 max=100>
                         <span>Minimum lightness (0-100)</span>
-
+                        <span class="tooltip"></span><span class="tooltiptext">Generate colors lighter than this value (0 is black; based on CIELAB L* value).</span>
                     </label>
                     <br>
                     <label id="maxlight">
                         <input id='max_bright' type="number" value=80 min=0 max=100>
                         <span>Maximum lightness (0-100)</span>
+                        <span class="tooltip"></span>
+                        <span class="tooltiptext">Generate colors darker than this value (100 is white; based on CIELAB L*
+                                value).</span>
 
                     </label>
                     <!-- <br>
@@ -80,6 +89,8 @@
                     <label id="light-correct-check">
                         <input id='lightcorrect' type="checkbox">
                         <span>Enforce consistent lightness</span>
+                        <span class="tooltip"></span><span class="tooltiptext">Adjusts lightness of each color in a gradient to produce 
+                            equidistant lightness without changing hue.</span>
                     </label>
                     <!-- <br>
                     <label id="perceptdist">
@@ -91,7 +102,7 @@
                     <label id="smooth_grad">
                         <input id='smoothing' type="number" value="40" min=0 max=100>
                         <span>Gradient smoothing (0-100)</span>
-
+                        <span class="tooltip"></span><span class="tooltiptext">Applies smoothing to all values between the endpoints of a gradient to minimize perceptual artifacts.</span>
                     </label>
                     <br>
                     <!-- <span>Account for:</span>
@@ -147,6 +158,10 @@
                     <label id="spexport">
                         <input id='export-spec' type="checkbox">
                         <span>Export full spectrum?</span>
+                        
+                        <span class="tooltip"></span>
+                        <span class="tooltiptext">Export 200 values (from spectrum) rather than the values of each column.</span>
+                        
                     </label>
                 </div>
                 <div id="colors-middle">
@@ -264,6 +279,7 @@
                         placeholder="as in [x, x, x] or &quot;hex(x)&quot;"><br>
                     <br>
                     <button id="export-reset" type="button" onclick=exportVals()>Reset</button>
+                    <button id="export-copy" type="button" onclick=copyVals()>Copy</button>
                 </div>
 
                 <div id="export-right" class="right">
