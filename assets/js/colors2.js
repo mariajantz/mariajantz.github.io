@@ -1,7 +1,13 @@
 //note: run from terminal with: npx serve . since Firefox doesn't allow importing from local for security
 
 //TODO NEXT
-//add tooltips!
+//fix tooltips!! possibly this is just a cached css issue.
+//make the copy button work properly 
+//allow drag and drop of every color
+//for the gradient version: add a row at the top (or split the first row or something??)
+//  so that it's the colors you use to set the gradient points at the top and they can be copied up. 
+//add a save bin?? to compare between a couple??
+
 //Error: add colors disabling - this currently breaks when you manually type in too many colors
 //technically it works, it just lets num clrs get set wrong and doesn't do next steps
 // ...check in updateGrid, also figure out handling with resizing windows.
@@ -76,6 +82,7 @@ function initializePage() {
 
 function copyVals() {
     var strFormat = document.getElementById('format-text').value;
+    console.log(strFormat)
     navigator.clipboard.writeText(strFormat);
 }
 
