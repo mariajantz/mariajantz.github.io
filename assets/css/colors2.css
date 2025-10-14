@@ -43,6 +43,8 @@ body {
   width: 95%;
   max-width: 100em;
   margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-container {
@@ -58,10 +60,20 @@ body {
   width: 20em;
 }
 
+.settings-save {
+  display: flex;
+}
+
+#saved {
+  margin-left: 1em;
+  flex-grow: 1; 
+}
+
 .tooltip {
   position: absolute; 
   margin-left: 5px;
   width: 1.5em;
+  font-style: normal;
 }
 
 .tooltip:before {
@@ -162,7 +174,7 @@ body {
 .subcontent {
   border-style: solid;
   border-color: #e0e0e0;
-  border-radius: 1em;
+  border-radius: .5em;
   margin-top: 1em;
   padding-left: .5em;
 }
@@ -193,6 +205,11 @@ body {
 
 .refresh {
   background: url(../img/refresh.png);
+  background-size: 16px;
+}
+
+.repop {
+  background: url(../img/arrow-down.png);
   background-size: 16px;
 }
 

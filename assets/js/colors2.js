@@ -1,14 +1,18 @@
-//note: run from terminal with: npx serve . since Firefox doesn't allow importing from local for security
+//note: in testing run from terminal with: npx serve . since Firefox doesn't allow importing from local for security
+
+//hello! if you're reading this, welcome to the backend of this color generator. I used this project in part to
+//teach myself js, so there is a bit of a hodgepodge of code going on - but if it works...
+//by Maria Jantz, 2023
 
 //TODO NEXT
-//allow drag and drop of every color
 //for the gradient version: add a row at the top (or split the first row or something??)
 //  so that it's the colors you use to set the gradient points at the top and they can be copied up. because of locking issue.
 //add a plot of fake data for the spectrum option? slash swap out
 //ADD DIVERGING OPTION
-//add a save bin?? to compare between a couple??
 //generate python code to make a matplotlib dealy
 //generate matlab code for colormap
+//add uniformity calculation for each of the different types of colorblindness
+
 
 
 //Error: add colors disabling - this currently breaks when you manually type in too many colors
@@ -71,6 +75,7 @@ function initializePage() {
     document.getElementById('add-color').onclick = addColor;
     document.getElementById('export-reset').onclick = exportVals;
     document.getElementById('export-copy').onclick = copyVals;
+    document.getElementById('savebutton').onclick = saveVals;
     document.getElementById('min_bright').addEventListener('change', function () { validBright(this); });
     document.getElementById('max_bright').addEventListener('change', function () { validBright(this); });
     document.getElementById('sort').onmouseup = sort;
@@ -91,6 +96,110 @@ function copyVals() {
     var valsOut = document.getElementById('export-target').textContent;
     console.log(valsOut)
     navigator.clipboard.writeText(valsOut);
+}
+
+function saveVals() {
+
+    //populate the colors to the saved zone
+    var sdiv = document.getElementById('saved-target'); 
+
+    if (sdiv.children.length>=5){
+        return
+    }
+
+    //style table
+    sdiv.style.display = 'flex';
+    sdiv.style.flexDirection = 'column';
+    sdiv.style.flexBasis = '1em';
+    sdiv.style.gap = '3px';
+
+    var sset = document.createElement('div');
+    // sset.draggable = true;
+    sset.className = "savedrow"; //TODO may need different unique identifier here to accomodate moving columns 
+    sdiv.appendChild(sset);
+
+    //style table
+    sset.style.display = 'flex';
+    sset.style.flexDirection = 'row';
+    sset.style.flexBasis = '1em';
+    sset.style.gap = '3px';
+    sset.style.marginBottom = '.5em'; 
+
+
+    for (let clri = 0; clri < undoArr[undoIdx].length; clri++) {
+        var sval = document.createElement('div');
+        sval.style.width = '1.5em';
+        sval.style.backgroundColor = "rgb(" + undoArr[undoIdx][clri][0] + "," + undoArr[undoIdx][clri][1] + "," + undoArr[undoIdx][clri][2] + ")";   
+        sset.appendChild(sval)
+    }
+
+    //trash can
+    var tbutton = document.createElement('button');
+    tbutton.classList.add('trash')
+    tbutton.classList.add('btn')
+    tbutton.addEventListener('click', function () {
+        this.parentNode.remove();
+    });
+
+    sset.appendChild(tbutton);
+
+    //button to repopulate!
+    var radios = document.getElementsByClassName('scheme-type');
+
+    var repop = document.createElement('button');
+    repop.classList.add('repop')
+    repop.classList.add('btn')
+    repop.classList.add('categorical-' + radios[0].checked)
+
+    repop.addEventListener('click', function () {
+        loadSaved(this.parentNode)
+    });
+
+    sset.appendChild(repop);
+    
+    //TODO add a limit to how many can be saved. (10?)
+}
+
+function loadSaved(clrrow){
+    //similar to reset plot
+
+    var clrArr = [];
+    var lockedArr = [];
+    let setRad = 0;
+    for (let i = 0; i < clrrow.children.length; i++) {
+        if (clrrow.children[i].tagName == 'DIV'){
+            clrArr.push(colorValues(clrrow.children[i].style.backgroundColor));
+            lockedArr.push(0) //unlock all
+        }
+        console.log('classes', clrrow.children[i].classList)
+        if (clrrow.children[i].classList.contains('repop')){
+            console.log(clrrow.children[i].classList)
+            if (clrrow.children[i].classList.contains('categorical-true')) {
+                setRad = 0;
+            }
+            else {
+                setRad = 1;
+            }
+        }
+    }
+
+    //reset to defaults for that set type
+    var radios = document.getElementsByClassName('scheme-type');
+
+    document.getElementById('export-spec').checked = false;
+
+    if (setRad==0) {
+        radios[0].checked = true; 
+        catDefaults();
+    } else {
+        radios[1].checked = true; 
+        gradDefaults();
+    }
+
+    updateGrid(clrArr, lockedArr)
+
+    updateUndo();
+
 }
 
 
