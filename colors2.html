@@ -189,7 +189,11 @@
                 <div id="colors-middle">
                     <div>
                         <div class="short" style="padding-bottom: .5em;"></div>
-                        <div class="medium">Full color</div>
+                        <div class="medium">Full color
+                            <br />
+                            <span class="tooltip"></span>
+                            <span class="tooltiptext">Select colors in this row (for gradients, smoothed value displayed below).</span>
+                        </div>
                         <div class="short" id="smoothlabel">Smoothed</div>
                         <div class="short">Deuteranopia</div>
                         <div class="short">Protanopia</div>
@@ -302,10 +306,22 @@
                         HSL
                     </label>
                     <br>
+                    <label class="container">
+                        <input id='python' type="radio" class='export-select' name="radio-output">
+                        to Python colormap
+                    </label>
+                    <br>
                     <br>
                     <label>Format:</label>
                     <input type="text" id="format-text" name="format-text"
                         placeholder="as in [x, x, x] or &quot;hex(x)&quot;"><br>
+                    
+                    
+                    <span class="tooltip"></span>
+                    <span class="tooltiptext">Enter your own output format using a capital X as the value to be substituted. Must be the correct number of Xs to be processed (eg RGB can 
+                        be displayed as any format that contains 3 Xs.)
+                    </span>
+                    <br >
                     <br>
                     <button id="export-reset" type="button" onclick=exportVals()>Reset</button>
                     <button id="export-copy" type="button" onclick=copyVals()>Copy</button>
@@ -313,7 +329,7 @@
 
                 <div id="export-right" class="right">
                     <div id="export-target"
-                        style="background-color: #ededf0;height: 100%;padding-top: 10px;padding-left: 10px;width: 90%;">
+                        style="background-color: #ededf0;height: 100%;padding-top: 10px;padding-left: 10px;width: 90%; font-family: 'Courier New', Courier, monospace;">
                         [generate color vals]</div>
                 </div>
             </div>

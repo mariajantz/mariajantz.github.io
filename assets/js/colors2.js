@@ -5,13 +5,10 @@
 //by Maria Jantz, 2023
 
 //TODO NEXT
-//for the gradient version: add a row at the top (or split the first row or something??)
-//  so that it's the colors you use to set the gradient points at the top and they can be copied up. because of locking issue.
-//add a plot of fake data for the spectrum option? slash swap out
-//ADD DIVERGING OPTION - needs to enforce odd number of colors (add one if needed)
-//update interpdivergin... include interpmulti and regular
 //generate python code to make a matplotlib dealy
 //generate matlab code for colormap
+//check the uniformity situation/lightness situation - may need to mess with axes. 
+//change ideal for diverging case (3 point not 2)
 //add uniformity calculation for each of the different types of colorblindness
 
 
@@ -77,6 +74,7 @@ function initializePage() {
     document.getElementById('grad-scheme').onclick = gradDefaults;
     document.getElementById('cat-scheme').onclick = catDefaults;
     document.getElementById('add-color').onclick = addColor;
+    document.getElementById('export-left').onchange = exportVals;
     document.getElementById('export-reset').onclick = exportVals;
     document.getElementById('export-copy').onclick = copyVals;
     document.getElementById('savebutton').onclick = saveVals;
@@ -1247,34 +1245,38 @@ function exportVals() {
     var radios = document.getElementsByClassName('export-select');
 
     var rchoose = 0;
+    let pyflag = false; 
     for (var r = 0; r < radios.length; r++) {
         if (radios[r].checked) {
             rchoose = radios[r].id
             break;
         }
     }
-    // console.log(rchoose);
+    if (rchoose=='python'){
+        rchoose = 'rgb1'; 
+        pyflag = true; 
+    }
 
     // console.log(document.getElementById('format-text').value)
     var strFormat = document.getElementById('format-text').value.toString();
-    var regex = /x/gi, result, indices = [];
+    var regex = /X/g, result, indices = [];
     while ((result = regex.exec(strFormat))) {
         indices.push(result.index);
     }
     if ((rchoose == 'rgb255' || rchoose == 'rgb1' || rchoose == 'hue') && indices.length != 3) {
-        strFormat = '[x, x, x]';
+        strFormat = '[X, X, X]';
         indices = [];
         while ((result = regex.exec(strFormat))) {
             indices.push(result.index);
         }
     } else if ((rchoose == 'hex') && indices.length != 1) {
-        strFormat = 'x';
+        strFormat = 'X';
         indices = [];
         while ((result = regex.exec(strFormat))) {
             indices.push(result.index);
         }
     } else if ((rchoose == 'cmyk') && indices.length != 4) {
-        strFormat = '(x, x, x, x)';
+        strFormat = '(X, X, X, X)';
         indices = [];
         while ((result = regex.exec(strFormat))) {
             indices.push(result.index);
@@ -1296,34 +1298,51 @@ function exportVals() {
     var clst = [];
     for (var c = 0; c < clrArr.length; c++) {
         if (rchoose == 'rgb255') {
-            let res = strFormat.replace(/x/i, clrArr[c][0]);
-            res = res.replace(/x/i, clrArr[c][1]);
-            res = res.replace(/x/i, clrArr[c][2]);
+            let res = strFormat.replace(/X/, clrArr[c][0]);
+            res = res.replace(/X/, clrArr[c][1]);
+            res = res.replace(/X/, clrArr[c][2]);
             clst.push(' ' + res);
         } else if (rchoose == 'rgb1') {
-            let res = strFormat.replace(/x/i, (clrArr[c][0] / 255).toFixed(2));
-            res = res.replace(/x/i, (clrArr[c][1] / 255).toFixed(2));
-            res = res.replace(/x/i, (clrArr[c][2] / 255).toFixed(2));
+            let res = strFormat.replace(/X/, (clrArr[c][0] / 255).toFixed(2));
+            res = res.replace(/X/, (clrArr[c][1] / 255).toFixed(2));
+            res = res.replace(/X/, (clrArr[c][2] / 255).toFixed(2));
             clst.push(' ' + res);
         } else if (rchoose == 'cmyk') {
             let tmp = rgbToCmyk(clrArr[c]);
-            let res = strFormat.replace(/x/i, tmp[0]);
-            res = res.replace(/x/i, tmp[1]);
-            res = res.replace(/x/i, tmp[2]);
-            res = res.replace(/x/i, tmp[3]);
+            let res = strFormat.replace(/X/, tmp[0]);
+            res = res.replace(/X/, tmp[1]);
+            res = res.replace(/X/, tmp[2]);
+            res = res.replace(/X/, tmp[3]);
             clst.push(' ' + res);
 
         } else if (rchoose == 'hex') {
-            let res = strFormat.replace(/x/i, rgbArrToHex(clrArr[c]));
+            let res = strFormat.replace(/X/, rgbArrToHex(clrArr[c]));
             clst.push(' ' + res);
+
         } else if (rchoose == 'hue') {
             let tmp = rgbToHsl(rgbArrTorgb(clrArr[c]));
-            let res = strFormat.replace(/x/i, tmp[0]);
-            res = res.replace(/x/i, tmp[1]);
-            res = res.replace(/x/i, tmp[2]);
+            let res = strFormat.replace(/X/, tmp[0]);
+            res = res.replace(/X/, tmp[1]);
+            res = res.replace(/X/, tmp[2]);
             clst.push(' ' + res);
         }
     }
+
+    if (pyflag){
+        //make into a string
+        let radioscheme = document.getElementsByClassName('scheme-type');
+
+        //also get the lightness, gradient smoothing, and diverging values (only gradient)
+        if (radioscheme[0].checked) {
+            clst = 'import matplotlib.colors as pltc<br /><br />carr = [' + clst.toString() + ' ]<br />cmap = pltc.ListedColormap(carr)';
+        } else {
+            clst = 'import matplotlib.colors as pltc<br /><br />carr = [' + clst.toString() + ' ]<br />cmap = pltc.LinearSegmentedColormap.from_list(\'cmap_name\', carr)';
+        }
+
+    }
+    //
+    //carr = 
+    //cmap = pltc.LinearSegmentedColormap.from_list('cmap_name', carr)
 
     //TODO format: then print them to the screen in the designated column
     var output = document.getElementById('export-target')
