@@ -154,6 +154,17 @@ function saveVals() {
     repop.classList.add('repop')
     repop.classList.add('btn')
     repop.classList.add('categorical-' + radios[0].checked)
+    
+    //also get the lightness, gradient smoothing, and diverging values (only gradient)
+    if (!radios[0].checked){
+        var light = document.getElementById('lightcorrect');
+        var smooth = document.getElementById('smoothing');
+        var diverge = document.getElementById('diverging');
+
+        repop.classList.add('light-' + light.checked)
+        repop.classList.add('div-' + diverge.checked)
+        repop.classList.add('smooth-' + smooth.value)
+    }
 
     repop.addEventListener('click', function () {
         loadSaved(this.parentNode)
@@ -170,6 +181,9 @@ function loadSaved(clrrow){
     var clrArr = [];
     var lockedArr = [];
     let setRad = 0;
+    let setLight = false; 
+    let setDiverge = false; 
+    let setSmooth = 30; 
     for (let i = 0; i < clrrow.children.length; i++) {
         if (clrrow.children[i].tagName == 'DIV'){
             clrArr.push(colorValues(clrrow.children[i].style.backgroundColor));
@@ -183,6 +197,14 @@ function loadSaved(clrrow){
             }
             else {
                 setRad = 1;
+                setLight = clrrow.children[i].classList.contains('light-true')
+                setDiverge = clrrow.children[i].classList.contains('div-true')
+                for (var val = 0; val < clrrow.children[i].classList.length; val++) {
+                    if (clrrow.children[i].classList[val].startsWith('smooth')) {
+                        console.log(clrrow.children[i].classList[val].split('-')[1])
+                        setSmooth = +clrrow.children[i].classList[val].split('-')[1];
+                    }
+                }
             }
         }
     }
@@ -198,6 +220,11 @@ function loadSaved(clrrow){
     } else {
         radios[1].checked = true; 
         gradDefaults();
+        //also get the lightness, gradient smoothing, and diverging values (only gradient)
+        document.getElementById('lightcorrect').checked = setLight;
+        document.getElementById('smoothing').value = setSmooth;
+        document.getElementById('diverging').checked = setDiverge;
+        
     }
 
     updateGrid(clrArr, lockedArr)
