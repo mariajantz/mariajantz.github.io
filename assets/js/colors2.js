@@ -5,39 +5,19 @@
 //by Maria Jantz, 2023
 
 //TODO NEXT
-//generate python code to make a matplotlib dealy
 //generate matlab code for colormap
 //check the uniformity situation/lightness situation - may need to mess with axes. 
 //change ideal for diverging case (3 point not 2)
 //add uniformity calculation for each of the different types of colorblindness
-
-
-//Error: add colors disabling - this currently breaks when you manually type in too many colors
-//technically it works, it just lets num clrs get set wrong and doesn't do next steps
-// ...check in updateGrid, also figure out handling with resizing windows.
-
-//Error: set up the categorical plots with a width based on screenwidth/window width like the images
-//or otherwise use document.getElementById('col-'+num_clrs-1).offsetWidth*
-//or figure out how to do side by side...two flex boxes?
-
+//fix the weird jumpiness in the images (make smaller?)
 
 //LATER MAYBE
 //add constrain saturation?
 //Add input by a list???
-//make export - radio on change not "reset" button? or not, given formatting.
+//add "share palette" link that auto inputs the colors (maybe just add hexes at end of link? or rgb vals)
+//cleaner buttons 
+//add this link: http://poynton.ca/ColorFAQ.html, https://www.kennethmoreland.com/color-maps/ColorMapsExpanded.pdf (got the maps from there)
 
-// - add "share palette" link that auto inputs the colors (maybe just add hexes at end of link? or rgb vals)
-
-//THEN (or any time): make pretty. 
-//cleaner buttons (image)
-//show only the gradient or categorical relevant options (ie eliminate saturation vs eliminate gradient)
-//Allow drag and drop of specific colors to reorder
-//https://www.w3schools.com/HTML/html5_draganddrop.asp
-//https://www.digitalocean.com/community/tutorials/js-drag-and-drop-vanilla-js
-//https://codepen.io/abechiyo/pen/aJdQXm
-//
-// - add this link: http://poynton.ca/ColorFAQ.html, https://www.kennethmoreland.com/color-maps/ColorMapsExpanded.pdf (got the maps from there)
-// - add tooltips
 
 let undoArr = []; //initialize global array 
 let lockArr = []; //initialize locked array (also update this when undo/redo)
