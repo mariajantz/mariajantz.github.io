@@ -1301,9 +1301,9 @@ function exportVals() {
             res = res.replace(/x/i, clrArr[c][2]);
             clst.push(' ' + res);
         } else if (rchoose == 'rgb1') {
-            let res = strFormat.replace(/x/i, (clrArr[c][0] / 255).toFixed(4));
-            res = res.replace(/x/i, (clrArr[c][1] / 255).toFixed(4));
-            res = res.replace(/x/i, (clrArr[c][2] / 255).toFixed(4));
+            let res = strFormat.replace(/x/i, (clrArr[c][0] / 255).toFixed(2));
+            res = res.replace(/x/i, (clrArr[c][1] / 255).toFixed(2));
+            res = res.replace(/x/i, (clrArr[c][2] / 255).toFixed(2));
             clst.push(' ' + res);
         } else if (rchoose == 'cmyk') {
             let tmp = rgbToCmyk(clrArr[c]);
