@@ -92,7 +92,7 @@
                         <input id='lightcorrect' type="checkbox">
                         <span>Enforce consistent lightness</span>
                         <span class="tooltip"></span><span class="tooltiptext">Adjusts lightness of each color in a gradient to produce 
-                            equidistant lightness without changing hue.</span>
+                            equidistant lightness without changing hue. Forces ends of diverging colormap to same lightness.</span>
                     </label>
                     <!-- <br>
                     <label id="perceptdist">
@@ -106,6 +106,14 @@
                         <span>Gradient smoothing (0-100)</span>
                         <span class="tooltip"></span><span class="tooltiptext">Applies smoothing to all values between the endpoints of a gradient to minimize perceptual artifacts.</span>
                     </label>
+
+                    <br>
+                    <label id="diverging-check">
+                        <input id='diverging' type="checkbox">
+                        <span>Diverging colormap?</span>
+                        <span class="tooltip"></span><span class="tooltiptext">Calculates gradient between the midpoint and each endpoint. Must be an odd number of colors.</span>
+                    </label>
+
                     <br>
                     <!-- <span>Account for:</span>
                     <label class="c2">
@@ -181,7 +189,8 @@
                 <div id="colors-middle">
                     <div>
                         <div class="short" style="padding-bottom: .5em;"></div>
-                        <div class="tall">Full color</div>
+                        <div class="medium">Full color</div>
+                        <div class="short" id="smoothlabel">Smoothed</div>
                         <div class="short">Deuteranopia</div>
                         <div class="short">Protanopia</div>
                         <div class="short">Tritanopia</div>

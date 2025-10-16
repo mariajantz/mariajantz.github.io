@@ -8,11 +8,11 @@
 //for the gradient version: add a row at the top (or split the first row or something??)
 //  so that it's the colors you use to set the gradient points at the top and they can be copied up. because of locking issue.
 //add a plot of fake data for the spectrum option? slash swap out
-//ADD DIVERGING OPTION
+//ADD DIVERGING OPTION - needs to enforce odd number of colors (add one if needed)
+//update interpdivergin... include interpmulti and regular
 //generate python code to make a matplotlib dealy
 //generate matlab code for colormap
 //add uniformity calculation for each of the different types of colorblindness
-
 
 
 //Error: add colors disabling - this currently breaks when you manually type in too many colors
@@ -47,12 +47,16 @@ let lockArr = []; //initialize locked array (also update this when undo/redo)
 const cpickArr = {}; //these have to be globally tracked because they're objects (class in code not findable by id in doc)
 let undoIdx = -1;
 let catVisited = false;
+let clrOut = []; //current color (done separately bc of smoothing)
 
 initializePage()
 
 const gridlist = document.getElementById("color-grid");
 new Sortable(gridlist, { //this only works if that library is imported properly
-    animation: 100
+    animation: 100,
+    onEnd: function () {
+        updateUndo();
+    }
 });
 
 function initializePage() {
@@ -171,9 +175,9 @@ function loadSaved(clrrow){
             clrArr.push(colorValues(clrrow.children[i].style.backgroundColor));
             lockedArr.push(0) //unlock all
         }
-        console.log('classes', clrrow.children[i].classList)
+        // console.log('classes', clrrow.children[i].classList)
         if (clrrow.children[i].classList.contains('repop')){
-            console.log(clrrow.children[i].classList)
+            
             if (clrrow.children[i].classList.contains('categorical-true')) {
                 setRad = 0;
             }
@@ -665,6 +669,8 @@ function catDefaults() {
 
     document.getElementById('light-correct-check').style.display = 'none';
     document.getElementById('smooth_grad').style.display = 'none';
+    document.getElementById('diverging-check').style.display = 'none';
+    document.getElementById('smoothlabel').style.visibility = 'hidden';
 
     document.getElementById('color-grid').style.justifyContent = 'flex-start'; 
 
@@ -683,6 +689,8 @@ function gradDefaults() {
 
     document.getElementById('light-correct-check').style.display = 'inline';
     document.getElementById('smooth_grad').style.display = 'inline';
+    document.getElementById('smoothlabel').style.visibility = 'visible';
+    document.getElementById('diverging-check').style.display = 'inline';
 
     document.getElementById('color-grid').style.justifyContent = 'space-between'; 
     // justify - content: space - between in the color - grid div
@@ -699,11 +707,18 @@ function updateUndo() {
     //get array of colors
     let clrdivs = document.getElementById('color-grid').children;
     let outarr = [];
+    
+    let strow = getInitRow(); 
+    let tmpClrOut = [];
 
     for (var i = 0; i < clrdivs.length; i++) {
         let clr = colorValues(clrdivs[i].children[1].style.backgroundColor);
         outarr.push([Math.round(clr[0]), Math.round(clr[1]), Math.round(clr[2])]);
+        //get clrOut (ie deal with smoothing)
+        let clr2 = colorValues(clrdivs[i].children[strow].style.backgroundColor);
+        tmpClrOut.push([Math.round(clr2[0]), Math.round(clr2[1]), Math.round(clr2[2])]);
     }
+    clrOut = tmpClrOut; 
 
     if (undoArr.length != undoIdx + 1) {
         //deals with undo then do something else 
@@ -739,13 +754,13 @@ function updateUndo() {
     } else if (radios[0].checked){
         populatePlots();
     } else {
-        console.log('edit imgs')
+        // console.log('edit imgs')
         // console.log('percept')
-        let spec_clrs = makeSpectrum(undoArr[undoIdx]); //this must happen after the grid is updated.
+        let spec_clrs = makeSpectrum(clrOut); //this must happen after the grid is updated.
         recolorImg('lowfreq', spec_clrs)
         recolorImg('highfreq', spec_clrs)
         recolorImg('ramonycajal', spec_clrs)
-        populatePercept(undoArr[undoIdx]);
+        populatePercept(clrOut);
     }
 
 }
@@ -753,6 +768,7 @@ function updateUndo() {
 function regenColors() {
     var radios = document.getElementsByClassName('scheme-type');
     var tmp = []; //clr arr and lock vals
+    
     if (radios[0].checked) {
         tmp = regenColorsCat();
     }
@@ -762,6 +778,7 @@ function regenColors() {
     }
 
     updateGrid(tmp[0], tmp[1]);
+    // clrOut = tmp[0]; 
 
     //update the undoArr, index, locked
     updateUndo();
@@ -815,7 +832,7 @@ function togglePlots(clrArr) {
         recolorImg('highfreq', spec_clrs)
         recolorImg('ramonycajal', spec_clrs)
 
-        populatePercept(undoArr[undoIdx]);
+        populatePercept(clrOut);
     }
 }
 
@@ -825,9 +842,16 @@ function regenColorsGrad() {
     let newLocks = getLocked();
     const locksum = newLocks.reduce((partialSum, a) => partialSum + a, 0);
     let clrArr = [];
-    var outLocks = Array(+document.getElementById('num_clrs').value).fill(0);
+    let num_clrs = +document.getElementById('num_clrs').value; 
+    var outLocks = Array(num_clrs).fill(0);
+    var divergeBool = document.getElementById('diverging').checked;
 
-    if (locksum <= 2) {
+    if (divergeBool) {
+        let tmp = interpValsDiverging();
+        clrArr = tmp[0];
+        outLocks = tmp[1];
+    }
+    else if (locksum <= 2) {
         clrArr = interpVals();
 
         // newLocks.fill(0); //set all to zeros
@@ -843,17 +867,18 @@ function regenColorsGrad() {
         //MULTI-HUE WITH STEP CORRECTION
         //this is in line with: https://www.vis4.net/blog/2013/09/mastering-multi-hued-color-scales/
         let tmp = interpMulti(); //UPDATE THIS -- deal with >20 case. 
+        //also update this to deal with diverging colormaps....
         clrArr = tmp[0];
-
+        //technically could use the locks from this function (nearest similar)
+        //but with updated methods that's annoying
+        outLocks = tmp[1];
         // newLocks.fill(0); //set all to zeros
-        for (var i = 0; i < tmp[1].length; i++) {
-            outLocks[tmp[1][i]] = 1;
-        }
+        // for (var i = 0; i < tmp[1].length; i++) {
+        //     outLocks[tmp[1][i]] = 1;
+        // }
     }
 
     return [clrArr, outLocks];
-
-    //TO DO!! add a spectrum beneath w/ 200 colors
 
 }
 
@@ -1065,6 +1090,17 @@ function updateGrid(clrArr, lockedArr) {
     let ech = e.children;
     // let curLocked = getLocked(); //actually this may not work bc this is also used for undo; maybe pass in
 
+    if (ech.length>1) {
+        if (ech[0].childElementCount != getInitRow()+6){
+            //clear and update grid if switching btw categorical/gradient
+            for (var i = ech.length; i-- > 0;) {
+                delete cpickArr['cpick-' + ech[i].id];
+                ech[i].remove();
+            }   
+        }
+    }
+
+
     for (var i = 0; i < clrArr.length; i++) {
         //cycle through colors and update them; deal with deleted vals
         // let colid = 'col-' + i.toString();
@@ -1082,10 +1118,31 @@ function updateGrid(clrArr, lockedArr) {
         // fill in or add a color if necessary
         // console.log(i, clrArr[i], colid)
         if (elem) {
-            //if column with that id exists, make this.
-            resetCol(clrArr[i], colid);
+            //set the color as locked/unlocked
+            let lockdiv = document.getElementsByClassName(elem.id)[1].children;
+            let lockbutt = [];
+            for (var j = 0; j < lockdiv.length; j++) {
+                if (lockdiv[j].classList.contains('lock')) {
+                    lockbutt = lockdiv[j];
+                    break;
+                }
+            }
+
+            if (lockedArr[i] == 0 && lockbutt.classList.contains('locked')) {
+                lockToggle(lockbutt)
+                //if column with that id exists and is locked reset AFTER updating lock
+                resetCol(clrArr[i], colid);
+            } else if (lockedArr[i] == 1 && !lockbutt.classList.contains('locked')) {
+                //if column not locked but locking, reset BEFORE updating lock
+                resetCol(clrArr[i], colid);
+                lockToggle(lockbutt)
+            } else {
+                resetCol(clrArr[i], colid);
+            }
+            
         }
         else {
+            
             //add a color
             populateColor(...clrArr[i])
             document.getElementById('num_clrs').value++;
@@ -1093,23 +1150,25 @@ function updateGrid(clrArr, lockedArr) {
             elem = e.children[i]; //define this so I can pass to locking
             // console.log('hi', elem)
             // console.log(lockedArr[i], elem.children[0].children[0].classList.contains('locked'))
-        }
 
-        //set the color as locked/unlocked
-        let lockdiv = document.getElementsByClassName(elem.id)[1].children;
-        let lockbutt = [];
-        for (var j = 0; j < lockdiv.length; j++) {
-            if (lockdiv[j].classList.contains('lock')) {
-                lockbutt = lockdiv[j];
-                break;
+            //set the color as locked/unlocked
+            let lockdiv = document.getElementsByClassName(elem.id)[1].children;
+            let lockbutt = [];
+            for (var j = 0; j < lockdiv.length; j++) {
+                if (lockdiv[j].classList.contains('lock')) {
+                    lockbutt = lockdiv[j];
+                    break;
+                }
+            }
+
+            if (lockedArr[i] == 0 && lockbutt.classList.contains('locked')) {
+                lockToggle(lockbutt)
+            } else if (lockedArr[i] == 1 && !lockbutt.classList.contains('locked')) {
+                lockToggle(lockbutt)
             }
         }
 
-        if (lockedArr[i] == 0 && lockbutt.classList.contains('locked')) {
-            lockToggle(lockbutt)
-        } else if (lockedArr[i] == 1 && !lockbutt.classList.contains('locked')) {
-            lockToggle(lockbutt)
-        }
+
 
     }
 
@@ -1201,10 +1260,10 @@ function exportVals() {
 
     if (document.getElementById('export-spec').checked) {
         let num_spec = 200;
-        clrArr = chroma.scale(undoArr[undoIdx]).colors(num_spec).map(hexToRgbArr);
+        clrArr = chroma.scale(clrOut).colors(num_spec).map(hexToRgbArr);
 
     } else {
-        clrArr = undoArr[undoIdx];
+        clrArr = clrOut;
     }
 
     var clst = [];
@@ -1273,16 +1332,39 @@ function refreshColor(elem) {
 
 function resetCol(rgb, colid) {
     //convenience fn to update a whole column
-    var rows = 6;
-    for (var row = 1; row < rows; row++) {
+    var initRow = getInitRow(); 
+    var rows = initRow + 5; 
+    // console.log(document.getElementById(colid))
+
+    // var locks = document.getElementsByClassName('lock');
+    // var empty = [];
+    // for (var i = 0; i < locks.length; i++) {
+    //     if (locks[i].classList.contains('locked')) {
+    //         empty.push(1);
+    //     } else {
+    //         empty.push(0);
+    //     }
+    // }
+    // var rows = 6;
+    if (document.getElementById(colid).children[1].children[0].classList.contains('locked')){
+        var strow = initRow; 
+        //TODO - actually this needs to be set to locked current undo value? 
+    }
+    else {
+        var strow = 1; 
+    }
+
+    for (var row = strow; row < rows; row++) {
         let gridcell = document.getElementsByClassName('grid-cell row-' + row + ' ' + colid)[0];
-        let convArr = toCB(rgb, row - 1);
+        let convArr = toCB(rgb, Math.max(row - getInitRow(), 0));
         gridcell.style.backgroundColor = "rgb(" + convArr[0] + "," + convArr[1] + "," + convArr[2] + ")";
     }
 
-    //update the color of the dropper
-    var picker = cpickArr['cpick-' + colid];
-    picker.setColor("rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")");
+    //update the color of the dropper (only if not locked/gradient)
+    if (strow==1){
+        var picker = cpickArr['cpick-' + colid];
+        picker.setColor("rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")");
+    }  
 
 }
 
@@ -1485,6 +1567,223 @@ function interpVals() {
     return new_clrs;
 }
 
+
+
+function interpValsDiverging() {
+    //GRADIENT PROCESSING
+    //get random colors for 2 ends of spectrum plus midpoint
+    //interpolate between them
+    //locked colors
+    var st_clrs = [];
+    var lockedVals = getLocked();
+    let num_clrs = +document.getElementById('num_clrs').value;
+    let locksum = lockedVals.reduce((partialSum, a) => partialSum + a, 0);
+    var outLocks = Array(num_clrs).fill(0); //will fill this in later. TODO may need to toggle locks in here??
+
+    //First: get existing colors and locations of those colors. 
+    // if not locked in the middle need to treat middle as locked after first val
+    let lockIdx = [];
+    //get the colors and the locations of them
+    for (var i = 0; i < lockedVals.length; i++) {
+        if (lockedVals[i] == 1) {
+            st_clrs.push(undoArr[undoIdx][i]);
+            lockIdx.push(i);
+        }
+    }
+    let origLocks = [...lockIdx];
+    if (locksum==0) {
+        st_clrs.push(randColor()); //need to set a value for no locks version to start generating, then proceed...
+    }
+
+    // console.log('locks', lockIdx, Math.max(lockIdx))
+
+    //define the midpoint and the ends. 
+    let setpoints = [0, Math.floor(num_clrs / 2), Math.floor(num_clrs / 2) * 2]; 
+    let setbool = []; 
+    //are these points already locked? 
+    for (var pt=0; pt<setpoints.length; pt++){
+        // console.log(setpoints[pt], lockIdx.includes(setpoints[pt]))
+        setbool.push(lockIdx.includes(setpoints[pt]));
+    }
+    //for each of the ends: what is the closest locked value to the ends that is NOT the midpoint? 
+    if (!setbool[0]){
+        let ep = lockIdx.find(el => el < setpoints[1]);
+        //reset that value to be end point
+        var index = lockIdx.indexOf(ep);
+        // console.log(ep, index)
+        if (index !== -1) {
+            lockIdx[index] = setpoints[0]; 
+            setbool[0] = true; 
+        } 
+    }
+    if (!setbool[setbool.length-1]) {
+        //need to reverse the list first for this to work.
+        lockIdx.reverse(); 
+        let ep = lockIdx.find(el => el > setpoints[1]);
+        //reset that value to be end point
+        var index = lockIdx.indexOf(ep);
+        // console.log(ep, index)
+        if (index !== -1) {
+            lockIdx[index] = setpoints[setpoints.length-1];
+            setbool[setbool.length-1] = true; 
+        }
+        lockIdx.reverse(); 
+    }
+    //for the midpoint: 
+    //if not locked and 2 locks and both locks not dealt with (aka it's closer to middle than end), lock it.
+    // otherwise, if not locked but there are 3+ locks, lock it anyway
+    let setsum = setbool.reduce((partialSum, a) => partialSum + a, 0);
+    if (!setbool[1] & locksum == 2 & setsum != locksum) {
+        //find index of midpoint...which here just means is left or right end the one I'm clamping
+        //so I can hard code to make this easier.
+        if (lockIdx[0]==0){
+            lockIdx[1] = setpoints[1]; 
+        } else {
+            lockIdx[0] = setpoints[1]; 
+        }
+        setbool[1] = true; 
+    }
+    else if (!setbool[1] & locksum >= 3) {
+        let ins = lockIdx.find(el => el > setpoints[1]);
+        var index = lockIdx.indexOf(ins); 
+        if (index == -1){
+            index = lockIdx.length-1; 
+        }
+        lockIdx.splice(index, 0, setpoints[1]);
+        setbool[1] = true; 
+        st_clrs.splice(index, 0, undoArr[undoIdx][setpoints[1]]);
+    }
+
+    // console.log('set', setbool, setpoints)
+    // console.log('newidx', lockIdx, st_clrs)
+    // console.log('map', )
+    //fill in set point colors if there aren't enough, then reorder. 
+    //only needs to generate color if not all set points are set and only base on set points.
+    //use the known set points to index into the start colors and use those to generate the remaining points
+    // console.log(st_clrs.length, st_clrs[0])
+    let tmp_st = indexByBool(setpoints, setbool).map(i => lockIdx.indexOf(i)); 
+    let tmpIdx = lockIdx.concat(indexByBool(setpoints, setbool.map(i => !i))); 
+    tmpIdx.sort();
+    // console.log(tmpIdx)
+    if (tmp_st.length<3){
+        //generate additional set points here
+        // console.log(tmp_st.map(i => rgb2lab(st_clrs[i]))); 
+        let tmp_clrs = genCandidates(tmp_st.map(i => rgb2lab(st_clrs[i])), 9); //minimal generate would be 3
+        //to introduce a little more randomness here...overgenerate and then random pick.
+        tmp_clrs = tmp_clrs.slice(tmp_st.length); //ignore the starting colors
+        shuffle(tmp_clrs); 
+        let ci = 0; 
+        // console.log('tmp', tmp_st, tmp_clrs)
+        for (var j=0; j<setbool.length; j++){
+            //deal with no locks case
+            if (j==0 & locksum==0){
+                // console.log('hmm')
+                continue
+            }
+            if (!setbool[j]){ //if you need to add in a color...
+                var index = tmpIdx.indexOf(setpoints[j]);
+                st_clrs.splice(index, 0, tmp_clrs[ci]);
+                ci++; 
+                // console.log('pt', setpoints[j], 'ind', index, 'ci', ci, st_clrs.length)
+            }
+        }
+    }
+    // console.log(st_clrs.length, st_clrs, tmpIdx)
+
+    //now control lightness on either end
+    let lab_clrs = st_clrs.map(rgb2lab);
+
+    if (document.getElementById('lightcorrect').checked) {
+        //if only one locked and it's an endpoint, force that one, otherwise it's treated as a sort of smoothing. 
+        if (setbool[0] != setbool[2]) {
+            lab_clrs[lab_clrs.length - 1][0] = lab_clrs[0][0];
+        } else {
+            //update lightness -- automatically sets them to the average of the two endpoints.
+            lab_clrs[0][0] = (lab_clrs[0][0] + lab_clrs[lab_clrs.length - 1][0]) / 2;
+            lab_clrs[lab_clrs.length - 1][0] = (lab_clrs[0][0] + lab_clrs[lab_clrs.length - 1][0]) / 2;
+        }
+    }
+
+    //NOW all of the setup is in place to do interp between these 3 pts either linear or bezier 
+    //divide arrays in half
+    let rgb_clrs = lab_clrs.map(lab2rgb);
+
+    // console.log('slice', lab_clrs.slice(0, tmpIdx.indexOf(setpoints[1])+1))
+    let lockLocs1 = tmpIdx.slice(0, tmpIdx.indexOf(setpoints[1]) + 1);
+    let new_clrs1 = doInterp(rgb_clrs.slice(0, tmpIdx.indexOf(setpoints[1]) + 1), Math.ceil(num_clrs / 2), lockLocs1)
+    
+    
+    let lockLocs2 = tmpIdx.slice(tmpIdx.indexOf(setpoints[1]));
+    lockLocs2 = lockLocs2.map(i => i - setpoints[1]);
+    // console.log(lockLocs2);
+    let new_clrs2 = doInterp(rgb_clrs.slice(tmpIdx.indexOf(setpoints[1])), Math.ceil(num_clrs / 2), lockLocs2)
+
+    const new_clrs = new_clrs1.concat(new_clrs2.slice(1));
+
+    // console.log(new_clrs)
+    //get the locks
+    for (var i=0; i<lockIdx.length; i++) {
+        outLocks[lockIdx[i]] = 1; 
+    }
+
+    return [new_clrs, outLocks];
+}
+
+function doInterp(clrArr, num_clrs, lockLocs){
+    //decides whether to do bezier or linear depending on input
+    //do rgb as input color type bc of bezier/chroma handling
+    //lockLocs is like [0, 1, 4]
+    if (clrArr.length==2){
+        //linear interp
+        let lab_clrs = clrArr.map(rgb2lab);
+        return interp2color(lab_clrs[0], lab_clrs[1], num_clrs);
+
+    } else {
+        //bezier interpolated colors w smoothing
+        var lockiNorm = [];
+        for (var i = 0; i < lockLocs.length; i++) {
+            lockiNorm.push((lockLocs[i] / (lockLocs[lockLocs.length-1])));
+        }
+
+        //having gotten location of locked colors now use that to set the locations in the domain
+        // ex: chroma.bezier(['yellow', 'lightgreen', '008ae5']).scale().domain([0, .25, 1])
+        var interp_clrs = chroma.bezier(clrArr).scale().colors(num_clrs)
+        interp_clrs = chroma.scale(interp_clrs).domain(lockiNorm).colors(num_clrs);
+        //linearly interpolated colors
+        var light_clrs = chroma.scale(clrArr).domain(lockiNorm).colors(num_clrs)//
+        // console.log(light_clrs)
+
+        //average these two together to end up less grayish - do not bother with lightness correction unless checked
+        var new_clrs = [];
+        let smoothval = +document.getElementById('smoothing').value;
+        for (var i = 0; i < num_clrs; i++) {
+            new_clrs.push(chroma.average([light_clrs[i], interp_clrs[i]], 'rgb', [(100 - smoothval) / 100, smoothval / 100]));
+        }
+
+        if (document.getElementById('lightcorrect').checked) {
+            //update lightness -- I don't like how chroma does it so I convert to lab, get minimum and maximum end, and scale in between
+            new_clrs = correctLight(new_clrs);
+        }
+
+        return new_clrs.map(hexToRgbArr); 
+    }
+}
+
+
+function interp2color(clr1, clr2, num_clrs){
+    //input colors in lab format
+
+    var newL = interpolateArray([clr1[0], clr2[0]], num_clrs);
+    var newa = interpolateArray([clr1[1], clr2[1]], num_clrs);
+    var newb = interpolateArray([clr1[2], clr2[2]], num_clrs);
+
+    var new_clrs = newL.map(function (e, i) {
+        return lab2rgb([e, newa[i], newb[i]]);
+    });
+
+    return new_clrs;
+}
+
 function interpolateArray(data, fitCount) {
 
     var linearInterpolate = function (before, after, atPoint) {
@@ -1518,10 +1817,30 @@ function interpMulti() {
     let num_clrs = +document.getElementById('num_clrs').value;
     var st_clrs = indexByBool(undoArr[undoIdx], getLocked());
 
+    var lockedVals = getLocked();
+    var outLocks = Array(+document.getElementById('num_clrs').value).fill(0);
+    var indexedLocks = indexByBool([...Array(lockedVals.length).keys()], lockedVals);
+    indexedLocks[0] = 0; //force first one to be locked
+    indexedLocks[indexedLocks.length - 1] = lockedVals.length - 1; //force last locked
+    // console.log(lockedVals, indexedLocks)
+    var lockiNorm = []; 
+    for (var i = 0; i < indexedLocks.length; i++) {
+        outLocks[indexedLocks[i]] = 1;
+        lockiNorm.push((indexedLocks[i]/(lockedVals.length-1)));
+    }
+    console.log(lockiNorm, st_clrs)
+
     //bezier interpolated colors
-    var interp_clrs = chroma.bezier(st_clrs).scale().colors(num_clrs);
+    //having gotten location of locked colors now use that to set the locations in the domain
+    // chroma.bezier(['yellow', 'lightgreen', '008ae5']).scale().domain([0, .25, 1])
+    // var interp_clrs = chroma.bezier(st_clrs).scale().colors(num_clrs); //original
+    var interp_clrs = chroma.bezier(st_clrs).scale().colors(num_clrs)//.domain([lockiNorm]).colors(num_clrs);
+    // console.log(interp_clrs)
+    // console.log(chroma.scale(interp_clrs).domain(lockiNorm).colors(num_clrs))
+    interp_clrs = chroma.scale(interp_clrs).domain(lockiNorm).colors(num_clrs); 
     //linearly interpolated colors
-    var light_clrs = chroma.scale(st_clrs).colors(num_clrs)// 
+    var light_clrs = chroma.scale(st_clrs).domain(lockiNorm).colors(num_clrs)// 
+    console.log(light_clrs)
 
     //average these two together to end up less grayish - do not bother with lightness correction unless checked
     var new_clrs = [];
@@ -1534,22 +1853,33 @@ function interpMulti() {
         new_clrs = correctLight(new_clrs);
     }
 
+    // console.log(outLocks)
+    // console.log(indexByBool([...Array(lockedVals.length).keys()], lockedVals))
+    
+    //previous method for lock output: 
     //get nearest value to each original color
-    var near_idx = [];
-    for (var i = 0; i < st_clrs.length; i++) {
-        //get distance to each of the colors
-        let distTmp = [];
-        for (var j = 0; j < new_clrs.length; j++) {
-            distTmp.push(chroma.deltaE(st_clrs[i], new_clrs[j]))
-        }
-        //make minimum distance part of near idx to be checked
-        near_idx.push(distTmp.indexOf(Math.min(...distTmp)))
-    }
+    // var near_idx = [];
+    // for (var i = 0; i < st_clrs.length; i++) {
+    //     //get distance to each of the colors
+    //     let distTmp = [];
+    //     for (var j = 0; j < new_clrs.length; j++) {
+    //         distTmp.push(chroma.deltaE(st_clrs[i], new_clrs[j]))
+    //     }
+    //     //make minimum distance part of near idx to be checked
+    //     near_idx.push(distTmp.indexOf(Math.min(...distTmp)))
+    // }
 
-    return [new_clrs.map(hexToRgbArr), near_idx];
+    //new method for lock output: 
+    //preserve all locks EXCEPT the first and last ones which move to endpoint.
+    return [new_clrs.map(hexToRgbArr), outLocks];
 
     //calculate the nearest values to the starting colors and check those boxes
 
+}
+
+function interpDiverging(){
+    console.log("Ahhhh")
+    //treat as interpMulti or regular but with set point at midpoint and lightness forcing on both ends
 }
 
 function correctLight(hexClrArr) {
@@ -1728,7 +2058,7 @@ function populateColor(r, g, b) {
     col.draggable = true;
     col.id = "col-" + num.toString(); //TODO may need different unique identifier here to accomodate moving columns 
     e.appendChild(col);
-    var rows = 6;
+
     // const row_lbls = ['Full color', 'Deuteranopia', 'Protanopia', 'Tritanopia'];
     //make buttons at top
     var cell = document.createElement('div');
@@ -1762,6 +2092,19 @@ function populateColor(r, g, b) {
     cell.style.flexBasis = '2em';
     col.appendChild(cell);
 
+    var initRows = getInitRow();
+    var rows = initRows + 5; 
+    // var radios = document.getElementsByClassName('scheme-type'); 
+    // if (radios[0].checked){
+    //     var initRows = 1; //number of rows to subtract (was 1)
+    //     var rows = 6;
+    // }
+    // else {
+    //     var initRows = 2; //number of rows to subtract updated for additional row/split in gradient version
+    //     var rows = 7;
+    // }
+    
+
     for (var row = 1; row < rows; row++) {
         var cell = document.createElement('div');
         //name each cell so normal, extras get 
@@ -1771,7 +2114,12 @@ function populateColor(r, g, b) {
         if (row == 1) {
             cell.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
             // cell.style.flexBasis = '4em';
-            cell.classList.add('tall');
+            if (initRows==1) {
+                cell.classList.add('tall');
+            }
+            else {
+                cell.classList.add('medium');
+            }
 
             var butt = document.createElement('button');
             // butt.innerHTML = '&#x1F512'; //lock color
@@ -1792,7 +2140,7 @@ function populateColor(r, g, b) {
             cell.appendChild(cpick)
         }
         else {
-            let convArr = toCB([r, g, b], row - 1);
+            let convArr = toCB([r, g, b], row - initRows);
             cell.style.backgroundColor = "rgb(" + convArr[0] + "," + convArr[1] + "," + convArr[2] + ")";
             // cell.style.flexBasis = '2em';
             cell.classList.add('short');
@@ -1850,7 +2198,7 @@ function populateColor(r, g, b) {
 
             let gridcell = document.getElementsByClassName('grid-cell row-' + row + ' ' + col.id)[0];
             let rgba = colorValues(color.rgb);
-            let convArr = toCB([rgba[0], rgba[1], rgba[2]], row - 1);
+            let convArr = toCB([rgba[0], rgba[1], rgba[2]], Math.max(row - getInitRow(), 0));
             gridcell.style.backgroundColor = "rgb(" + convArr[0] + "," + convArr[1] + "," + convArr[2] + ")";
         }
     });
@@ -1866,8 +2214,19 @@ function populateColor(r, g, b) {
 
     //check if the add button needs to be disabled
     checkMinWidth();
-
 }
+
+function getInitRow(){
+    //number of rows to subtract updated for additional row/split in gradient version
+    var radios = document.getElementsByClassName('scheme-type'); 
+    if (radios[0].checked) {
+        return 1;
+    }
+    else {
+        return 2;
+    }
+}
+
 
 
 
