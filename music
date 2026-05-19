@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frequency — Music Data Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #181818;
+    --bg4: #202020;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0ede8;
+    --text2: #8a8580;
+    --text3: #52504d;
+    --accent: #c8f064;
+    --accent2: #9adb3e;
+    --accent-dim: rgba(200,240,100,0.1);
+    --red: #ff6b5a;
+    --blue: #6eb5ff;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Instrument Serif', serif;
+    --sans: 'DM Sans', sans-serif;
+    --radius: 6px;
+    --radius-lg: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--text3);
+    font-weight: 300;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .api-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .api-badge.connected {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .api-badge:hover { border-color: var(--border2); color: var(--text); }
+
+  /* Main layout */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 3rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  /* API Config panel */
+  .config-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  .config-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    cursor: pointer;
+  }
+
+  .config-panel-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .config-panel-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text3);
+    display: inline-block;
+  }
+
+  .config-panel-title.has-keys::before { background: var(--accent); }
+
+  .config-toggle {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  .config-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .config-fields { grid-template-columns: 1fr; }
+  }
+
+  .field-group label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text2);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .field-group input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    transition: border-color 0.15s;
+    outline: none;
+  }
+
+  .field-group input:focus { border-color: var(--accent); }
+  .field-group input::placeholder { color: var(--text3); }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 5px;
+    font-family: var(--mono);
+  }
+
+  .field-hint a { color: var(--text2); text-decoration: underline; text-underline-offset: 2px; }
+  .field-hint a:hover { color: var(--accent); }
+
+  /* Search */
+  .search-section {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.5s 0.15s ease both;
+  }
+
+  .mode-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 1rem;
+    background: var(--bg2);
+    padding: 4px;
+    border-radius: var(--radius);
+    width: fit-content;
+    border: 1px solid var(--border);
+  }
+
+  .mode-tab {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+
+  .mode-tab.active {
+    background: var(--accent);
+    color: #0a0a0a;
+    font-weight: 500;
+  }
+
+  .mode-tab:not(.active):hover { color: var(--text); }
+
+  .search-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .search-input-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-input-wrap input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px 12px 44px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-input-wrap input:focus { border-color: var(--accent); }
+  .search-input-wrap input::placeholder { color: var(--text3); }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  .search-btn {
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: var(--accent2); }
+  .search-btn:active { transform: scale(0.98); }
+
+  /* Status */
+  .status {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 0.5rem 0;
+    color: var(--text2);
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0.75rem;
+  }
+
+  .status.error { color: var(--red); }
+
+  .spinner {
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--text3);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  /* Results */
+  #results { animation: fadeUp 0.4s ease both; }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text3);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    transition: color 0.15s;
+    letter-spacing: 0.05em;
+  }
+
+  .back-btn:hover { color: var(--accent); }
+
+  /* Track detail */
+  .track-hero {
+    margin-bottom: 2rem;
+  }
+
+  .track-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 0.5rem;
+  }
+
+  .track-title {
+    font-family: var(--serif);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 0.35rem;
+  }
+
+  .track-artist {
+    font-size: 16px;
+    color: var(--text2);
+  }
+
+  .track-artist span { color: var(--accent); }
+
+  /* Metrics */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .metric {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  }
+
+  .metric.highlight {
+    border-color: rgba(200,240,100,0.25);
+    background: rgba(200,240,100,0.04);
+  }
+
+  .metric.highlight::before {
+    background: linear-gradient(90deg, transparent, rgba(200,240,100,0.4), transparent);
+  }
+
+  .metric-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .metric-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .metric.highlight .metric-value { color: var(--accent); }
+
+  .metric-unit {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .metric-missing {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  /* Section headers */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .section-head h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Tags */
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 2rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    background: var(--bg2);
+    cursor: default;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+
+  .tag:first-child {
+    border-color: rgba(200,240,100,0.3);
+    color: var(--accent);
+    background: rgba(200,240,100,0.05);
+  }
+
+  /* Similar tracks */
+  .similar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .similar-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .similar-card:hover {
+    border-color: var(--border2);
+    background: var(--bg3);
+    transform: translateY(-1px);
+  }
+
+  .similar-card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .similar-card-artist {
+    font-size: 12px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .similar-card-match {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  .match-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+
+  .match-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: width 0.4s ease;
+  }
+
+  /* Wiki */
+  .wiki-block {
+    border-left: 2px solid var(--border2);
+    padding-left: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .wiki-text {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.75;
+    font-style: italic;
+    font-family: var(--serif);
+    font-size: 16px;
+  }
+
+  /* Playlist */
+  .playlist-head {
+    margin-bottom: 1.5rem;
+  }
+
+  .playlist-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .playlist-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  .track-list { border-top: 1px solid var(--border); }
+
+  .track-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    border-radius: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0 -8px;
+  }
+
+  .track-row:hover { background: var(--bg2); }
+
+  .track-row:hover .track-row-num { opacity: 0; }
+  .track-row:hover .track-row-play { opacity: 1; }
+
+  .track-row-num-wrap {
+    width: 24px;
+    flex-shrink: 0;
+    text-align: center;
+    position: relative;
+    height: 18px;
+  }
+
+  .track-row-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text3);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.1s;
+  }
+
+  .track-row-play {
+    font-size: 12px;
+    color: var(--accent);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  .track-row-info { flex: 1; min-width: 0; }
+
+  .track-row-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-row-artist {
+    font-size: 12px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-row-plays {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .track-row-arrow {
+    color: var(--text3);
+    font-size: 14px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  .track-row:hover .track-row-arrow { opacity: 1; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+  /* Config collapse */
+  .config-body { overflow: hidden; transition: max-height 0.3s ease; }
+  .config-body.collapsed { max-height: 0 !important; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    main { padding: 2rem 1rem; }
+    header { padding: 0 1rem; }
+    .search-row { flex-direction: column; }
+    footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">FREQ<span>uency</span></a>
+  <div class="header-right">
+    <span id="lfm-badge" class="api-badge">last.fm ✕</span>
+    <span id="bpm-badge" class="api-badge">bpm ✕</span>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">// music data explorer</div>
+    <h1>Dig deeper<br>into any <em>track.</em></h1>
+    <p class="hero-sub">Pull BPM, key, genre tags, play counts, and similar tracks from Last.fm and GetSongBPM — for any song or playlist.</p>
+  </div>
+
+  <!-- Config -->
+  <div class="config-panel">
+    <div class="config-panel-header" onclick="toggleConfig()">
+      <div class="config-panel-title" id="config-title">API keys</div>
+      <div class="config-toggle" id="config-toggle">▲ collapse</div>
+    </div>
+    <div class="config-body" id="config-body" style="max-height: 200px;">
+      <div class="config-fields">
+        <div class="field-group">
+          <label>Last.fm API key <span style="color:var(--red)">*</span></label>
+          <input type="text" id="lfm-key" placeholder="a1b2c3d4e5f6..." oninput="updateBadges()" />
+          <div class="field-hint">Get yours at <a href="https://www.last.fm/api/account/create" target="_blank">last.fm/api/account/create</a> — free</div>
+        </div>
+        <div class="field-group">
+          <label>GetSongBPM API key</label>
+          <input type="text" id="bpm-key" placeholder="optional — for BPM + key data" oninput="updateBadges()" />
+          <div class="field-hint">Get yours at <a href="https://getsongbpm.com/api" target="_blank">getsongbpm.com/api</a> — free</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-section">
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="track" onclick="setMode('track')">Track</button>
+      <button class="mode-tab" data-mode="user" onclick="setMode('user')">User top tracks</button>
+      <button class="mode-tab" data-mode="tag" onclick="setMode('tag')">Genre / tag</button>
+      <button class="mode-tab" data-mode="playlist" onclick="setMode('playlist')">Playlist URL</button>
+    </div>
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search-input" placeholder="Artist – Track name (e.g. Radiohead – Creep)" />
+      </div>
+      <button class="search-btn" onclick="doSearch()">Search →</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <!-- Results -->
+  <div id="results"></div>
+</main>
+
+<footer>
+  <div class="footer-note">© frequency — powered by Last.fm &amp; GetSongBPM APIs</div>
+  <div class="footer-links">
+    <a href="https://www.last.fm/api" target="_blank">last.fm api</a>
+    <a href="https://getsongbpm.com/api" target="_blank">getsongbpm api</a>
+  </div>
+</footer>
+
+<script>
+const LASTFM = 'https://ws.audioscrobbler.com/2.0/';
+const BPMAPI = 'https://api.getsongbpm.com';
+let currentMode = 'track';
+let configOpen = true;
+
+function getLFKey() { return document.getElementById('lfm-key').value.trim(); }
+function getBPMKey() { return document.getElementById('bpm-key').value.trim(); }
+
+function updateBadges() {
+  const lfmBadge = document.getElementById('lfm-badge');
+  const bpmBadge = document.getElementById('bpm-badge');
+  lfmBadge.className = 'api-badge' + (getLFKey() ? ' connected' : '');
+  lfmBadge.textContent = getLFKey() ? 'last.fm ✓' : 'last.fm ✕';
+  bpmBadge.className = 'api-badge' + (getBPMKey() ? ' connected' : '');
+  bpmBadge.textContent = getBPMKey() ? 'bpm ✓' : 'bpm ✕';
+
+  const titleEl = document.getElementById('config-title');
+  titleEl.className = 'config-panel-title' + (getLFKey() ? ' has-keys' : '');
+}
+
+function toggleConfig() {
+  configOpen = !configOpen;
+  const body = document.getElementById('config-body');
+  const toggle = document.getElementById('config-toggle');
+  if (configOpen) {
+    body.classList.remove('collapsed');
+    body.style.maxHeight = '200px';
+    toggle.textContent = '▲ collapse';
+  } else {
+    body.classList.add('collapsed');
+    toggle.textContent = '▼ expand';
+  }
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === mode);
+  });
+  const inp = document.getElementById('search-input');
+  if (mode === 'track') inp.placeholder = 'Artist – Track name (e.g. Radiohead – Creep)';
+  else if (mode === 'user') inp.placeholder = 'Last.fm username (e.g. rj)';
+  else inp.placeholder = 'Genre tag (e.g. jazz, indie rock, 90s)';
+}
+
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+function setStatus(msg, isError) {
+  const el = document.getElementById('status');
+  if (!msg) { el.innerHTML = ''; el.className = 'status'; return; }
+  el.className = 'status' + (isError ? ' error' : '');
+  el.innerHTML = isError ? msg : `<div class="spinner"></div>${msg}`;
+}
+
+async function lfm(params) {
+  const key = getLFKey();
+  if (!key) throw new Error('Enter your Last.fm API key to continue');
+  const url = LASTFM + '?' + new URLSearchParams({ ...params, api_key: key, format: 'json' });
+  const r = await fetch(url);
+  const d = await r.json();
+  if (d.error) throw new Error(d.message || 'Last.fm API error');
+  return d;
+}
+
+async function getBPMData(artist, track) {
+  const key = getBPMKey();
+  if (!key) return null;
+  try {
+    const q = encodeURIComponent(`${track} ${artist}`);
+    const r = await fetch(`${BPMAPI}/search/?api_key=${key}&type=both&lookup=${q}`);
+    const d = await r.json();
+    if (!d.search || !d.search.length) return null;
+    const match = d.search.find(s =>
+      s.song_title && s.song_title.toLowerCase().includes(track.toLowerCase().substring(0,5))
+    ) || d.search[0];
+    if (!match?.song_id) return null;
+    const r2 = await fetch(`${BPMAPI}/song/?api_key=${key}&id=${match.song_id}`);
+    const d2 = await r2.json();
+    return d2.song || null;
+  } catch(e) { return null; }
+}
+
+async function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  document.getElementById('results').innerHTML = '';
+  setStatus('');
+  try {
+    if (currentMode === 'track') {
+      const hasDash = q.includes('–') || q.includes(' - ');
+      let artist = '', track = q;
+      if (q.includes('–')) { [artist, track] = q.split('–').map(s => s.trim()); }
+      else if (q.includes(' - ')) { [artist, track] = q.split(' - ').map(s => s.trim()); }
+      await showTrack(artist, track);
+    } else if (currentMode === 'user') {
+      await showUserTracks(q);
+    } else {
+      await showTagTracks(q);
+    }
+  } catch(e) {
+    setStatus(e.message, true);
+  }
+}
+
+async function showTrack(artist, track) {
+  setStatus('Fetching track data...');
+  const params = { method: 'track.getInfo', track, autocorrect: 1 };
+  if (artist) params.artist = artist;
+  const data = await lfm(params);
+  const t = data.track;
+
+  setStatus('Loading tags, similar tracks, audio data...');
+  const [tagsData, similarData, bpmData] = await Promise.all([
+    lfm({ method: 'track.getTopTags', track: t.name, artist: t.artist.name, autocorrect: 1 }).catch(() => null),
+    lfm({ method: 'track.getSimilar', track: t.name, artist: t.artist.name, limit: 8, autocorrect: 1 }).catch(() => null),
+    getBPMData(t.artist.name, t.name)
+  ]);
+  setStatus('');
+  renderTrack(t, tagsData, similarData, bpmData);
+
+  if (getLFKey() && configOpen) {
+    toggleConfig();
+  }
+}
+
+function renderTrack(t, tagsData, similarData, bpmData) {
+  const tags = tagsData?.toptags?.tag?.slice(0, 12) || [];
+  const similar = similarData?.similartracks?.track?.slice(0, 8) || [];
+  const plays = parseInt(t.playcount || 0).toLocaleString();
+  const listeners = parseInt(t.listeners || 0).toLocaleString();
+  const durMs = parseInt(t.duration || 0);
+  const duration = durMs > 0
+    ? `${Math.floor(durMs/60000)}:${String(Math.floor((durMs%60000)/1000)).padStart(2,'0')}`
+    : '—';
+  const wiki = t.wiki?.summary?.replace(/<[^>]+>/g, '').split('. Read more')[0] || '';
+  const bpm = bpmData?.tempo ? Math.round(bpmData.tempo) : null;
+  const key = bpmData?.key_of || null;
+
+  let html = `
+    <button class="back-btn" onclick="clearResults()">← back to search</button>
+    <div class="track-hero">
+      <div class="track-eyebrow">// track</div>
+      <div class="track-title">${esc(t.name)}</div>
+      <div class="track-artist">by <span>${esc(t.artist?.name || '')}</span>${t.album?.title ? ' · <span style="color:var(--text2)">' + esc(t.album.title) + '</span>' : ''}</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">Scrobbles</div>
+        <div class="metric-value">${formatBig(parseInt(t.playcount || 0))}</div>
+        <div class="metric-unit">${plays} total plays</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Listeners</div>
+        <div class="metric-value">${formatBig(parseInt(t.listeners || 0))}</div>
+        <div class="metric-unit">unique listeners</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Duration</div>
+        <div class="metric-value">${duration}</div>
+        <div class="metric-unit">mm:ss</div>
+      </div>
+      <div class="metric ${bpm ? 'highlight' : ''}">
+        <div class="metric-label">BPM</div>
+        <div class="metric-value">${bpm !== null ? bpm : '—'}</div>
+        ${!getBPMKey() ? '<div class="metric-missing">add bpm key</div>' : bpm ? '<div class="metric-unit">beats per min</div>' : '<div class="metric-unit">not found</div>'}
+      </div>
+      <div class="metric ${key ? 'highlight' : ''}">
+        <div class="metric-label">Key</div>
+        <div class="metric-value">${key ? key.split(' ')[0] : '—'}</div>
+        ${key ? `<div class="metric-unit">${key}</div>` : !getBPMKey() ? '<div class="metric-missing">add bpm key</div>' : '<div class="metric-unit">not found</div>'}
+      </div>
+    </div>`;
+
+  if (tags.length) {
+    html += `
+      <div class="section-head"><h2>Genre tags</h2><div class="section-line"></div></div>
+      <div class="tags-wrap">`;
+    tags.forEach(tag => { html += `<span class="tag">${esc(tag.name)}</span>`; });
+    html += `</div>`;
+  }
+
+  if (similar.length) {
+    html += `
+      <div class="section-head"><h2>Similar tracks</h2><div class="section-line"></div></div>
+      <div class="similar-grid">`;
+    similar.forEach(s => {
+      const pct = s.match ? Math.round(parseFloat(s.match) * 100) : 0;
+      html += `<div class="similar-card" onclick="showTrackExternal('${esc2(s.artist?.name||'')}','${esc2(s.name||'')}')">
+        <div class="similar-card-name">${esc(s.name)}</div>
+        <div class="similar-card-artist">${esc(s.artist?.name || '')}</div>
+        ${pct ? `<div class="similar-card-match">${pct}% match<div class="match-bar"><div class="match-fill" style="width:${pct}%"></div></div></div>` : ''}
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  if (wiki) {
+    html += `
+      <div class="section-head"><h2>About</h2><div class="section-line"></div></div>
+      <div class="wiki-block"><p class="wiki-text">"${esc(wiki.trim())}."</p></div>`;
+  }
+
+  document.getElementById('results').innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function showUserTracks(username) {
+  setStatus(`Fetching ${username}'s top tracks...`);
+  const data = await lfm({ method: 'user.getTopTracks', user: username, limit: 30, period: 'overall' });
+  const tracks = data.toptracks?.track || [];
+  if (!tracks.length) throw new Error('No tracks found for this user');
+  setStatus('');
+  renderPlaylist(tracks, `${username}'s top tracks`, `all-time · ${tracks.length} tracks`);
+}
+
+async function showTagTracks(tag) {
+  setStatus(`Fetching top tracks for "${tag}"...`);
+  const data = await lfm({ method: 'tag.getTopTracks', tag, limit: 30 });
+  const tracks = data.tracks?.track || [];
+  if (!tracks.length) throw new Error('No tracks found for this tag');
+  setStatus('');
+  renderPlaylist(tracks, `Top tracks: ${tag}`, `genre tag · ${tracks.length} tracks`);
+}
+
+function renderPlaylist(tracks, title, meta) {
+  let html = `
+    <div class="playlist-head">
+      <div class="playlist-title">${esc(title)}</div>
+      <div class="playlist-meta">${esc(meta)} · click any track to explore</div>
+    </div>
+    <div class="track-list">`;
+
+  tracks.forEach((t, i) => {
+    const artistName = typeof t.artist === 'string' ? t.artist : (t.artist?.name || '');
+    const plays = t.playcount ? formatBig(parseInt(t.playcount)) : '';
+    html += `<div class="track-row" onclick="showTrackExternal('${esc2(artistName)}','${esc2(t.name)}')">
+      <div class="track-row-num-wrap">
+        <div class="track-row-num">${i + 1}</div>
+        <div class="track-row-play">▶</div>
+      </div>
+      <div class="track-row-info">
+        <div class="track-row-name">${esc(t.name)}</div>
+        <div class="track-row-artist">${esc(artistName)}</div>
+      </div>
+      ${plays ? `<div class="track-row-plays">${plays}</div>` : ''}
+      <div class="track-row-arrow">→</div>
+    </div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('results').innerHTML = html;
+  if (getLFKey() && configOpen) toggleConfig();
+}
+
+function showTrackExternal(artist, track) {
+  document.getElementById('results').innerHTML = '';
+  setStatus('Loading...');
+  showTrack(artist, track).catch(e => setStatus(e.message, true));
+}
+
+function clearResults() {
+  document.getElementById('results').innerHTML = '';
+  setStatus('');
+}
+
+function formatBig(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+  return n.toLocaleString();
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function esc2(s) {
+  return String(s || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
